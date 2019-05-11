@@ -1,27 +1,19 @@
-#include "junctionpoint.h"
+class JunctionPoint(Pvector):
+    def __init__(self, x, y, i):
+    self.x = float(x)
+    self.y = float(y)
+    self.i = int(i)
 
-from Pvector import *
-
-x = 0
-x = float(x)
-y = 0
-y = float(y)
-i = 0
-i = int(i)
-
-def JunctionPoint(x, y, i):
-    
-    Pvector(x,y)
-
+    #If this junction point can take you to next junction, it's accessible.
+    # Otherwise, it's not (e.g. at the corner)
     accessible = true
+    # A street has only two ends, one is to drive in,
+    #the other is to drive out
     inOrOut = true
+    #It's used to record the relative position of the
+    # junction points at the junction
     index = i
 
+    #Return a junction point object
 def get():
-    
-    #JunctionPoint and v1 variables need to be correctly defined
-    '''
-    JunctionPoint *v1 = new JunctionPoint(0,0,0)
-    *v1 = *this
-    return *v1
-    '''
+    return self #Lets try this -K

@@ -4,13 +4,11 @@ from Destinations import *
 from Pvector import *
 from Junction import *
 
-x = 0
-x = float(x)
-y = 0
-y = float(y)
+x = float(0)
+y = float(0)
 
 def Path():
-
+    #TODO refactor into method with loop -K
     #Initial junctions (smaller map)
     addMainJunctions(-200, 200)
     addMainJunctions(   0, 200)
@@ -47,6 +45,4 @@ def Path():
 
 
 def addMainJunctions(x, y):
-
     mainJunctions.push_back(Junction(x,y))
-
