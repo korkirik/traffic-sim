@@ -17,7 +17,7 @@
  *              emergent effect is thereby generated and is observable.
  *
  * Author:      Yu-Jeng Kuo, Arindam Mahanta, Anoshan Indreswaran
- * Translated into Python by: Yusuf Ismail, Kirill Korolev, Leen Nijim
+ * Ported into Python by: Yusuf Ismail, Kirill Korolev, Leen Nijim
  *
  * Last update: 24.04.2019
  ******************************************************************/
@@ -31,11 +31,10 @@ argc = int(argc)
 argv = []
 
 def main(argc, argv):
-    
+
     #Qapplication and Dialog need to be correctly defined.
     QApplication a(argc, argv)
     Dialog w
     w.show()
 
     return a.exec()
-

@@ -1,13 +1,18 @@
-#include "path.h"
-
-from Destinations import *
-from Pvector import *
+from pvector import *
 from Junction import *
 
-x = float(0)
-y = float(0)
+class Path:
+    def __init__(self):
+    #in C Destinations is a list of Pvectors
+    #that stores the coordinates of some destinations
+    # mainJunctions is a list of Junctions
+    #that manages all the junctions
 
-def Path():
+    Destinations = list()
+    mainJunctions = list()
+
+    self.x = float(0) ???
+    self.y = float(0) ???
     #TODO refactor into method with loop -K
     #Initial junctions (smaller map)
     addMainJunctions(-200, 200)
@@ -38,11 +43,11 @@ def Path():
     addMainJunctions( 200, 400)
     addMainJunctions( 400, 400)
 
-    Destinations.push_back(Pvector( 380, 380))
-    Destinations.push_back(Pvector( 120,-380))
-    Destinations.push_back(Pvector(-320, 220))
-    Destinations.push_back(Pvector(  80,  20))
+    Destinations.append(Pvector( 380, 380))
+    Destinations.append(Pvector( 120,-380))
+    Destinations.append(Pvector(-320, 220))
+    Destinations.append(Pvector(  80,  20))
 
-
-def addMainJunctions(x, y):
-    mainJunctions.push_back(Junction(x,y))
+    #Add junction on to the map
+def addMainJunctions(self, x, y):
+    mainJunctions.append(Junction(x,y))
