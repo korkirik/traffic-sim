@@ -1,3 +1,21 @@
+'''
+ * Classname
+ *  - Path
+ *
+ * Brief
+ *  - A class that resembles the whole map
+ *
+ * Inherit
+ *  - None
+ *
+ * Virtual Function
+ *  - None
+ *
+ * Detail
+ *  - A path is like the whole map where agents are travelling.
+ *    A path object manages all the main junctions, and it also stores
+ *    where the final destination are.
+'''
 from pvector import *
 from Junction import *
 
@@ -11,8 +29,6 @@ class Path:
     Destinations = list()
     mainJunctions = list()
 
-    self.x = float(0) ???
-    self.y = float(0) ???
     #TODO refactor into method with loop -K
     #Initial junctions (smaller map)
     addMainJunctions(-200, 200)

@@ -1,3 +1,24 @@
+'''
+ * Classname
+ *  - JunctionPoint
+ *
+ * Brief
+ *  - A class that resembles driving "in" or "out" a street
+ *
+ * Inherit
+ *  - class Pvector
+ *
+ * Virtual Function
+ *  - None
+ *
+ * Detail
+ *  - A Junction point is like the entrance or exit of the street.
+ *    As this class inherits from the Pvector class, each junction
+ *    points has its own coordinates. In addition, it also carries
+ *    other infomation like accessibility, direction (in or out)...etc.
+ *
+'''
+
 class JunctionPoint(Pvector):
     def __init__(self, x, y, i):
     self.x = float(x)
