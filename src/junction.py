@@ -17,6 +17,8 @@
  *    basically 8 junction points, from which each pair represents
  *    driving "in" and "out" of the street.
 '''
+from pvector import *
+from junctionpoint import *
 
 class Junction:
 
@@ -28,6 +30,8 @@ class Junction:
         self.addPoints(x,y)
         self.setStatus()
 
+    def whoAmI(self):
+        print('I am junction')
     #Add points to the junction
     # 8 junction points will be added by calling it once
 
@@ -50,10 +54,12 @@ class Junction:
         length = len(self.subJunctions)
         for i in range(0,length,2):
                 self.subJunctions[i].inOrOut = 0
+
         for i in range(1,length,2):
                 self.subJunctions[i].inOrOut = 1
-        for i in self.subJunctions:
-            if self.subJunctions[i].x > 410 || self.subJunctions[i].x <-410:
-                self.subJunctions[i].accessible = false
-            elif self.subJunctions[i].y > 410 || self.subJunctions[i].y <-410:
-                self.subJunctions[i].accessible = false
+
+        for i in range(0,length,1):
+            if self.subJunctions[i].x > 410 or self.subJunctions[i].x <-410:
+                self.subJunctions[i].accessible = False
+            elif self.subJunctions[i].y > 410 or self.subJunctions[i].y <-410:
+                self.subJunctions[i].accessible = False

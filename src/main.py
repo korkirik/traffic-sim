@@ -22,19 +22,32 @@
  * Last update: 24.04.2019
  ******************************************************************/
 '''
+from junction import *
+from path import*
+from array import *
 
-#include "dialog.h"
-#include <QApplication>
+from bokeh.plotting import figure, output_file, show
+output_file("test.html")
 
-argc = 0
-argc = int(argc)
-argv = []
+q = Junction(0,0)
+q.whoAmI()
 
-def main(argc, argv):
+path = Path()
+p = figure()
+length = len(path.mainJunctions)
+xl = list()
+yl = list()
+a = list()
+for jun in range(0,length,1):
+    xl = path.mainJunctions[jun].junLocation.x
+    yl = path.mainJunctions[jun].junLocation.y
+    print(xl,yl)
+    a = (xl,yl)
+#p = figure(plot_width=400, plot_height=400)
+#p.line(a, line_width=2)
 
-    #Qapplication and Dialog need to be correctly defined.
-    QApplication a(argc, argv)
-    Dialog w
-    w.show()
+p.image(image = [a], x=0 , y=0, dw =2, dh =2, palette="Spectral11")
+show(p)
 
-    return a.exec()
+
+show(p)

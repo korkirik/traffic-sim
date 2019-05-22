@@ -9,8 +9,14 @@ import math
 class Pvector:
 
     def __init__(self, xCoordinate, yCoordinate):
-        self.x = float(xCoordinate)
-        self.y = float(yCoordinate)
+        if xCoordinate == None:
+            self.x = 0
+        else:
+            self.x = float(xCoordinate)
+        if yCoordinate == None:
+            self.y = 0
+        else:
+            self.y = float(yCoordinate)
 
     def add(self, pvector):
         x = self.x + pvector.x
@@ -40,7 +46,7 @@ class Pvector:
         self.x = self.x + pvector.x
         self.y = self.y + pvector.y
 
-    def substractfromSelf(self, pvector):
+    def substractFromSelf(self, pvector):
         self.x = self.x - pvector.x
         self.y = self.y - pvector.y
 
@@ -96,3 +102,6 @@ class Pvector:
         ba.multiplySelfByScalar(value)
         normalPoint = a.add(ba)
         return normalPoint
+
+    def whoAmI(self):
+        print('I am vector', self.x, self.y)
