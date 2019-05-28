@@ -37,17 +37,18 @@ p = figure()
 length = len(path.mainJunctions)
 xl = list()
 yl = list()
-a = list()
+#a = list()
 for jun in range(0,length,1):
-    xl = path.mainJunctions[jun].junLocation.x
-    yl = path.mainJunctions[jun].junLocation.y
-    print(xl,yl)
-    a = (xl,yl)
-#p = figure(plot_width=400, plot_height=400)
+    xl.append(path.mainJunctions[jun].junLocation.x)
+    yl.append(path.mainJunctions[jun].junLocation.y)
+
+print(xl,yl)
+    #a = (xl,yl)
+
+p = figure(plot_width=700, plot_height=700)
+p.circle(xl,yl)
+p.line(xl,yl)
 #p.line(a, line_width=2)
 
-p.image(image = [a], x=0 , y=0, dw =2, dh =2, palette="Spectral11")
-show(p)
-
-
+#p.image(image = [a], x=0 , y=0, dw =2, dh =2, palette="Spectral11")
 show(p)
