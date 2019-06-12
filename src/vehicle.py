@@ -133,7 +133,7 @@ class Vehicle:
             goals.push_back(goal)
     
             this.counter +=1
-            onlyOnce ++1
+            onlyOnce +=1
     
     
     # Choose which junction points to turn
@@ -245,7 +245,7 @@ class Vehicle:
     
         #Single path
     
-        Pvector *normalPoint = Pvector.getNormalPoint(predictLoc, here, there)
+        Pvector.normalPoint = Pvector.getNormalPoint(predictLoc, here, there)
     
         if(normalPoint.x < fmin(here.x, there.x) or normalPoint.x > fmax(here.x, there.x)):
         
@@ -256,10 +256,10 @@ class Vehicle:
             normalPoint = there.get()
         
     
-        Pvector *dir = Pvector.sub(there, here)
+        Pvector.dir = Pvector.sub(there, here)
         dir.normalize()
         dir.mult(10)
-        Pvector *target = Pvector.add(normalPoint, dir)
+        Pvector.target = Pvector.add(normalPoint, dir)
     
         if (worldRecord > 5):
         
@@ -401,7 +401,7 @@ class Vehicle:
     
     def applyForce(Pvector):
     
-        Pvector *f= Pvector.div(force,this.mass)
+        Pvector.f= Pvector.div(force,this.mass)
         acceleration.add(f)
     
     
@@ -454,7 +454,7 @@ class Vehicle:
     
         if(crashed == true):
         
-            Pvector* breakForce = Pvector.mult(velocity, -1)
+            Pvector.breakForce = Pvector.mult(velocity, -1)
             acceleration.mult(0)
             applyForce(breakForce)
         
