@@ -23,7 +23,7 @@ class Pvector:
         y = self.y + pvector.y
         return Pvector(x, y)
 
-    def substract(self, pvector):
+    def subtract(self, pvector):
         x = self.x - pvector.x
         y = self.y - pvector.y
         return Pvector(x, y)
@@ -46,7 +46,7 @@ class Pvector:
         self.x = self.x + pvector.x
         self.y = self.y + pvector.y
 
-    def substractFromSelf(self, pvector):
+    def subtractFromSelf(self, pvector):
         self.x = self.x - pvector.x
         self.y = self.y - pvector.y
 
@@ -95,8 +95,8 @@ class Pvector:
         return math.sqrt((self.x - vector.x)*(self.x - vector.x) + (self.y - vector.y)*(self.y - vector.y))
 
     def getNormalPoint(self, b, p):
-        pa = p.substract(self)
-        ba = b.substract(self)
+        pa = p.subtract(self)
+        ba = b.subtract(self)
         ba.normalize()
         value = pa.dotProduct(ba)
         ba.multiplySelfByScalar(value)
