@@ -1,8 +1,8 @@
 #include "drunkdriver.h"
 
-import Path as p
-from Vehicle import *
-from Pvector import *
+import path as p
+from vehicle import *
+from pvector import *
 
 posX = float(0)
 posY = float(0)
@@ -155,7 +155,7 @@ class DrunkDriver:
         radius = int(50)
         Pvector.sum = newPvector(0,0)
     
-        
+        '''
         for i in range (Pvector.iterator = vehicles.begin(), vehicles.end()):
         
             d = float(Pvector.dist(location, (i).location))
@@ -188,7 +188,7 @@ class DrunkDriver:
     
                     summ.add(diff)
                     tooClosecount + 1
-                
+       '''         
             
     
         #Average
