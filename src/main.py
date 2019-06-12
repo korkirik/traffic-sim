@@ -16,39 +16,20 @@
  *              as well as other factors like traffic jam. An overall
  *              emergent effect is thereby generated and is observable.
  *
- * Author:      Yu-Jeng Kuo, Arindam Mahanta, Anoshan Indreswaran
- * Ported into Python by: Yusuf Ismail, Kirill Korolev, Leen Nijim
- *
- * Last update: 24.04.2019
+ *   Developed by: Yusuf Ismail, Kirill Korolev, Leen Nijim
+ * Based on initial work of:
+    Yu-Jeng Kuo, Arindam Mahanta, Anoshan Indreswaran
  ******************************************************************/
 '''
-from junction import *
-from path import*
-from array import *
+from map import *
+from parser_osm import *
+from pseudoparser import *
 
-from bokeh.plotting import figure, output_file, show
-output_file("test.html")
+#from array import *
 
-q = Junction(0,0)
-q.whoAmI()
 
-path = Path()
-p = figure()
-length = len(path.mainJunctions)
-xl = list()
-yl = list()
-#a = list()
-for jun in range(0,length,1):
-    xl.append(path.mainJunctions[jun].junLocation.x)
-    yl.append(path.mainJunctions[jun].junLocation.y)
-
-print(xl,yl)
-    #a = (xl,yl)
-
-p = figure(plot_width=700, plot_height=700)
-p.circle(xl,yl)
-p.line(xl,yl)
-#p.line(a, line_width=2)
-
-#p.image(image = [a], x=0 , y=0, dw =2, dh =2, palette="Spectral11")
-show(p)
+map = Map()
+psparser = PseudoParser()
+psparser.parseFile()
+map.loadStreets(psparser.getStreetSegmentList())
+map.drawStreets()
