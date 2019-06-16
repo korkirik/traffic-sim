@@ -27,9 +27,9 @@ from pseudoparser import *
 
 #from array import *
 
-
 map = Map()
 psparser = PseudoParser()
 psparser.parseFile()
 map.loadStreets(psparser.getStreetSegmentList())
 map.drawStreets()
+#simulation = Simulation()    To be added later!

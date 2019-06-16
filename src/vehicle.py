@@ -55,9 +55,7 @@ class Vehicle:
         #///////// No Used Variable ////////
         mass = 1                           # No use
         
-    
-    #///////////////// Behaviors ///////////////
-    
+    #///////////////// Behaviors ///////////////   
                                                 
     # Choose which main junction to go
     def chooseJunction(Path):
@@ -88,9 +86,7 @@ class Vehicle:
                         smallest = distance
     
                         #find out which junction has the cloest "drive out" point
-                        tempGoal = i
-                    
-                
+                        tempGoal = i                 
     
             #set my goal to that junciton, in particular the corresponding point
             (this.goal) = p.mainJunctions[tempGoal].subJunctions[index].get()
@@ -99,8 +95,7 @@ class Vehicle:
             goals.push_back(goal)
     
             this.counter +=1
-        
-    
+         
         #is true if the car is on a street or somewhere else, but not at the in/out points
         elif(setGoal() & onlyOnce == 0):
         
@@ -112,8 +107,7 @@ class Vehicle:
                 
                     smallest = distance
                     tempGoal = i                                                            # find out which junction is the closet
-                
-            
+                         
             # randomly pick up one junction point to arrive at the chosen junction
             for i in range(0, len(p.mainJunctions[tempGoal].subJunctions)):
             
@@ -123,7 +117,6 @@ class Vehicle:
     
                     this.possibleDest.push_back(point)
             
-    
             options = int(this.possibleDest.size())
             decision = int(rand() % options)
     
@@ -134,7 +127,6 @@ class Vehicle:
     
             this.counter +=1
             onlyOnce +=1
-    
     
     # Choose which junction points to turn
     def makeTurn(Path):
@@ -151,8 +143,7 @@ class Vehicle:
     
                     # randomly choose one junction points, and set it as goal
                     this.possibleDest.push_back(point)
-                
-            
+                    
             options = int(this.possibleDest.size())
             decision = int(rand() % options)
     
@@ -163,7 +154,6 @@ class Vehicle:
             goals.push_back(goal)
     
             this.counter += 1
-    
     
     # Driving towards my goal (junction points), but follow someone when he is there (No too close to him though)
     def arrive(Pvector):
@@ -193,8 +183,6 @@ class Vehicle:
                         whoIfollowed = i
                         tempD = distToHim
                     
-    
-    
         if(followSomeone == true & goal.inOrOut == 0):
         
             # check the distance and the guy driving ahead 
@@ -207,7 +195,6 @@ class Vehicle:
                 mySteerForce.multiply(-1)
                 summ = mySteerForce
     
-            
             # Wait and do nothing until someone in front is already 30 pixel away 
             elif(distToSomeone < 20):
             
@@ -217,16 +204,13 @@ class Vehicle:
             
                 summ = goToJunction()
             
-        
         else:
         
             summ = goToJunction()
     
-    
         possibleCars.clear()
         return summ
     
-      
     def follow(Pvector):
     
         Pvector.here = Pvector(0,0)
@@ -255,7 +239,6 @@ class Vehicle:
         
             normalPoint = there.get()
         
-    
         Pvector.dir = Pvector.sub(there, here)
         dir.normalize()
         dir.mult(10)
@@ -265,9 +248,7 @@ class Vehicle:
         
             foll = seek(target)
     
-        
         return foll
-    
     
     def separate():    # is not a void function now
     
@@ -321,7 +302,6 @@ class Vehicle:
     # Behaviour function (following and separation)   (overwritten for drunk drivers in drunkdriver class) 
     def applyBehaviour():
     
-        
         Pvector.sep = separate(vehicles)
         Pvector.foll = follow()
     
@@ -332,7 +312,6 @@ class Vehicle:
         applyForce(sep)
         applyForce(foll)
         
-    
     # Go to my goal (junction points)
     def goToJunction():
     
@@ -357,8 +336,6 @@ class Vehicle:
         followSomeone = false
         
         return steer
-    
-    
     
     def seek(Pvector):
     
@@ -395,16 +372,13 @@ class Vehicle:
             
                 possibleCars.push_back(vehicles[i])
             
-        
         carsAroundMe = len(possibleCars)
-    
     
     def applyForce(Pvector):
     
         Pvector.f= Pvector.div(force,this.mass)
         acceleration.add(f)
-    
-    
+      
     def update():
     
         velocity.add(acceleration)
@@ -415,7 +389,6 @@ class Vehicle:
         stopIfCloseEnough()
         computePatience()
     
-    
     def setInitDest(self, Path, ide):
         
         self.ide = int(ide)
@@ -423,7 +396,6 @@ class Vehicle:
         #unsigned long size = p.Destinations.size()
         #int ran = rand() % size
         longTermDest = p.Destinations[ide].get()
-    
     
     #///////////////// Sub Functions ///////////////
     
@@ -433,7 +405,6 @@ class Vehicle:
         if(velocity.mag() != 0):
         
             NumAccidentMet+=1
-        
         
     # Compute the patience of driver 
     def computePatience():
@@ -447,19 +418,16 @@ class Vehicle:
         elif (patience >= 1):
         
             patience = 1
-        
     
     # Make the vehicle completely stoped if crashed 
-    def ifCrashed():
+    def ifCrashed(pVector):
     
         if(crashed == true):
         
             Pvector.breakForce = Pvector.mult(velocity, -1)
-            acceleration.mult(0)
+            acceleration.multiply(0)
             applyForce(breakForce)
         
-    
-    
     # Stop the car if it is very close to goal, and reset counter back to zero, so that next behavior can be carried out 
     def stopIfCloseEnough():
     
@@ -469,7 +437,6 @@ class Vehicle:
             (this.location) = (this.goal)
             this.counter = 0
         
-    
     # Return true only if the previous behaior is finished (i.e. counter = 0) 
     def setGoal():
         
@@ -478,9 +445,7 @@ class Vehicle:
         if(this.counter > 0):
             yesOrNo == false
         
-    
         return yesOrNo
-    
     
     # Return true if the car has reached the goal (i.e. at the "out" point) 
     def isArrived():
@@ -490,14 +455,12 @@ class Vehicle:
         else:
             return false
     
-    
     # Return true if the car has reached the goal (i.e. at the "in" point) 
     def aboutToGo():
         if(this.location.x == this.goal.x & this.location.y == this.goal.y & this.goal.inOrOut == 1):
             return true
         else:
             return false
-    
     
     # Return true if the point asked is accessible ( p->mainJunctions[argument1]->subJunctions[argument2]->accessible ) 
     def isAccessible(self,Path, i, j):
@@ -509,8 +472,7 @@ class Vehicle:
             return true
         else:
             return false
-        
-        
+         
     # Return true if the point asked is In or Out ( p->mainJunctions[argument1]->subJunctions[argument2]->argument3 ) 
     def isInOrOut(self, Path, i, j, in_or_out):
         
@@ -523,7 +485,6 @@ class Vehicle:
         else:
             return false
         
-    
     def map(self, d, ilb, iub, olb, oub):
         
         self.d = float(d)

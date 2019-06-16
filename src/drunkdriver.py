@@ -4,21 +4,13 @@ import path as p
 from vehicle import *
 from pvector import *
 
-posX = float(0)
-posY = float(0)
-_id = float(0)
-maxV = float(0)
-globalTime = float(0)
-
 class DrunkDriver:
-
 
     def _init_(self, posX, posY, _id, maxV, p, globalTime):
         
         self.setInitDest = p, _id
         
-        self.syncTime = globalTime
-        
+        self.syncTime = globalTime   
     
     def move(Vehicle):
     
@@ -36,8 +28,7 @@ class DrunkDriver:
             applyForce(breakForce)
     
             checkNumOfAccidentMet()
-        
-    
+          
         ifCrashed()
         
         location = float(0)
@@ -59,8 +50,6 @@ class DrunkDriver:
         
             syncTime +1
             localTime +1
-        
-    
     
     def makeTurn(p):    
         
@@ -77,8 +66,7 @@ class DrunkDriver:
                     JunctionPointPoint = p.mainJunctions(tempGoal).subJunctions(i).get()
     
                     #randomly choose one junction points, and set it as goal
-                    this.possibleDest.append(JunctionPointPoint)
-                
+                    this.possibleDest.append(JunctionPointPoint)             
             
             options = this.possibleDest.size()
     
@@ -95,8 +83,7 @@ class DrunkDriver:
                 if(angle < tempAngle):
                 
                     tempAngle = angle
-                    tempChoice = i
-                
+                    tempChoice = i          
             
             this.goal = this.possibleDest(tempChoice).get()
     
