@@ -31,5 +31,6 @@ map = Map()
 psparser = PseudoParser()
 psparser.parseFile()
 map.loadStreets(psparser.getStreetSegmentList())
+map.generateNodes()
 map.drawStreets()
 #simulation = Simulation()    To be added later!
