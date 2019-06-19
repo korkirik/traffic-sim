@@ -2,7 +2,7 @@ from streetsegment import *
 from node import *
 from pvector import *
 from bokeh.plotting import figure, output_file, show
-output_file("map_build_0.0.1.html")
+output_file("map_build_0.1.1.html")
 
 class Map:
     def __init__(self):
@@ -60,5 +60,5 @@ class Map:
         for index in range(0,nodesNumber, 1):
             x = self.nodeList[index].position.x
             y = self.nodeList[index].position.y
-            p.circle(x, y, fill_color="white", size=8)
+            p.circle(x, y, fill_color="white", size=2)
         show(p)

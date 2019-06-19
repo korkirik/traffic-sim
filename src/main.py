@@ -23,13 +23,12 @@
 '''
 from map import *
 from parser_osm import *
-from pseudoparser import *
+from lparser import *
 
 #from array import *
 
 map = Map()
-psparser = PseudoParser()
-psparser.parseFile()
+psparser = LParser()
 map.loadStreets(psparser.getStreetSegmentList())
 map.generateNodes()
 map.printNodesStats()
