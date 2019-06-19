@@ -1,5 +1,5 @@
 from pvector import *
-from junctionpoint import *
+#from junctionpoint import *
 from path import *
 
 class Vehicle:

@@ -28,13 +28,11 @@ class RoamingDriver:
         self._id = int(_id)
         self.maxV = float(maxV)
         
-        Vehicle(posX, posY, _id, maxV)
-        
+        Vehicle(posX, posY, _id, maxV)        
     
     def move(vehicle):
     
         applyBehaviour(vehicle)
-    
     
     def applyBehaviour():
         
