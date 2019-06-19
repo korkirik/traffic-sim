@@ -9,9 +9,7 @@ class StreetSegment:
         self.lanesFromStart = 1
         self.lanesFromEnd = 1
         self.streetType = 'street'
-        #two lists for start and end nodes
-        self.startPointConnections = list()
-        self.endPointConnections = list()
+        self.streetId = 0
 
     def directDistance(self):
         deltaVector = self.endPoint.subtract(startPoint)
