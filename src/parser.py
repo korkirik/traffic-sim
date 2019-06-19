@@ -4,7 +4,7 @@ with open('export_map_data.json', 'r') as export:
     meta_data = json.load(export)
 
 
-number_of_elements = 5#len(meta_data['features'])
+number_of_elements = len(meta_data['features'])
 
 for i in range(0, number_of_elements):
     geometry = meta_data['features'][i]['geometry']
@@ -13,31 +13,42 @@ for i in range(0, number_of_elements):
 
         highway = properties.get('highway','Street')
         #print(type(highway))
-        print(highway)
+        #print(highway)
         name = properties.get('name','Street name')
 
-        print(name)
+        #print(name)
         lanes = int(properties.get('lanes','1'))
 
-        print(lanes)
+        #print(lanes)
         #print(type(lanes))
-        print("\n")
+       # print("\n")
 
-        startXcoor = geometry['coordinates'][0][0]
-        print(startXcoor)
-        print(type(startXcoor))
+        segments = len(geometry['coordinates']) -1
+        #print(segments)
+        #print(type(segments))
 
-        startYcoor = geometry['coordinates'][0][1]
-        print(startYcoor)
-        print(type(startYcoor))
+        for segment in range(0, segments):
+            print(name)
+            print(highway)
+            print(lanes)
 
-        endXcoor = geometry['coordinates'][-1][0]
-        print(endXcoor)
-        print(type(endXcoor))
+            startXcoor = geometry['coordinates'][segment][0]
+            print(startXcoor)
+            #print(type(startXcoor))
 
-        endYcoor = geometry['coordinates'][-1][1]
-        print(endYcoor)
-        print(type(endYcoor))
+            startYcoor = geometry['coordinates'][segment][1]
+            print(startYcoor)
+            #print(type(startYcoor))
+
+            endXcoor = geometry['coordinates'][segment +1][0]
+            print(endXcoor)
+            #print(type(endXcoor))
+
+            endYcoor = geometry['coordinates'][segment +1][1]
+            print(endYcoor)
+            #print(type(endYcoor))
+
+            print('\n')
 
 
 export.close()
