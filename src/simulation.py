@@ -1,9 +1,10 @@
 from map import *
-from vehicle import *
+from agent import *
 
 class Simulation:
     
     def drawMap(map):
+        self.mapsLists = list()
         
-    def placeVehicles(vehicle):
-        self.vehiclesList = list()
+    def placeAgents(agent):
+        self.agentsList = list()

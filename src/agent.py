@@ -42,7 +42,20 @@ class Agent:
     
 '''
 pswarm_main_run-5.py purpose and how it can be used for the agents
+-Incorporate pswarm_main_run5
+
 Which classes are required to inherit from?
+-pVector.py
+-pswarm_main_run5.py?
+
 Setting initial and final destination.  Is it required?
+-Relevant question is how to route traffic through Kleve?
+-Travelling salesman problem.
+
 Interfacing with map?  Simulation?
+-Try and get agent and map to work together from Simulation.
+
+Assign a time property for when agent starts of and then when it reaches destination.
+Helps with calculating the velocity.  A screen velocity can be assigned to particles
+later on so that it can be visualized.
 '''
