@@ -4,3 +4,4 @@ class Node:
         self.position = Pvector(x,y)
         self.nodeId = nodeId
         self.connectedStreetSegments = list()
+        self.connectedStreetSegmentsIds = list()
