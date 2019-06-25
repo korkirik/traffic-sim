@@ -1,5 +1,6 @@
 from map import *
 from agent import *
+from agentController import *
 
 class Simulation:
     

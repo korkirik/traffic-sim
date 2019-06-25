@@ -35,4 +35,4 @@ map.printNodesStats()
 map.mergeNodes()
 map.printNodesStats()
 map.drawStreets()
-#simulation = Simulation()    To be added later!
+simulation = Simulation(map,agentController)
