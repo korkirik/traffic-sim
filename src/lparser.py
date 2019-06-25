@@ -3,11 +3,10 @@ import json
 from parser_osm import Parser
 from streetsegment import *
 
-
-
 class LParser(Parser):
     def __init__(self):
             self.streetSegmentList = list()
+
             with open('export_map_data.json', 'r') as export: #&&&&
                 meta_data = json.load(export)
             number_of_elements = len(meta_data['features'])
@@ -28,28 +27,31 @@ class LParser(Parser):
                     if self.lanes > 2:
                         self.bcklanes = int(properties.get('lanes:backward','1'))
                         self.fwdlanes = int(properties.get('lanes:forward','1'))
-
+                    else: #defaults
+                        self.fwdlanes = 1
+                        self.bcklanes = 1
 
                     segments = len(geometry['coordinates']) -1
 
                     for segment in range(0, segments):
 
-                        self.startXcoor = geometry['coordinates'][segment][0]
+                        startXcoor = geometry['coordinates'][segment][0]
 
-                        self.startYcoor = geometry['coordinates'][segment][1]
+                        startYcoor = geometry['coordinates'][segment][1]
 
-                        self.endXcoor = geometry['coordinates'][segment +1][0]
+                        endXcoor = geometry['coordinates'][segment +1][0]
 
-                        self.endYcoor = geometry['coordinates'][segment +1][1]
+                        endYcoor = geometry['coordinates'][segment +1][1]
 
-                        self.StrSeg = StreetSegment(Pvector(self.startXcoor,self.startYcoor),Pvector(self.endXcoor,self.endYcoor))
+                        StrSeg = StreetSegment(Pvector(startXcoor,startYcoor),
+                        Pvector(endXcoor,endYcoor))
 
-                        self.StrSeg.name = self.name
-                        self.StrSeg.streetType = self.highway
-                        self.StrSeg.lanes = self.lanes
-                        self.StrSeg.lanesForward = self.fwdlanes
-                        self.StrSeg.lanesBackward = self.bcklanes
-                        self.StrSeg.speed = self.speed
+                        StrSeg.name = self.name
+                        StrSeg.streetType = self.highway
+                        StrSeg.lanes = self.lanes
+                        StrSeg.lanesForward = self.fwdlanes
+                        StrSeg.lanesBackward = self.bcklanes
+                        StrSeg.speed = self.speed
 
 
                         self.streetSegmentList.append(StrSeg)
