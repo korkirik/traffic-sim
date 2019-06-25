@@ -11,10 +11,6 @@ class Map:
 
     def loadStreets(self, recievedList):
         self.streetSegmentList = recievedList.copy()
-        length = len(self.streetSegmentList)
-        for index in range(0,length,1):
-            print(self.streetSegmentList[index].startPoint.x, self.streetSegmentList[index].startPoint.y,
-                self.streetSegmentList[index].endPoint.x, self.streetSegmentList[index].endPoint.y)
 
     def generateNodes(self):
         length = len(self.streetSegmentList)
@@ -33,20 +29,29 @@ class Map:
             self.nodeCounter += 1
 
     def mergeNodes(self):
-        for i in self.nodeList:
-            '''for j in self.nodeList:
-                if(i !=j):
-                    if(self.nodeList[i].position.x == self.nodeList[j].position.x):
-                        if(self.nodeList[i].position.y == self.nodeList[j].position.y):
-                            self.nodeList[i].connectedStreetSegments.append(self.nodeList[j].connectedStreetSegments)
-                            self.nodeList[i].connectedStreetSegmentsIds.append(self.nodeList[j].connectedStreetSegmentsIds)
-                            self.nodeList.pop(j)'''
+        rem = []
+        for i in range(0,len(self.nodeList)-1):
+            for j in range(i + 1, len(self.nodeList)):
+                    if self.nodeList[i].position.x == self.nodeList[j].position.x:
+                        if self.nodeList[i].position.y == self.nodeList[j].position.y:
+                            rem.append(j)
+        print(len(rem))
+        print('Duples')
+        print(rem)
+        #for index in sorted(rem, reverse = True):
+        #    del self.nodeList[index]
+
+                #self.nodeList[i].connectedStreetSegments.append(self.nodeList[j].connectedStreetSegments)
+                #self.nodeList[i].connectedStreetSegmentsIds.append(self.nodeList[j].connectedStreetSegmentsIds)
+                #self.nodeList.pop(j)
 
     def printNodesStats(self):
+        print('Nodes created:')
         print(self.nodeCounter)
+        print('Current number of nodes')
         nodesNumber = len(self.nodeList)
-        for index in range(0,nodesNumber, 1):
-            print(self.nodeList[index].position.x, self.nodeList[index].position.y, self.nodeList[index].nodeId)
+    #    for index in range(0,nodesNumber, 1):
+    #        print(self.nodeList[index].position.x, self.nodeList[index].position.y, self.nodeList[index].nodeId)
 
     def drawStreets(self):
         p = figure(plot_width=700, plot_height=700)
