@@ -6,10 +6,12 @@ class StreetSegment:
         self.endPoint = endPoint
         #defaults
         self.name = 'defaultName'
-        self.lanesFromStart = 1
-        self.lanesFromEnd = 1
+        self.lanes = 1
+        self.lanesForward = 1
+        self.lanesBackward = 1
         self.streetType = 'street'
         self.streetId = 0
+        self.speed = 50
 
     def directDistance(self):
         deltaVector = self.endPoint.subtract(startPoint)

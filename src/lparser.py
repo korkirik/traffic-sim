@@ -17,44 +17,42 @@ class LParser(Parser):
                 if geometry['type'] == 'LineString':
                     properties = meta_data['features'][i]['properties']
 
-                    highway = properties.get('highway','Street')
-                    #print(type(highway))
-                    #print(highway)
-                    name = properties.get('name','Street name')
+                    self.highway = properties.get('highway','Street')
 
-                    #print(name)
-                    lanes = int(properties.get('lanes','1'))
+                    self.name = properties.get('name','Street name')
 
-                    #print(lanes)
-                    #print(type(lanes))
-                   # print("\n")
+                    self.lanes = int(properties.get('lanes','1'))
+
+                    self.speed = int(properties.get('maxspeed','50'))
+
+                    if self.lanes > 2:
+                        self.bcklanes = int(properties.get('lanes:backward','1'))
+                        self.fwdlanes = int(properties.get('lanes:forward','1'))
+
 
                     segments = len(geometry['coordinates']) -1
-                    #print(segments)
-                    #print(type(segments))
 
                     for segment in range(0, segments):
-                        #print(name)
-                        #print(highway)
-                        #print(lanes)
 
-                        startXcoor = geometry['coordinates'][segment][0]
-                        #print(startXcoor)
-                        #print(type(startXcoor))
+                        self.startXcoor = geometry['coordinates'][segment][0]
 
-                        startYcoor = geometry['coordinates'][segment][1]
-                        #print(startYcoor)
-                        #print(type(startYcoor))
+                        self.startYcoor = geometry['coordinates'][segment][1]
 
-                        endXcoor = geometry['coordinates'][segment +1][0]
-                        #print(endXcoor)
-                        #print(type(endXcoor))
+                        self.endXcoor = geometry['coordinates'][segment +1][0]
 
-                        endYcoor = geometry['coordinates'][segment +1][1]
-                        #print(endYcoor)
-                        #print(type(endYcoor))
-                        self.streetSegmentList.append(StreetSegment(Pvector(startXcoor,startYcoor),Pvector(endXcoor,endYcoor)))
-                        #print('\n')
+                        self.endYcoor = geometry['coordinates'][segment +1][1]
+
+                        self.StrSeg = StreetSegment(Pvector(self.startXcoor,self.startYcoor),Pvector(self.endXcoor,self.endYcoor))
+
+                        self.StrSeg.name = self.name
+                        self.StrSeg.streetType = self.highway
+                        self.StrSeg.lanes = self.lanes
+                        self.StrSeg.lanesForward = self.fwdlanes
+                        self.StrSeg.lanesBackward = self.bcklanes
+                        self.StrSeg.speed = self.speed
+
+
+                        self.streetSegmentList.append(StrSeg)
 
 
             export.close()
