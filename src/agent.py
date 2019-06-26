@@ -2,7 +2,7 @@ from pvector import *
 
 class Agent:
     
-    def __init__(self,x,y,maxVelocity, agent_id):
+    def __init__(self,x,y,vMax,agentId,position,velocity,acceleration,goal):
         
         self.x = float(x)
         self.y = float(y)
@@ -13,8 +13,6 @@ class Agent:
         self.velocity = Pvector(0,0)
         self.acceleration = Pvector(0,0)
         self.goal = node(0,0,0)
-        
-        agent = (x,y,vMax,agentID,position,velocity,acceleration,goal)
     
     def move(agent):
     

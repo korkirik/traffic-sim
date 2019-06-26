@@ -9,9 +9,8 @@ class agentController:
     def deploy(self,num,agentType):
         
         self.num = int(num)
-        
-        #self.agentType
+        self.agentType
         
         for i in range(0, num):
             agentCount + 1
-            #initialize agent
+            agent = Agent(1,1,10,i,1,0,0,0)

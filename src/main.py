@@ -24,6 +24,8 @@
 from map import *
 from parser_osm import *
 from lparser import *
+from agentcontroller import *
+from simulation import *
 
 #from array import *
 
@@ -34,5 +36,5 @@ map.generateNodes()
 map.printNodesStats()
 map.mergeNodes()
 map.printNodesStats()
-#map.drawStreets()
-#simulation = Simulation(map,agentController)
+map.drawStreets()
+simulation = Simulation()
