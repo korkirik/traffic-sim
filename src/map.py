@@ -34,10 +34,21 @@ class Map:
             for j in range(i + 1, len(self.nodeList)):
                     if self.nodeList[i].position.x == self.nodeList[j].position.x:
                         if self.nodeList[i].position.y == self.nodeList[j].position.y:
-                            rem.append(j)
-        print(len(rem))
-        print('Duples')
-        print(rem)
+                            rem.append(self.nodeList[j].nodeId)
+
+        print('Nodes')
+        print(len(self.nodeList))
+        mer = sorted(rem, reverse = True)
+        print(mer)
+        print(len(mer))
+        #print(self.nodeList)
+
+        #del self.nodeList[mer[0]]
+        #for index in range(0, len(mer)):
+            #del self.nodeList[mer[index]]
+
+        print('Duples removed')
+        print(len(self.nodeList))
         #for index in sorted(rem, reverse = True):
         #    del self.nodeList[index]
 
@@ -54,7 +65,7 @@ class Map:
     #        print(self.nodeList[index].position.x, self.nodeList[index].position.y, self.nodeList[index].nodeId)
 
     def drawStreets(self):
-        p = figure(plot_width=700, plot_height=700)
+        p = figure(plot_width=700, plot_height=700,y_axis_type="")
         length = len(self.streetSegmentList)
         for index in range(0,length,1):
             x = [self.streetSegmentList[index].startPoint.x, self.streetSegmentList[index].endPoint.x]
