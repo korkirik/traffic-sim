@@ -33,12 +33,9 @@ map = Map()
 psparser = LParser()
 map.loadStreets(psparser.getStreetSegmentList())
 map.generateNodes()
-map.printNodesStats()
+
 map.mergeNodes()
-map.printNodesStats()
+#map.printNodesStats()
 map.drawStreets()
-<<<<<<< HEAD
+
 #simulation = Simulation(map,agentController)
-=======
-simulation = Simulation()
->>>>>>> 7db1b7d9522761bc9666a662ca296164488e9ae5

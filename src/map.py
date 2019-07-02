@@ -2,7 +2,7 @@ from streetsegment import *
 from node import *
 from pvector import *
 from bokeh.plotting import figure, output_file, show
-output_file("map_build_0.1.1.html")
+output_file("map_build_0.1.2.html")
 
 class Map:
     def __init__(self):
@@ -39,16 +39,21 @@ class Map:
         print('Nodes')
         print(len(self.nodeList))
         mer = sorted(rem, reverse = True)
-        print(mer)
+        print('Indexes found')
         print(len(mer))
         #print(self.nodeList)
-
+        self.nodeList.reverse()
         #del self.nodeList[mer[0]]
-        #for index in range(0, len(mer)):
-            #del self.nodeList[mer[index]]
+        self.deleted = 0
+        for indexes_to_delete in mer:
+            for obj in self.nodeList:
+                if(obj.nodeId == indexes_to_delete):
+                    self.nodeList.remove(obj)
+                    self.deleted += 1
+                    break
 
-        print('Duples removed')
-        print(len(self.nodeList))
+        print('Objects removed')
+        print(self.deleted)
         #for index in sorted(rem, reverse = True):
         #    del self.nodeList[index]
 
@@ -65,12 +70,12 @@ class Map:
     #        print(self.nodeList[index].position.x, self.nodeList[index].position.y, self.nodeList[index].nodeId)
 
     def drawStreets(self):
-        p = figure(plot_width=700, plot_height=700,y_axis_type="")
+        p = figure(plot_width=700, plot_height=700)
         length = len(self.streetSegmentList)
-        for index in range(0,length,1):
-            x = [self.streetSegmentList[index].startPoint.x, self.streetSegmentList[index].endPoint.x]
-            y = [self.streetSegmentList[index].startPoint.y,self.streetSegmentList[index].endPoint.y]
-            p.line(x, y, line_width=2)
+    #    for index in range(0,length,1):
+        #    x = [self.streetSegmentList[index].startPoint.x, self.streetSegmentList[index].endPoint.x]
+        #    y = [self.streetSegmentList[index].startPoint.y,self.streetSegmentList[index].endPoint.y]
+        #    p.line(x, y, line_width=2)
 
         nodesNumber = len(self.nodeList)
         for index in range(0,nodesNumber, 1):
