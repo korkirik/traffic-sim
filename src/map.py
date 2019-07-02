@@ -15,17 +15,21 @@ class Map:
     def generateNodes(self):
         length = len(self.streetSegmentList)
         self.nodeCounter = 0
-        for index in range(0,length,1):
-            self.nodeList.append(Node(self.streetSegmentList[index].startPoint.x,
-                self.streetSegmentList[index].startPoint.y, self.nodeCounter))
-            self.nodeList[self.nodeCounter].connectedStreetSegments.append(self.streetSegmentList[index].name)
-            self.nodeList[self.nodeCounter].connectedStreetSegments.append(self.streetSegmentList[index].streetId)
+        for street_index in range(0,length,1):
+            self.nodeList.append(Node(
+                self.streetSegmentList[street_index].startPoint.x,
+                self.streetSegmentList[street_index].startPoint.y,
+                self.nodeCounter))
+            self.nodeList[self.nodeCounter].connectedStreetSegments.append(self.streetSegmentList[street_index].name)
+            self.nodeList[self.nodeCounter].connectedNodesId.append(self.nodeCounter + 1)
             self.nodeCounter += 1
 
-            self.nodeList.append(Node(self.streetSegmentList[index].endPoint.x,
-                self.streetSegmentList[index].endPoint.y, self.nodeCounter))
-            self.nodeList[self.nodeCounter].connectedStreetSegments.append(self.streetSegmentList[index].name)
-            self.nodeList[self.nodeCounter].connectedStreetSegments.append(self.streetSegmentList[index].streetId)
+            self.nodeList.append(Node(
+                self.streetSegmentList[street_index].endPoint.x,
+                self.streetSegmentList[street_index].endPoint.y,
+                self.nodeCounter))
+            self.nodeList[self.nodeCounter].connectedStreetSegments.append(self.streetSegmentList[street_index].name)
+            self.nodeList[self.nodeCounter].connectedNodesId.append(self.nodeCounter - 1)
             self.nodeCounter += 1
 
     def mergeNodes(self):
@@ -48,18 +52,13 @@ class Map:
         for indexes_to_delete in mer:
             for obj in self.nodeList:
                 if(obj.nodeId == indexes_to_delete):
+                    
                     self.nodeList.remove(obj)
                     self.deleted += 1
                     break
 
         print('Objects removed')
         print(self.deleted)
-        #for index in sorted(rem, reverse = True):
-        #    del self.nodeList[index]
-
-                #self.nodeList[i].connectedStreetSegments.append(self.nodeList[j].connectedStreetSegments)
-                #self.nodeList[i].connectedStreetSegmentsIds.append(self.nodeList[j].connectedStreetSegmentsIds)
-                #self.nodeList.pop(j)
 
     def printNodesStats(self):
         print('Nodes created:')
