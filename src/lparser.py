@@ -7,7 +7,7 @@ class LParser(Parser):
     def __init__(self):
             self.streetSegmentList = list()
 
-            with open('export_map_data.json', 'r') as export: #&&&&
+            with open('export_map_data_smaller.json', 'r') as export: #&&&&
                 meta_data = json.load(export)
             number_of_elements = len(meta_data['features'])
 
