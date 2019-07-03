@@ -13,8 +13,12 @@ class Simulation:
     
     def drawMap(map):
         
-        self.mapsLists = list()
+        map = map.drawStreets()
+        
+        return map
         
     def placeAgents(agentController):
         
         agent = agentController()
+        
+        return agent
