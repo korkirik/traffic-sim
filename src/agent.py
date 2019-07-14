@@ -3,43 +3,55 @@
 from pvector import *
 
 class Agent:
-    
-    def __init__(self,x,y,vMax,agentId,position,velocity,acceleration,goal):
-        
+                                        #do we need start Node? -K
+    def __init__(self, x, y, vMax, agentId, startNode, goal):
+
         self.x = float(x)
         self.y = float(y)
-        self.vMax = float(maxVelocity)
-        self.agentId = agent_id
+        self.vMax = float(vMax)
+        self.agentId = agentId
 
         self.position = Pvector(x,y)
         self.velocity = Pvector(0,0)
         self.acceleration = Pvector(0,0)
         self.goal = node(0,0,0)
-    
+
+        self.nodeFrom = startNode
+
+    def pickNode(self):
+        self.nodeTowards = self.nodeFrom.connectedNodes[1] #pick the first one
+        n_vector = Pvector(self.nodeTowards.position.x, self.nodeTowards.position.y) #directional vector towards next node
+        n_vector.subtractFromSelf(self.nodeFrom.position.x, self.nodeFrom.position.y)
+        self.distance = n_vector.magnitude()
+        n_vector.normalize()
+
+    def moveK(self):
+        pvector.addToSelf(n_vector.position.x,n_vector.position.y) # should be * V
+
     def move(agent):
-    
+
         movement = applyBehaviour(agent)
-        
+
         acceleration = pvector.multiply(0)
         velocity = pvector.add(acceleration)
         velocity = pvector.limitMagnitude()
         position = pvector.add(velocity)
-    
+
     def applyBehaviour():
-        
+
         separate = pvector.distanceBetween()
-    
+
         separate = pvector.multiply(1)
-        
+
         separate = applyForce(separate)
-        
+
         return separate
-    
+
     def applyForce():
-    
+
         force = Pvector.divide()
         acceleration = pvector.add(force)
-    
+
 '''
 pswarm_main_run-5.py purpose and how it can be used for the agents
 -Incorporate pswarm_main_run5

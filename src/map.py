@@ -64,7 +64,6 @@ class Map:
 
         print('Objects removed')
         print(self.deleted)
-        print(self.nodeList[15].connectedNodes)
 
     def printNodesStats(self):
         print('Nodes created:')
