@@ -2,7 +2,7 @@ from streetsegment import *
 from node import *
 from pvector import *
 from bokeh.plotting import figure, output_file, show
-output_file("map_build_0.2.1.html")
+output_file("map_build_tg0.2.0.html")
 
 class Map:
     def __init__(self):
@@ -21,7 +21,7 @@ class Map:
                 self.streetSegmentList[street_index].startPoint.y,
                 self.nodeCounter))
             #self.nodeList[self.nodeCounter].connectedStreetSegments.append(self.streetSegmentList[street_index].name)
-            self.nodeList[self.nodeCounter].connectedNodesId.append(self.nodeCounter + 1)
+            self.nodeList[self.nodeCounter].connectedNodesId.append(self.nodeCounter + 1) #REMOVE THIS
             self.nodeCounter += 1
 
             self.nodeList.append(Node(
@@ -29,7 +29,7 @@ class Map:
                 self.streetSegmentList[street_index].endPoint.y,
                 self.nodeCounter))
             #self.nodeList[self.nodeCounter].connectedStreetSegments.append(self.streetSegmentList[street_index].name)
-            self.nodeList[self.nodeCounter].connectedNodesId.append(self.nodeCounter - 1)
+            self.nodeList[self.nodeCounter].connectedNodesId.append(self.nodeCounter - 1) #REMOVE THIS
             self.nodeCounter += 1
 
             self.nodeList[self.nodeCounter - 2].connectedNodes.append(self.nodeList[self.nodeCounter - 1])
@@ -43,6 +43,12 @@ class Map:
                         if self.nodeList[i].position.y == self.nodeList[j].position.y:
                             self.nodeList[i].connectedNodesId = self.nodeList[i].connectedNodesId + self.nodeList[j].connectedNodesId
                             self.nodeList[i].connectedNodes = self.nodeList[i].connectedNodes + self.nodeList[j].connectedNodes
+
+                            #risk to get out of bound
+# removing duplicate from next node ! ALLO
+                            self.nodeList[j+1].removeNodeWithId(j)
+                            self.nodeList[j+1].connectedNodes.append(self.nodeList[i]) #linking next node to merged
+
                             rem.append(self.nodeList[j].nodeId)
 
         print('Nodes')
@@ -57,6 +63,7 @@ class Map:
         for indexes_to_delete in mer:
             for obj in self.nodeList:
                 if(obj.nodeId == indexes_to_delete):
+                    #need to test more
 
                     self.nodeList.remove(obj)
                     self.deleted += 1
@@ -64,19 +71,21 @@ class Map:
 
         print('Objects removed')
         print(self.deleted)
-        print(self.nodeList[15].connectedNodes)
 
     def printNodesStats(self):
-        print('Nodes created:')
-        print(self.nodeCounter)
-        print('Current number of nodes')
-        nodesNumber = len(self.nodeList)
+
+        for i in range(0,len(self.nodeList)):
+            print('Node id:')
+            print(self.nodeList[i].nodeId)
+            print('Adjacent Nodes:')
+            for j in range(0,len(self.nodeList[i].connectedNodes)):
+                print(self.nodeList[i].connectedNodes[j].nodeId)
 
 
     def drawStreets(self):
-        p = figure(plot_width=700, plot_height=700)
+        p = figure(plot_width=700, plot_height=700, match_aspect=True)
         for node in self.nodeList:
-            for connected_node in node.connectedNodes:
+            for connected_node in node.connectedNodes: #Remove overlapping drawings
                 x = [node.position.x, connected_node.position.x]
                 y = [node.position.y, connected_node.position.y]
                 p.line(x, y, line_width=2)
@@ -86,4 +95,5 @@ class Map:
             x = self.nodeList[index].position.x
             y = self.nodeList[index].position.y
             p.circle(x, y, fill_color="white", size=2)
+
         show(p)

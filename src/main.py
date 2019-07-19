@@ -27,16 +27,20 @@ from lparser import *
 from agentcontroller import *
 from simulation import *
 
+from pseudoparser_testground import *
+
 #from array import *
 
 map = Map()
-psparser = LParser()
+#psparser = LParser()
+psparser = PseudoParser_Testground()
 map.loadStreets(psparser.getStreetSegmentList())
 map.generateNodes()
-
 map.mergeNodes()
-#map.printNodesStats()
 map.drawStreets()
+#map.printNodesStats()
 
 simulation = Simulation()
-simulation.agentsOnMap(agentController)
+simulation.loadNodes(map.nodeList)
+simulation.createRoamingAgents(1)
+simulation.startSimulation(50)
