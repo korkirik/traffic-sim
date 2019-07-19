@@ -27,11 +27,13 @@ class Agent:
         print('picked node', pickedNode, 'out of ',len(self.nodeFrom.connectedNodes) )
 
         self.nodeTowards = self.nodeFrom.connectedNodes[pickedNode]
-
+        print('---------------')
         for nodeF in self.nodeFrom.connectedNodes:
-            print('node F', nodeF.nodeId)
-        for nodeTo in self.nodeTowards.connectedNodes:
-            print('node T', nodeTo.nodeId)
+
+            print('adjacent nodes ', nodeF.nodeId)
+        print('---------------')
+        #for nodeTo in self.nodeTowards.connectedNodes:
+            #print('node T', nodeTo.nodeId)
 
         nextNode_vector = Pvector(self.nodeTowards.position.x, self.nodeTowards.position.y) #directional vector towards next node
         nextNode_vector.subtractFromSelf(self.position) #heading of the agent

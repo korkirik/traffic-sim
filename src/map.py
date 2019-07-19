@@ -43,6 +43,12 @@ class Map:
                         if self.nodeList[i].position.y == self.nodeList[j].position.y:
                             self.nodeList[i].connectedNodesId = self.nodeList[i].connectedNodesId + self.nodeList[j].connectedNodesId
                             self.nodeList[i].connectedNodes = self.nodeList[i].connectedNodes + self.nodeList[j].connectedNodes
+
+                            #risk to get out of bound
+# removing duplicate from next node ! ALLO
+                            self.nodeList[j+1].removeNodeWithId(j)
+                            self.nodeList[j+1].connectedNodes.append(self.nodeList[i]) #linking next node to merged
+
                             rem.append(self.nodeList[j].nodeId)
 
         print('Nodes')
@@ -57,6 +63,7 @@ class Map:
         for indexes_to_delete in mer:
             for obj in self.nodeList:
                 if(obj.nodeId == indexes_to_delete):
+                    #need to test more
 
                     self.nodeList.remove(obj)
                     self.deleted += 1
@@ -66,13 +73,13 @@ class Map:
         print(self.deleted)
 
     def printNodesStats(self):
-        print('Nodes id:')
 
         for i in range(0,len(self.nodeList)):
+            print('Node id:')
             print(self.nodeList[i].nodeId)
-        print('Adjacent Nodes:')
-        for i in range(0,len(self.nodeList[3].connectedNodesId)):
-                print(self.nodeList[2].connectedNodesId)
+            print('Adjacent Nodes:')
+            for j in range(0,len(self.nodeList[i].connectedNodes)):
+                print(self.nodeList[i].connectedNodes[j].nodeId)
 
 
     def drawStreets(self):
