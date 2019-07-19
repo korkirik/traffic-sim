@@ -2,7 +2,7 @@ from streetsegment import *
 from node import *
 from pvector import *
 from bokeh.plotting import figure, output_file, show
-output_file("map_build_0.2.1.html")
+output_file("map_build_tg0.2.0.html")
 
 class Map:
     def __init__(self):
@@ -21,7 +21,7 @@ class Map:
                 self.streetSegmentList[street_index].startPoint.y,
                 self.nodeCounter))
             #self.nodeList[self.nodeCounter].connectedStreetSegments.append(self.streetSegmentList[street_index].name)
-            self.nodeList[self.nodeCounter].connectedNodesId.append(self.nodeCounter + 1)
+            self.nodeList[self.nodeCounter].connectedNodesId.append(self.nodeCounter + 1) #REMOVE THIS
             self.nodeCounter += 1
 
             self.nodeList.append(Node(
@@ -29,7 +29,7 @@ class Map:
                 self.streetSegmentList[street_index].endPoint.y,
                 self.nodeCounter))
             #self.nodeList[self.nodeCounter].connectedStreetSegments.append(self.streetSegmentList[street_index].name)
-            self.nodeList[self.nodeCounter].connectedNodesId.append(self.nodeCounter - 1)
+            self.nodeList[self.nodeCounter].connectedNodesId.append(self.nodeCounter - 1) #REMOVE THIS
             self.nodeCounter += 1
 
             self.nodeList[self.nodeCounter - 2].connectedNodes.append(self.nodeList[self.nodeCounter - 1])
@@ -66,16 +66,19 @@ class Map:
         print(self.deleted)
 
     def printNodesStats(self):
-        print('Nodes created:')
-        print(self.nodeCounter)
-        print('Current number of nodes')
-        nodesNumber = len(self.nodeList)
+        print('Nodes id:')
+
+        for i in range(0,len(self.nodeList)):
+            print(self.nodeList[i].nodeId)
+        print('Adjacent Nodes:')
+        for i in range(0,len(self.nodeList[3].connectedNodesId)):
+                print(self.nodeList[2].connectedNodesId)
 
 
     def drawStreets(self):
-        p = figure(plot_width=700, plot_height=700)
+        p = figure(plot_width=700, plot_height=700, match_aspect=True)
         for node in self.nodeList:
-            for connected_node in node.connectedNodes:
+            for connected_node in node.connectedNodes: #Remove overlapping drawings
                 x = [node.position.x, connected_node.position.x]
                 y = [node.position.y, connected_node.position.y]
                 p.line(x, y, line_width=2)
@@ -85,4 +88,5 @@ class Map:
             x = self.nodeList[index].position.x
             y = self.nodeList[index].position.y
             p.circle(x, y, fill_color="white", size=2)
+
         show(p)

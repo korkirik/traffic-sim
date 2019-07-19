@@ -104,4 +104,4 @@ class Pvector:
         return normalPoint
 
     def whoAmI(self):
-        print('I am vector', self.x, self.y)
+        print('vector', self.x, self.y)
