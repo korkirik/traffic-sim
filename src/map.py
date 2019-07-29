@@ -2,7 +2,9 @@ from streetsegment import *
 from node import *
 from pvector import *
 from bokeh.plotting import figure, output_file, show
-output_file("map_build_tg0.2.0.html")
+from bokeh.models import ColumnDataSource, Range1d, LabelSet, Label
+
+output_file("map_build_tg2.1.0.html")
 
 class Map:
     def __init__(self):
@@ -33,6 +35,7 @@ class Map:
             self.nodeList[self.nodeCounter].connectedNodes.append(self.nodeList[self.nodeCounter - 1])
 
             self.nodeCounter += 1
+        self.mergeNodes()
 
     def mergeNodes(self):
         rem = []
@@ -45,30 +48,26 @@ class Map:
                             self.nodeList[j].updateConnections(self.nodeList[i])    #updating links to new merged node
                             rem.append(self.nodeList[j].nodeId)
 
-        print('Nodes: ', len(self.nodeList))
-        print('Indexes found', len(rem))
+        self.nodesCreated = len(self.nodeList)
 
         mer = sorted(rem, reverse = True)
         self.nodeList.reverse()
-        #removing Nodes that repeat
         self.deleted = 0
-        for indexes_to_delete in mer:
+        for indexes_to_delete in mer:           #removing Nodes that repeat
             for obj in self.nodeList:
                 if(obj.nodeId == indexes_to_delete):
-                    #obj.removeConnectionsToMe()    #removing links to nodes marked for deletion
                     self.nodeList.remove(obj)
                     self.deleted += 1
                     break
 
-        print('Objects removed:', self.deleted)
-
-    def printNodesStats(self):
-
-        for i in range(0,len(self.nodeList)):
-            print('Node:', self.nodeList[i].nodeId, 'Adjacent Nodes:')
-            for j in range(0,len(self.nodeList[i].connectedNodes)):
-                print(self.nodeList[i].connectedNodes[j].nodeId)
-
+    def printNodesStats(self, showNodes):
+        print('Nodes initially created: ', self.nodesCreated)
+        print('Nodes removed:', self.deleted)
+        if(showNodes):
+            for i in range(0,len(self.nodeList)):
+                print('Node:', self.nodeList[i].nodeId, 'Adjacent Nodes:')
+                for j in range(0,len(self.nodeList[i].connectedNodes)):
+                    print(self.nodeList[i].connectedNodes[j].nodeId)
 
     def drawStreets(self):
         p = figure(plot_width=700, plot_height=700, match_aspect=True)
@@ -78,10 +77,17 @@ class Map:
                 y = [node.position.y, connected_node.position.y]
                 p.line(x, y, line_width=2)
 
-        nodesNumber = len(self.nodeList)
-        for index in range(0,nodesNumber, 1):
+        for index in range(0,len(self.nodeList), 1):
             x = self.nodeList[index].position.x
             y = self.nodeList[index].position.y
             p.circle(x, y, fill_color="white", size=2)
 
+        source = ColumnDataSource(data=dict(posY=[o.position.y for o in self.nodeList],
+                                            posX=[o.position.x for o in self.nodeList],
+                                            nodeids=[o.nodeId for o in self.nodeList
+                                                    ]))
+        labels = LabelSet(x='posX', y='posY', text='nodeids', level='glyph',
+              x_offset=5, y_offset=5, text_font_size="10pt", text_color="#0c0c0c",
+               source=source, render_mode='canvas')
+        p.add_layout(labels)
         show(p)

@@ -15,27 +15,27 @@ class Agent:
         self.acceleration = Pvector(0,0)
         #self.goal = node(0,0,0)
 
-        self.nodeFrom = startNode
+        self.nodeOut = startNode
         self.position = startNode.position
 
         self.delta_r = Pvector(0,0)
         self.pickNode()
 
     def pickNode(self):
-        pickedNode = random.randint(0,len(self.nodeFrom.connectedNodes)-1)  #pick random N0de from available
+        print('I am at Node ', self.nodeOut.nodeId)
+        pickedNode = random.randint(0,len(self.nodeOut.connectedNodes)-1)  #pick random N0de from available
 
-        print('picked node', pickedNode, 'out of ',len(self.nodeFrom.connectedNodes) )
+        #print('picked node', pickedNode, 'out of ',len(self.nodeOut.connectedNodes) )
 
-        self.nodeTowards = self.nodeFrom.connectedNodes[pickedNode]
-        print('---------------')
-        for nodeF in self.nodeFrom.connectedNodes:
-
-            print('adjacent nodes ', nodeF.nodeId)
-        print('---------------')
-        #for nodeTo in self.nodeTowards.connectedNodes:
+        self.nodeTo = self.nodeOut.connectedNodes[pickedNode]
+        for obj in self.nodeOut.connectedNodes:
+            print('adjacent nodes ', obj.nodeId)
+        print('Going to ', self.nodeTo.nodeId)
+        print('k')
+        #for nodeTo in self.nodeTo.connectedNodes:
             #print('node T', nodeTo.nodeId)
 
-        nextNode_vector = Pvector(self.nodeTowards.position.x, self.nodeTowards.position.y) #directional vector towards next node
+        nextNode_vector = Pvector(self.nodeTo.position.x, self.nodeTo.position.y) #directional vector towards next node
         nextNode_vector.subtractFromSelf(self.position) #heading of the agent
 
         #self.delta_r = self.delta_r.add(nextNode_vector)
@@ -53,7 +53,7 @@ class Agent:
         self.distanceToNextNode = self.distanceToNextNode - self.vMax #currently move with vMax, should change to magnitude of current speed
         #self.delta_r = self.delta_r.subtract(self.velocity)
         if(self.distanceToNextNode < 0.2):
-                self.nodeFrom = self.nodeTowards
+                self.nodeOut = self.nodeTo
                 self.pickNode()
 
 

@@ -16,7 +16,7 @@ class Simulation:
 
 
     def createRoamingAgents(self, number):
-        self.agentList.append(Agent(0, 0, self.vMax, self.agentID, self.nodeList[2]))
+        self.agentList.append(Agent(0, 0, self.vMax, self.agentID, self.nodeList[0]))
         self.agentCount += number
 
     def startSimulation(self, time):
@@ -26,7 +26,7 @@ class Simulation:
             for agent in self.agentList:
                 agent.updateVelocity()
                 agent.updatePosition()
-                print(agent.position.x, agent.position.y)
+                #print(agent.position.x, agent.position.y)
     #obsolete
     #def agentsOnMap(map,agentController):
     #agent = placeAgents(agentController)
