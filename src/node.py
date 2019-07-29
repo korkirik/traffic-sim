@@ -24,6 +24,15 @@ class Node:
                 obj.connectedNodes.append(self)
 
 
+    def updateConnections(self, new_node):
+        for obj in self.connectedNodes:
+            for o in obj.connectedNodes:
+                if(o.nodeId == self.nodeId):
+                    obj.connectedNodes.remove(o)
+                    obj.connectedNodes.append(new_node)
+                    break
+        del self.connectedNodes[:]    
+
     def removeConnectedNodeWithId(self, index_to_delete):
         for obj in self.connectedNodes:
             if(obj.nodeId == index_to_delete):

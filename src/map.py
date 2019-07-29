@@ -41,9 +41,8 @@ class Map:
                     if self.nodeList[i].position.x == self.nodeList[j].position.x:
                         if self.nodeList[i].position.y == self.nodeList[j].position.y:
                             self.nodeList[i].connectedNodes = self.nodeList[i].connectedNodes + self.nodeList[j].connectedNodes
-                            self.nodeList[i].merged = True
 
-                            self.nodeList[j].removeConnectionsToMe()    #removing links to nodes marked for deletion
+                            self.nodeList[j].updateConnections(self.nodeList[i])    #updating links to new merged node
                             rem.append(self.nodeList[j].nodeId)
 
         print('Nodes: ', len(self.nodeList))
@@ -56,17 +55,12 @@ class Map:
         for indexes_to_delete in mer:
             for obj in self.nodeList:
                 if(obj.nodeId == indexes_to_delete):
-                                                    #need to test more
+                    #obj.removeConnectionsToMe()    #removing links to nodes marked for deletion
                     self.nodeList.remove(obj)
                     self.deleted += 1
                     break
 
         print('Objects removed:', self.deleted)
-
-        #Now Linking Nodes back to new merged Nodes
-        for obj in self.nodeList:
-            if(obj.merged):
-                obj.addConnectionsToMe()
 
     def printNodesStats(self):
 
