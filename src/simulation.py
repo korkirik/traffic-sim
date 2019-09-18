@@ -27,16 +27,3 @@ class Simulation:
                 agent.updateVelocity()
                 agent.updatePosition()
                 #print(agent.position.x, agent.position.y)
-    #obsolete
-    #def agentsOnMap(map,agentController):
-    #agent = placeAgents(agentController)
-    #Run agents on map
-    #map1 = drawMap(map)
-    #def drawMap(map):
-    #    map = map.drawStreets()
-    #    return map
-    #def placeAgents(agentController):
-    #
-    #    agent = agentController()
-    #
-    #    return agent

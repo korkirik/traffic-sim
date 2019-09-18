@@ -28,10 +28,10 @@ class Agent:
         #print('picked node', pickedNode, 'out of ',len(self.nodeOut.connectedNodes) )
 
         self.nodeTo = self.nodeOut.connectedNodes[pickedNode]
-        for obj in self.nodeOut.connectedNodes:
-            print('adjacent nodes ', obj.nodeId)
-        print('Going to ', self.nodeTo.nodeId)
-        print('k')
+    #    for obj in self.nodeOut.connectedNodes:
+    #        print('adjacent nodes ', obj.nodeId)
+    #    print('Going to ', self.nodeTo.nodeId)
+    #    print('k')
         #for nodeTo in self.nodeTo.connectedNodes:
             #print('node T', nodeTo.nodeId)
 

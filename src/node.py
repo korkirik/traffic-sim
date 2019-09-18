@@ -31,7 +31,7 @@ class Node:
                     obj.connectedNodes.remove(o)
                     obj.connectedNodes.append(new_node)
                     break
-        del self.connectedNodes[:]    
+        del self.connectedNodes[:]
 
     def removeConnectedNodeWithId(self, index_to_delete):
         for obj in self.connectedNodes:
