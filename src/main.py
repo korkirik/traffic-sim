@@ -38,9 +38,10 @@ map.loadStreets(psparser.getStreetSegmentList())
 map.generateNodes()
 
 map.drawStreets()
+map.saveMapToFile()
 map.printNodesStats(0)
 
 simulation = Simulation()
 simulation.loadNodes(map.nodeList)
 simulation.createRoamingAgents(1)
-simulation.startSimulation(100)
+simulation.startSimulation(10)

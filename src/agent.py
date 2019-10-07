@@ -13,6 +13,7 @@ class Agent:
         self.position = Pvector(x,y)
         self.velocity = Pvector(0,0)
         self.acceleration = Pvector(0,0)
+        self.approachError = 0.2
         #self.goal = node(0,0,0)
 
         self.nodeOut = startNode
@@ -52,7 +53,7 @@ class Agent:
         self.position = self.position.add(self.velocity)
         self.distanceToNextNode = self.distanceToNextNode - self.vMax #currently move with vMax, should change to magnitude of current speed
         #self.delta_r = self.delta_r.subtract(self.velocity)
-        if(self.distanceToNextNode < 0.2):
+        if(self.distanceToNextNode < self.approachError):
                 self.nodeOut = self.nodeTo
                 self.pickNode()
 

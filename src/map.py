@@ -3,6 +3,7 @@ from node import *
 from pvector import *
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import ColumnDataSource, Range1d, LabelSet, Label
+import numpy as np
 
 output_file("map_build_tg2.1.0.html")
 
@@ -91,3 +92,14 @@ class Map:
                source=source, render_mode='canvas')
         p.add_layout(labels)
         show(p)
+
+    def saveMapToFile(self):
+        dataArray = np.zeros((len(self.nodeList),3))
+        #print(dataArray)
+        #print(len(self.nodeList))
+        for rowIndex, node in enumerate(self.nodeList):
+            dataArray[rowIndex,0] = node.nodeId
+            dataArray[rowIndex,1] = node.position.x
+            dataArray[rowIndex,2] = node.position.y
+        #print(dataArray)
+        np.savetxt("mapFile.csv", dataArray, delimiter=", ", header="nodeId, X, Y")

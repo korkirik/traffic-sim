@@ -4,7 +4,6 @@ class Node:
         self.position = Pvector(x,y)
         self.nodeId = nodeId
         self.connectedNodes = list()
-        self.merged = False
 
     def removeConnectionsToMe(self):
         for obj in self.connectedNodes:
