@@ -31,4 +31,4 @@ class Simulation:
                 agent.updateVelocity()
                 agent.updatePosition()
 
-        np.savetxt("agentsDataFile.csv", agentsDataArray, delimiter=", ", header="iteration, agentId, X, Y")
+        np.savetxt("agentsFile.csv", agentsDataArray, delimiter=", ", header="iteration, agentId, X, Y")
