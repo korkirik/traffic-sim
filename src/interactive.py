@@ -10,6 +10,7 @@ from bokeh.plotting import figure, show
 
 import pandas as pd
 import numpy as np
+import random
 
 
 plot = figure(x_range=(-1, 17), y_range=(-12, 5), title='Traffic Sim', plot_height=450, match_aspect=True)
@@ -44,8 +45,9 @@ iterMax = df_agentsFile.iloc[-1,0]
 
 df_agentsFile.set_index('# iteration', inplace=True)
 
+#Draw agents on the map TODO add random colors
 source_agents = ColumnDataSource(df_agentsFile.loc[[0],:])
-plot.circle(x = ' X',y = ' Y',fill_color='#a6051a', size=4, source=source_agents)
+plot.circle(x = ' X',y = ' Y',fill_color='#20D0D9', size=4, source=source_agents)
 
 #plot.line(xa,ya,line_color='#a6051a', line_width=2, line_dash= 'dashed')
 #print(iterMax)
@@ -75,7 +77,7 @@ def animate():
     global callback_id
     if button.label == '► Play':
         button.label = '❚❚ Pause'
-        callback_id = curdoc().add_periodic_callback(animate_update, 200)
+        callback_id = curdoc().add_periodic_callback(animate_update, 30)
     else:
         button.label = '► Play'
         curdoc().remove_periodic_callback(callback_id)

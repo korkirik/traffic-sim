@@ -8,7 +8,7 @@ class Agent:
 
         #self.x = float(x)
         #self.y = float(y)
-        self.vMax = float(vMax)
+        self.vMax = vMax
         self.agentId = agentId
         self.position = Pvector(x,y)
         self.velocity = Pvector(0,0)
@@ -23,18 +23,11 @@ class Agent:
         self.pickNode()
 
     def pickNode(self):
-        print('I am at Node ', self.nodeOut.nodeId)
+        print(self.agentId,' at ', self.nodeOut.nodeId)
         pickedNode = random.randint(0,len(self.nodeOut.connectedNodes)-1)  #pick random N0de from available
-
         #print('picked node', pickedNode, 'out of ',len(self.nodeOut.connectedNodes) )
 
         self.nodeTo = self.nodeOut.connectedNodes[pickedNode]
-    #    for obj in self.nodeOut.connectedNodes:
-    #        print('adjacent nodes ', obj.nodeId)
-    #    print('Going to ', self.nodeTo.nodeId)
-    #    print('k')
-        #for nodeTo in self.nodeTo.connectedNodes:
-            #print('node T', nodeTo.nodeId)
 
         nextNode_vector = Pvector(self.nodeTo.position.x, self.nodeTo.position.y) #directional vector towards next node
         nextNode_vector.subtractFromSelf(self.position) #heading of the agent
@@ -43,7 +36,7 @@ class Agent:
 
         self.distanceToNextNode = nextNode_vector.magnitude()
         nextNode_vector.normalize()
-        nextNode_vector.setMagnitude = self.vMax
+        nextNode_vector.multiplySelfByScalar(self.vMax)
         self.velocity = nextNode_vector
 
     def updateVelocity(self):
@@ -56,6 +49,16 @@ class Agent:
         if(self.distanceToNextNode < self.approachError):
                 self.nodeOut = self.nodeTo
                 self.pickNode()
+
+    def printNodesIsee(self):
+        print('start connections:')
+        for obj in self.nodeOut.connectedNodes:
+            print(obj.nodeId)
+
+        print('next connections:')
+        for n in self.nodeTo.connectedNodes:
+            print(n.nodeId)
+
 
 
 

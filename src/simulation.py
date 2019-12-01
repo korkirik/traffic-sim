@@ -2,12 +2,13 @@ from map import *
 from agent import *
 from node import *
 import numpy as np
+import random
 
 class Simulation:
     def __init__(self):
         self.agentCount = 0
         self.agentId = 1
-        self.vMax = 1
+        self.vMax = 0.2
         self.agentList = list()
 
     def loadNodes(self, recievedList):
@@ -15,8 +16,15 @@ class Simulation:
 
 
     def createRoamingAgents(self, number):
-        self.agentList.append(Agent(0, 0, self.vMax, self.agentId, self.nodeList[0]))
+        for i in range(number):
+            self.agentList.append(Agent(0, 0, self.vMax, self.agentId, self.nodeList[i]))
+            self.agentId +=1
+
         self.agentCount += number
+
+    #work on that randomness
+    def selectRandomNode(self):
+        randrange(0,101,1)
 
     def startSimulation(self, time):
         self.iterMax = time
