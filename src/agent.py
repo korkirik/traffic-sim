@@ -6,15 +6,15 @@ class Agent:
                                         #do we need start Node? -K
     def __init__(self, x, y, vMax, agentId, startNode): # , goal):
 
-        #self.x = float(x)
-        #self.y = float(y)
         self.vMax = vMax
         self.agentId = agentId
         self.position = Pvector(x,y)
         self.velocity = Pvector(0,0)
         self.acceleration = Pvector(0,0)
         self.approachError = 0.2
+        self.agentsInRange = 0
         #self.goal = node(0,0,0)
+        self.heading = Pvector(0,0)
 
         self.nodeOut = startNode
         self.position = startNode.position
@@ -29,26 +29,37 @@ class Agent:
 
         self.nodeTo = self.nodeOut.connectedNodes[pickedNode]
 
-        nextNode_vector = Pvector(self.nodeTo.position.x, self.nodeTo.position.y) #directional vector towards next node
-        nextNode_vector.subtractFromSelf(self.position) #heading of the agent
+        # vector from current position to the next node
+        nextNode_vector = Pvector(self.nodeTo.position.x, self.nodeTo.position.y)
+        nextNode_vector.subtractFromSelf(self.position)
 
         #self.delta_r = self.delta_r.add(nextNode_vector)
 
         self.distanceToNextNode = nextNode_vector.magnitude()
         nextNode_vector.normalize()
+        self.heading = Pvector(0,0)
+        self.heading.addToSelf(nextNode_vector)
         nextNode_vector.multiplySelfByScalar(self.vMax)
         self.velocity = nextNode_vector
 
+    def projectAcceleration(self):
+        dotProduct = self.acceleration.dotProduct(self.heading)
+        self.acceleration = self.heading.multiply(dotProduct)
+
     def updateVelocity(self):
+        self.projectAcceleration()
         self.velocity = self.velocity.add(self.acceleration)
 
     def updatePosition(self):
         self.position = self.position.add(self.velocity)
-        self.distanceToNextNode = self.distanceToNextNode - self.vMax #currently move with vMax, should change to magnitude of current speed
+        self.distanceToNextNode = self.distanceToNextNode - self.velocity.magnitude()
         #self.delta_r = self.delta_r.subtract(self.velocity)
         if(self.distanceToNextNode < self.approachError):
                 self.nodeOut = self.nodeTo
                 self.pickNode()
+
+    #def detectAgentsAround(self):
+        #calculate resulting force
 
     def printNodesIsee(self):
         print('start connections:')
@@ -60,7 +71,8 @@ class Agent:
             print(n.nodeId)
 
 
-
+    def slowDown(self):
+        self.velocity.multiplySelfByScalar(0.5)
 
 
     def move(agent):

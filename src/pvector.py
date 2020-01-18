@@ -9,23 +9,23 @@ import math
 class Pvector:
 
     def __init__(self, xCoordinate, yCoordinate):
-        if xCoordinate == None:
+        if(xCoordinate == None):
             self.x = 0
         else:
             self.x = float(xCoordinate)
-        if yCoordinate == None:
+        if(yCoordinate == None):
             self.y = 0
         else:
             self.y = float(yCoordinate)
 
-    def add(self, pvector):
-        x = self.x + pvector.x
-        y = self.y + pvector.y
+    def add(self, vector):
+        x = self.x + vector.x
+        y = self.y + vector.y
         return Pvector(x, y)
 
-    def subtract(self, pvector):
-        x = self.x - pvector.x
-        y = self.y - pvector.y
+    def subtract(self, vector):
+        x = self.x - vector.x
+        y = self.y - vector.y
         return Pvector(x, y)
 
     def multiply(self, alpha):
@@ -42,13 +42,13 @@ class Pvector:
             return Pvector(self.x, self.y)
             print('Division by zero')
 
-    def addToSelf(self, pvector):
-        self.x = self.x + pvector.x
-        self.y = self.y + pvector.y
+    def addToSelf(self, vector):
+        self.x = self.x + vector.x
+        self.y = self.y + vector.y
 
-    def subtractFromSelf(self, pvector):
-        self.x = self.x - pvector.x
-        self.y = self.y - pvector.y
+    def subtractFromSelf(self, vector):
+        self.x = self.x - vector.x
+        self.y = self.y - vector.y
 
     def multiplySelfByScalar(self, alpha):
         self.x = self.x * alpha
