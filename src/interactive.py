@@ -30,7 +30,7 @@ df_mapFile = pd.read_csv("mapFile.csv")
 x1 = df_mapFile.iloc[:,1]
 y1 = df_mapFile.iloc[:,2]
 
-plot.circle(x1,y1,fill_color='#7c7e71', size=4)
+plot.circle(x1,y1,fill_color='#7c7e71', size=2)
 
 source = ColumnDataSource(df_mapFile)
 labels = LabelSet(x=' X', y=' Y', text='# nodeId', level='glyph',

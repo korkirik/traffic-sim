@@ -11,7 +11,7 @@ class Simulation:
         self.vMax = 0.1
         self.agentRange = 1
         self.agentList = list()
-        self.headingError = 0.01
+        self.headingError = 0.05
 
     def loadNodes(self, recievedList):
         self.nodeList = recievedList
@@ -58,10 +58,15 @@ class Simulation:
                     if(agent.nodeTo != agent2.nodeTo):
                         continue
 
-                    #check if two agents have the same heading vector
+                    #check if two agents are coming from the same node
+                    if(agent.nodeOut != agent2.nodeOut):
+                        continue
+
+                    #probably is not required
+                    '''#check if two agents have the same heading vector
                     codirectionalityVector = Pvector(agent.heading.x - agent2.heading.x, agent.heading.y - agent2.heading.y)
                     if(not (math.fabs(codirectionalityVector.x) < self.headingError and math.fabs(codirectionalityVector.y) < self.headingError)):
-                        continue
+                        continue'''
 
                     #directional vector tovards agent 1 from agent 2
                     deltaVector = Pvector(0,0)

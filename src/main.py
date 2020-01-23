@@ -43,5 +43,5 @@ map.printNodesStats(0)
 
 simulation = Simulation()
 simulation.loadNodes(map.nodeList)
-simulation.createRoamingAgents(5)
+simulation.createRoamingAgents(9)
 simulation.startSimulation(1000)
