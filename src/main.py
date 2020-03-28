@@ -23,7 +23,7 @@
 '''
 from map import *
 from parser_osm import *
-from lparser import *
+from parser_streets import *
 from agentcontroller import *
 from simulation import *
 

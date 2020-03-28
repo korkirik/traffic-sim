@@ -3,7 +3,10 @@ import json
 from parser_osm import Parser
 from streetsegment import *
 
-class LParser(Parser):
+    #Should extract data from OSM, create a temp object and fill the fields in it,
+    # when everything is filled parser should pass object into streetSegmentList
+
+class Parser
     def __init__(self):
             self.streetSegmentList = list()
 

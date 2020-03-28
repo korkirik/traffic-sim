@@ -13,6 +13,6 @@ class StreetSegment:
         self.streetId = 0
         self.speed = 50
 
-    def directDistance(self):
+    def returnLength(self):
         deltaVector = self.endPoint.subtract(startPoint)
         return deltaVector.magnitude()
