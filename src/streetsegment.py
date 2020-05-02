@@ -15,5 +15,5 @@ class StreetSegment:
 
     @property
     def length(self):
-        delta_r = self.endPoint.subtract(self.startPoint)
+        delta_r = self.endPoint - self.startPoint
         return delta_r.magnitude()

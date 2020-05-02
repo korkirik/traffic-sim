@@ -16,14 +16,14 @@ class Pvector:
         if(yCoordinate != 0):
             self.y = float(yCoordinate)
 
-    def add(self, vector):
-        x = self.x + vector.x
-        y = self.y + vector.y
+    def __add__(self, other):
+        x = self.x + other.x
+        y = self.y + other.y
         return Pvector(x, y)
 
-    def subtract(self, vector):
-        x1 = self.x - vector.x
-        y1 = self.y - vector.y
+    def __sub__(self, other):
+        x1 = self.x - other.x
+        y1 = self.y - other.y
         return Pvector(x1, y1)
 
     def multiply(self, alpha):
@@ -69,9 +69,6 @@ class Pvector:
         mag = self.magnitude()
         self.divideSelfByScalar(mag)
 
-    def get(self):
-        return self
-
     def copy(self):
         return Pvector(self.x, self.y)
 
@@ -83,24 +80,20 @@ class Pvector:
         if self.magnitude() > lim:
             self.setMagnitude(lim)
 
-    def dotProduct(self, vector):
-        x = self.x * vector.x
-        y = self.y * vector.y
-        return x + y
-
     #TODO swap for atan2 for a safer angle determination
-    def angleBetween(self, vector):
-        angle = math.acosf(self.dotProduct(vector)/(self.magnitude() * vector.magnitude()))
+    def angleBetween(self, other):
+        angle = math.acosf( Pvector.dot_product(self, other) / (self.magnitude() * other.magnitude() ))
         return angle
 
-    def distanceBetween(self, vector):
-        return math.sqrt((self.x - vector.x)*(self.x - vector.x) + (self.y - vector.y)*(self.y - vector.y))
+    @staticmethod
+    def distance_between(one, other):
+        return math.sqrt((one.x - other.x)*(one.x - other.x) + (one.y - other.y)*(one.y - other.y))
 
     def getNormalPoint(self, b, p):
-        pa = p.subtract(self)
-        ba = b.subtract(self)
+        pa = p - self
+        ba = b - self
         ba.normalize()
-        value = pa.dotProduct(ba)
+        value = Pvector.dot_product(pa,ba)
         ba.multiplySelfByScalar(value)
         normalPoint = a.add(ba)
         return normalPoint
@@ -108,8 +101,8 @@ class Pvector:
     def whoAmI(self):
         print('vector', self.x, self.y)
 
-    @classmethod
-    def dot_product(self, vector1, vector2):
-        x = vector1.x * vector2.x
-        y = vector1.y * vector2.y
+    @staticmethod
+    def dot_product(one, other):
+        x = one.x * other.x
+        y = one.y * other.y
         return x + y
