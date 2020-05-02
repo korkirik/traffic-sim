@@ -9,13 +9,11 @@ import math
 class Pvector:
 
     def __init__(self, xCoordinate, yCoordinate):
-        if(xCoordinate == None):
-            self.x = 0
-        else:
+        self.x = 0
+        self.y = 0
+        if(xCoordinate != 0):
             self.x = float(xCoordinate)
-        if(yCoordinate == None):
-            self.y = 0
-        else:
+        if(yCoordinate != 0):
             self.y = float(yCoordinate)
 
     def add(self, vector):
@@ -24,9 +22,9 @@ class Pvector:
         return Pvector(x, y)
 
     def subtract(self, vector):
-        x = self.x - vector.x
-        y = self.y - vector.y
-        return Pvector(x, y)
+        x1 = self.x - vector.x
+        y1 = self.y - vector.y
+        return Pvector(x1, y1)
 
     def multiply(self, alpha):
         x = self.x * alpha
@@ -74,6 +72,9 @@ class Pvector:
     def get(self):
         return self
 
+    def returnCopy(self):
+        return Pvector(self.x, self.y)
+
     def setMagnitude(self, x):
         self.normalize()
         self.multiplySelfByScalar(x)
@@ -87,6 +88,7 @@ class Pvector:
         y = self.y * vector.y
         return x + y
 
+    #TODO swap for atan2 for a safer angle determination
     def angleBetween(self, vector):
         angle = math.acosf(self.dotProduct(vector)/(self.magnitude() * vector.magnitude()))
         return angle
@@ -105,3 +107,9 @@ class Pvector:
 
     def whoAmI(self):
         print('vector', self.x, self.y)
+
+    @classmethod
+    def dot_product(self, vector1, vector2):
+        x = vector1.x * vector2.x
+        y = vector1.y * vector2.y
+        return x + y

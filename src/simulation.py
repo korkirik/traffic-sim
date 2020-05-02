@@ -7,19 +7,22 @@ import random
 class Simulation:
     def __init__(self):
         self.agentCount = 0
-        self.agentId = 1
+        self.agentId = 0
+
         self.vMax = 0.1
-        self.agentRange = 1
-        self.agentList = list()
         self.headingError = 0.05
+        self.agentRange = 1
 
-    def loadNodes(self, recievedList):
-        self.nodeList = recievedList
+        self.agentList = list()
+
+    def load_nodes(self, recievedList):
+        self.node_list = recievedList
 
 
-    def createRoamingAgents(self, number):
+    def create_roaming_agents(self, number):
         for i in range(number):
-            self.agentList.append(Agent(0, 0, self.vMax + random.randrange(0,10,1)*0.01, self.agentId, self.nodeList[i]))
+            self.agentList.append(Agent(0, 0, self.vMax + random.randrange(0,10,1)*0.01, self.agentId, self.node_list[i]))
+            #self.agentList.append(Agent(0, 0, self.vMax, self.agentId, self.node_list[i]))
             self.agentId +=1
 
         self.agentCount += number
@@ -28,7 +31,7 @@ class Simulation:
     def selectRandomNode(self):
         randrange(0,101,1)
 
-    def startSimulation(self, time):
+    def start_simulation(self, time):
         self.iterMax = time
         agentsDataArray = np.zeros((self.iterMax*len(self.agentList),4))
 
@@ -58,7 +61,7 @@ class Simulation:
                     if(agent.nodeTo != agent2.nodeTo):
                         continue
 
-                    #check if two agents are coming from the same node
+                    #check if two agents are coming from the same node    ## WARNING: may cause unintended skipping
                     if(agent.nodeOut != agent2.nodeOut):
                         continue
 
@@ -68,13 +71,15 @@ class Simulation:
                     if(not (math.fabs(codirectionalityVector.x) < self.headingError and math.fabs(codirectionalityVector.y) < self.headingError)):
                         continue'''
 
-                    #directional vector tovards agent 1 from agent 2
+                    agent.agentsInRange += 1
+
+                    #directional vector from agent 2 tovards agent 1
                     deltaVector = Pvector(0,0)
                     deltaVector = agent.position.subtract(agent2.position)
 
                     deltaVector.normalize()
                     #check if agent is behind or in front of the agent2
-                    agent.agentsInRange += 1
+
                     if(deltaVector.dotProduct(agent.heading)>0):
                         continue
                     else:
@@ -85,7 +90,7 @@ class Simulation:
                     #a = a.add(deltaVector)
 
                     #agent.acceleration.addToSelf(a)
-            if(agent.agentsInRange == 0):
+            if(agent.agentsInRange == 0): #TODO slowly accelerate till vMax
                 agent.velocity.setMagnitude(agent.vMax)
 
 

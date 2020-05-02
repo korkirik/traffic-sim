@@ -1,16 +1,15 @@
 import json
 
-from parser_osm import Parser
 from streetsegment import *
 
     #Should extract data from OSM, create a temp object and fill the fields in it,
     # when everything is filled parser should pass object into streetSegmentList
 
-class Parser
+class Parser:
     def __init__(self):
             self.streetSegmentList = list()
 
-            with open('export_map_data_smaller.json', 'r') as export: #&&&&
+            with open('export_map_data_smaller.json', 'r') as export: 
                 meta_data = json.load(export)
             number_of_elements = len(meta_data['features'])
 
@@ -62,5 +61,5 @@ class Parser
 
             export.close()
 
-            def getStreetSegmentList(self):
+            def get_street_segment_list(self):
                 return self.streetSegmentList

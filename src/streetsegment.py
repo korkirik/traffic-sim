@@ -6,13 +6,14 @@ class StreetSegment:
         self.endPoint = endPoint
         #defaults
         self.name = 'defaultName'
-        self.lanes = 1
-        self.lanesForward = 1
-        self.lanesBackward = 1
-        self.streetType = 'street'
+        self.lanes = 1          # TODO: Not used, remove or implement something
+        self.lanesForward = 1   # TODO: Not used, remove or implement something
+        self.lanesBackward = 1  # TODO: Not used, remove or implement something
+        self.streetType = 'street' # TODO: Not used, remove or implement something
         self.streetId = 0
-        self.speed = 50
+        self.speed = 50         # TODO: Not used, remove or implement something
 
-    def returnLength(self):
-        deltaVector = self.endPoint.subtract(startPoint)
-        return deltaVector.magnitude()
+    @property
+    def length(self):
+        delta_r = self.endPoint.subtract(self.startPoint)
+        return delta_r.magnitude()

@@ -1,8 +1,8 @@
 import random
-from parser_osm import Parser
+from parser_streets import Parser
 from streetsegment import *
 
-class PseudoParser_Testground(Parser):
+class PseudoParserTestground(Parser):
     def __init__(self):
             self.streetSegmentList = list()
             self.getData()
@@ -18,5 +18,5 @@ class PseudoParser_Testground(Parser):
         self.streetSegmentList.append(street3)
         self.streetSegmentList.append(street4)
 
-    def getStreetSegmentList(self):
+    def get_street_segment_list(self):
         return self.streetSegmentList

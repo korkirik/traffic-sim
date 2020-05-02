@@ -17,31 +17,28 @@
  *              emergent effect is thereby generated and is observable.
  *
  *   Developed by: Yusuf Ismail, Kirill Korolev, Leen Nijim
- * Based on initial work of:
+ * Based on ideas from the work of:
     Yu-Jeng Kuo, Arindam Mahanta, Anoshan Indreswaran
  ******************************************************************/
 '''
 from map import *
-from parser_osm import *
 from parser_streets import *
 from agentcontroller import *
 from simulation import *
 
 from pseudoparser_testground2 import *
 
-#from array import *
 
 map = Map()
-#psparser = LParser()
-psparser = PseudoParser_Testground()
-map.loadStreets(psparser.getStreetSegmentList())
-map.generateNodes()
+#psparser = Parser()
+psparser = PseudoParserTestground()
+map.load_streets(psparser.get_street_segment_list())
+map.generate_nodes()
 
-#map.drawStreets()
-map.saveMapToFile()
-map.printNodesStats(0)
+map.save_map_to_file()
+map.print_nodes_stats(0)
 
 simulation = Simulation()
-simulation.loadNodes(map.nodeList)
-simulation.createRoamingAgents(9)
-simulation.startSimulation(1000)
+simulation.load_nodes(map.node_list)
+simulation.create_roaming_agents(9)
+simulation.start_simulation(1000)
