@@ -3,47 +3,46 @@ from node import *
 import random
 
 class Agent:
-                                        #do we need start Node? -K
-    def __init__(self, x, y, vMax, agentId, startNode): # , goal):
 
-        self.position = Pvector(x,y)
+    def __init__(self, agent_id):
+
+        self.position = Pvector(0,0)
         self.velocity = Pvector(0,0)
         self.acceleration = Pvector(0,0)
-        self.agentId = agentId
+        self.agent_id = agent_id
 
+        self.v_max = 0.1
+        self.breakRate = 0.01
 
-        self.vMax = vMax
-        self.breakRate = vMax/10
-
-
+        self.separation = 1
         self.approachError = 0.2
         self.agentsInRange = 0
-        #self.goal = node(0,0,0)
         self.heading = Pvector(0,0)
-
-        self.nodeOut = startNode
-        self.position = startNode.position
-
         self.delta_r = Pvector(0,0)
-        
-        self.pickNode()
 
-    def pickNode(self):
-        print(self.agentId,' at ', self.nodeOut.nodeId)
-        pickedNode = random.randint(0,len(self.nodeOut.connectedNodes)-1)  #pick random N0de from available
-        #print('picked node', pickedNode, 'out of ',len(self.nodeOut.connectedNodes) )
+    def pick_node(self):
+        #print(self.agent_id,' at ', self.node_out.nodeId)
+        pickedNode = random.randint(0,len(self.node_out.connectedNodes)-1)  #pick random N0de from available
+        #print('picked node', pickedNode, 'out of ',len(self.node_out.connectedNodes) )
 
-        self.nodeTo = self.nodeOut.connectedNodes[pickedNode]
-        self.updateDistanceHeading()
-        self.velocity = self.heading.multiply(self.vMax)
+        self.nodeTo = self.node_out.connectedNodes[pickedNode]
+        self.update_distance_heading()
+        self.velocity = self.heading.multiply(self.v_max)
 
-    def updateDistanceHeading(self):
+    def update_distance_heading(self):
         vectorToNextNode = Pvector(self.nodeTo.position.x, self.nodeTo.position.y)
         vectorToNextNode.subtractFromSelf(self.position)
         self.distanceToNextNode = vectorToNextNode.magnitude()
         vectorToNextNode.normalize()
-        self.heading = vectorToNextNode.returnCopy()
+        self.heading = vectorToNextNode.copy()
 
+    def set_starting_node(self, start_node):
+        self.node_out = start_node
+        self.position = start_node.position
+        self.pick_node()
+
+    def set_v_max(self, v_max):
+        self.v_max = v_max
 
     def projectAcceleration(self):
         dotProduct = self.acceleration.dotProduct(self.heading)
@@ -55,19 +54,19 @@ class Agent:
 
     def updatePosition(self):
         self.position = self.position.add(self.velocity)
-        self.updateDistanceHeading()
-        a = Pvector.dotProductCM(self.velocity, self.heading)
+        self.update_distance_heading()
+        a = Pvector.dot_product(self.velocity, self.heading)
         if(a < 0):
             if(self.distanceToNextNode < self.approachError):
-                self.nodeOut = self.nodeTo
-                self.pickNode()
+                self.node_out = self.nodeTo
+                self.pick_node()
 
     #def detectAgentsAround(self):
         #calculate resulting force
 
-    def printNodesIsee(self):
+    def print_reachable_nodes(self):
         print('start connections:')
-        for obj in self.nodeOut.connectedNodes:
+        for obj in self.node_out.connectedNodes:
             print(obj.nodeId)
 
         print('next connections:')

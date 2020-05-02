@@ -7,9 +7,9 @@ import random
 class Simulation:
     def __init__(self):
         self.agentCount = 0
-        self.agentId = 0
+        self.agent_id = 0
 
-        self.vMax = 0.1
+        self.v_max = 0.1
         self.headingError = 0.05
         self.agentRange = 1
 
@@ -21,14 +21,16 @@ class Simulation:
 
     def create_roaming_agents(self, number):
         for i in range(number):
-            self.agentList.append(Agent(0, 0, self.vMax + random.randrange(0,10,1)*0.01, self.agentId, self.node_list[i]))
-            #self.agentList.append(Agent(0, 0, self.vMax, self.agentId, self.node_list[i]))
-            self.agentId +=1
+            agent = Agent(self.agent_id)
+            agent.set_starting_node(self.node_list[i])
+            agent.set_v_max(self.v_max + random.randrange(0,10,1)*0.01)
+            self.agentList.append(agent)
 
+            self.agent_id +=1
         self.agentCount += number
 
-    #work on that randomness
-    def selectRandomNode(self):
+    # TODO: remove method
+    def select_random_node(self):
         randrange(0,101,1)
 
     def start_simulation(self, time):
@@ -36,16 +38,17 @@ class Simulation:
         agentsDataArray = np.zeros((self.iterMax*len(self.agentList),4))
 
         for iter in range(0, self.iterMax, 1):
-            self.findRepulsion()
+            #self.findRepulsion()
             for agentIndex, agent in enumerate(self.agentList):
                 agentsDataArray[agentIndex + self.agentCount*iter,0] = iter
-                agentsDataArray[agentIndex + self.agentCount*iter,1] = agent.agentId
+                agentsDataArray[agentIndex + self.agentCount*iter,1] = agent.agent_id
                 agentsDataArray[agentIndex + self.agentCount*iter,2] = agent.position.x
                 agentsDataArray[agentIndex + self.agentCount*iter,3] = agent.position.y
                 agent.updateVelocity()
                 agent.updatePosition()
 
-        np.savetxt("agentsFile.csv", agentsDataArray, delimiter=", ", header="iteration, agentId, X, Y")
+        np.savetxt("agentsFile.csv", agentsDataArray, delimiter=", ", header="iteration, agent_id, X, Y")
+        print('Simulation complete, {} steps'.format(time))
 
     def findRepulsion(self):
         for agentIndex, agent in enumerate(self.agentList):
@@ -62,7 +65,7 @@ class Simulation:
                         continue
 
                     #check if two agents are coming from the same node    ## WARNING: may cause unintended skipping
-                    if(agent.nodeOut != agent2.nodeOut):
+                    if(agent.node_out != agent2.node_out):
                         continue
 
                     #probably is not required
@@ -90,21 +93,5 @@ class Simulation:
                     #a = a.add(deltaVector)
 
                     #agent.acceleration.addToSelf(a)
-            if(agent.agentsInRange == 0): #TODO slowly accelerate till vMax
-                agent.velocity.setMagnitude(agent.vMax)
-
-
-    def startSimulationOld(self, time):
-        self.iterMax = time
-        agentsDataArray = np.zeros((self.iterMax*len(self.agentList),4))
-
-        for iter in range(0, self.iterMax, 1):
-            for agentIndex, agent in enumerate(self.agentList):
-                agentsDataArray[agentIndex + self.agentCount*iter,0] = iter
-                agentsDataArray[agentIndex + self.agentCount*iter,1] = agent.agentId
-                agentsDataArray[agentIndex + self.agentCount*iter,2] = agent.position.x
-                agentsDataArray[agentIndex + self.agentCount*iter,3] = agent.position.y
-                agent.updateVelocity()
-                agent.updatePosition()
-
-        np.savetxt("agentsFile.csv", agentsDataArray, delimiter=", ", header="iteration, agentId, X, Y")
+            if(agent.agentsInRange == 0): #TODO slowly accelerate till v_max
+                agent.velocity.setMagnitude(agent.v_max)

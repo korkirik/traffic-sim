@@ -9,7 +9,7 @@ output_file("map_build_tg2.1.0.html")
 
 class Map:
     def __init__(self):
-        self.name = 'defaultMapName'
+        self.name = 'Default Map Name'
         self.node_list = list()
 
     def load_streets(self, recievedList):

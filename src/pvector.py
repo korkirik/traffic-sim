@@ -72,7 +72,7 @@ class Pvector:
     def get(self):
         return self
 
-    def returnCopy(self):
+    def copy(self):
         return Pvector(self.x, self.y)
 
     def setMagnitude(self, x):
