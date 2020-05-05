@@ -33,7 +33,7 @@ y1 = df_mapFile.iloc[:,2]
 plot.circle(x1,y1,fill_color='#7c7e71', size=2)
 
 source = ColumnDataSource(df_mapFile)
-labels = LabelSet(x=' X', y=' Y', text='# nodeId', level='glyph',
+labels = LabelSet(x=' X', y=' Y', text='# node_id', level='glyph',
               x_offset=5, y_offset=5, text_font_size="10pt", text_color="#0c0c0c",
                source=source, render_mode='canvas')
 plot.add_layout(labels)

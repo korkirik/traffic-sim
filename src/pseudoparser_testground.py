@@ -4,7 +4,7 @@ from streetsegment import *
 
 class PseudoParserTestground(Parser):
     def __init__(self):
-            self.streetSegmentList = list()
+            self.street_segment_list = list()
             self.getData()
 
     def getData(self):
@@ -13,10 +13,10 @@ class PseudoParserTestground(Parser):
         street3 = StreetSegment(Pvector(12,-1), Pvector(16,2))
         street4 = StreetSegment(Pvector(12,-1), Pvector(15,-5))
 
-        self.streetSegmentList.append(street1)
-        self.streetSegmentList.append(street2)
-        self.streetSegmentList.append(street3)
-        self.streetSegmentList.append(street4)
+        self.street_segment_list.append(street1)
+        self.street_segment_list.append(street2)
+        self.street_segment_list.append(street3)
+        self.street_segment_list.append(street4)
 
     def get_street_segment_list(self):
-        return self.streetSegmentList
+        return self.street_segment_list

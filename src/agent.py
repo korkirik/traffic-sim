@@ -12,21 +12,21 @@ class Agent:
         self.agent_id = agent_id
 
         self.v_max = 0.1
-        self.breakRate = 0.01
+        self.break_rate = 0.01
 
         self.separation = 1
-        self.approachError = 0.2
+        self.approach_error = 0.2
         self.agent_range = 1
         self.agents_in_range = 0
         self.heading = Pvector(0,0)
         self.delta_r = Pvector(0,0)
 
     def pick_node(self):
-        #print(self.agent_id,' at ', self.node_out.nodeId)
-        pickedNode = random.randint(0,len(self.node_out.connectedNodes)-1)  #pick random N0de from available
-        #print('picked node', pickedNode, 'out of ',len(self.node_out.connectedNodes) )
+        #print(self.agent_id,' at ', self.node_out.node_id)
+        picked_node = random.randint(0,len(self.node_out.connected_nodes)-1)  #pick random N0de from available
+        #print('picked node', picked_node, 'out of ',len(self.node_out.connected_nodes) )
 
-        self.nodeTo = self.node_out.connectedNodes[pickedNode]
+        self.nodeTo = self.node_out.connected_nodes[picked_node]
         self.update_distance_heading()
         self.velocity = self.heading.multiply(self.v_max)
 
@@ -63,7 +63,7 @@ class Agent:
         self.update_distance_heading()
         #a = Pvector.dot_product(self.velocity, self.heading)
         #if(a < 0):
-        if(self.distance_to_next_node < self.approachError):
+        if(self.distance_to_next_node < self.approach_error):
             self.node_out = self.nodeTo
             self.pick_node()
 
@@ -72,19 +72,19 @@ class Agent:
 
     def print_reachable_nodes(self):
         print('start connections:')
-        for obj in self.node_out.connectedNodes:
-            print(obj.nodeId)
+        for obj in self.node_out.connected_nodes:
+            print(obj.node_id)
 
         print('next connections:')
-        for n in self.nodeTo.connectedNodes:
-            print(n.nodeId)
+        for n in self.nodeTo.connected_nodes:
+            print(n.node_id)
 
     def slow_down(self):
-        #self.acceleration = self.heading.multiply(-1*self.breakRate) #TODO change to sum later
-        self.velocity.divideSelfByScalar(2)
-        #self.velocity = self.velocity - self.heading.multiply(self.breakRate)
+        #self.acceleration = self.heading.multiply(-1*self.break_rate) #TODO change to sum later
+        self.velocity.divide_itself(2)
+        #self.velocity = self.velocity - self.heading.multiply(self.break_rate)
         #if(self.velocity.magnitude() < 0):## TODO: magnitude can not be negative, fix
-            #self.velocity.multiplySelfByScalar(0)
+            #self.velocity.multiply_itself(0)
 
     def add_agent_list(self, agent_list):
         self.agent_list = agent_list
@@ -118,7 +118,7 @@ class Agent:
                     continue
                 else:
                     self.slow_down()
-                #delta_vector.divideSelfByScalar(10)
+                #delta_vector.divide_itself(10)
                 #a = Pvector(0,0)
                 #print(delta_vector.magnitude())
                 #a = a.add(delta_vector)

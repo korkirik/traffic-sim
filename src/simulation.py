@@ -6,11 +6,11 @@ import random
 
 class Simulation:
     def __init__(self):
-        self.agentCount = 0
+        self.agent_count = 0
         self.agent_id = 0
 
         self.v_max = 0.1
-        self.headingError = 0.05
+        self.heading_error = 0.05
 
         self.agent_list = list()
 
@@ -27,7 +27,7 @@ class Simulation:
             agent.add_agent_list(self.agent_list)
 
             self.agent_id +=1
-        self.agentCount += number
+        self.agent_count += number
         #for agent in self.agent_list:
         #    print(len(agent.agent_list))
 
@@ -38,10 +38,10 @@ class Simulation:
         for iter in range(0, self.iterMax, 1):
             #self.findRepulsion()
             for agentIndex, agent in enumerate(self.agent_list):
-                agentsDataArray[agentIndex + self.agentCount*iter,0] = iter
-                agentsDataArray[agentIndex + self.agentCount*iter,1] = agent.agent_id
-                agentsDataArray[agentIndex + self.agentCount*iter,2] = agent.position.x
-                agentsDataArray[agentIndex + self.agentCount*iter,3] = agent.position.y
+                agentsDataArray[agentIndex + self.agent_count*iter,0] = iter
+                agentsDataArray[agentIndex + self.agent_count*iter,1] = agent.agent_id
+                agentsDataArray[agentIndex + self.agent_count*iter,2] = agent.position.x
+                agentsDataArray[agentIndex + self.agent_count*iter,3] = agent.position.y
                 agent.update_behaviour()
                 agent.update_velocity()
                 agent.update_position()

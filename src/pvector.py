@@ -8,13 +8,13 @@ import math
 
 class Pvector:
 
-    def __init__(self, xCoordinate, yCoordinate):
+    def __init__(self, x, y):
         self.x = 0
         self.y = 0
-        if(xCoordinate != 0):
-            self.x = float(xCoordinate)
-        if(yCoordinate != 0):
-            self.y = float(yCoordinate)
+        if(x != 0):
+            self.x = float(x)
+        if(y != 0):
+            self.y = float(y)
 
     def __add__(self, other):
         x = self.x + other.x
@@ -40,18 +40,18 @@ class Pvector:
             return Pvector(self.x, self.y)
             print('Division by zero')
 
-    def multiplySelfByScalar(self, alpha):
+    def multiply_itself(self, alpha):
         self.x = self.x * alpha
         self.y = self.y * alpha
 
-    def divideSelfByScalar(self, alpha):
+    def divide_itself(self, alpha):
         if alpha != 0:
             self.x = self.x/float(alpha)
             self.y = self.y/float(alpha)
         else:
             print('Division by zero')
 
-    def magnitudeSquared(self):
+    def magnitude_squared(self):
         return self.x*self.x + self.y*self.y
 
     def magnitude(self):
@@ -59,21 +59,21 @@ class Pvector:
 
     def normalize(self):
         mag = self.magnitude()
-        self.divideSelfByScalar(mag)
+        self.divide_itself(mag)
 
     def copy(self):
         return Pvector(self.x, self.y)
 
     def set_magnitude(self, x):
         self.normalize()
-        self.multiplySelfByScalar(x)
+        self.multiply_itself(x)
 
-    def limitMagnitude(self, lim):
+    def limit_magnitude(self, lim):
         if self.magnitude() > lim:
             self.set_magnitude(lim)
 
     #TODO swap for atan2 for a safer angle determination
-    def angleBetween(self, other):
+    def angle_between(self, other):
         angle = math.acosf( Pvector.dot_product(self, other) / (self.magnitude() * other.magnitude() ))
         return angle
 
@@ -81,17 +81,14 @@ class Pvector:
     def distance_between(one, other):
         return math.sqrt((one.x - other.x)*(one.x - other.x) + (one.y - other.y)*(one.y - other.y))
 
-    def getNormalPoint(self, b, p):
+    def get_normal_point(self, b, p):
         pa = p - self
         ba = b - self
         ba.normalize()
         value = Pvector.dot_product(pa,ba)
-        ba.multiplySelfByScalar(value)
+        ba.multiply_itself(value)
         normalPoint = a.add(ba)
         return normalPoint
-
-    def whoAmI(self):
-        print('vector', self.x, self.y)
 
     @staticmethod
     def dot_product(one, other):

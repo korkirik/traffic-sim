@@ -1,39 +1,39 @@
 from pvector import *
 class Node:
-    def __init__(self, x, y, nodeId):
+    def __init__(self, x, y, node_id):
         self.position = Pvector(x,y)
-        self.nodeId = nodeId
-        self.connectedNodes = list()
+        self.node_id = node_id
+        self.connected_nodes = list()
 
-    def removeConnectionsToMe(self):
-        for obj in self.connectedNodes:
-            for o in obj.connectedNodes:
-                if(o.nodeId == self.nodeId):
-                    obj.connectedNodes.remove(o)
+    def remove_connections_to_me(self):
+        for obj in self.connected_nodes:
+            for o in obj.connected_nodes:
+                if(o.node_id == self.node_id):
+                    obj.connected_nodes.remove(o)
                     break
 
-    def addConnectionsToMe(self):
-        for obj in self.connectedNodes:
+    def add_connections_to_me(self):
+        for obj in self.connected_nodes:
             foundFlag = False
-            for o in obj.connectedNodes:
-                if(o.nodeId == self.nodeId):
+            for o in obj.connected_nodes:
+                if(o.node_id == self.node_id):
                     foundFlag = True
                     break                   #found id in list
             if(not foundFlag):
-                obj.connectedNodes.append(self)
+                obj.connected_nodes.append(self)
 
 
-    def updateConnections(self, new_node):
-        for obj in self.connectedNodes:
-            for o in obj.connectedNodes:
-                if(o.nodeId == self.nodeId):
-                    obj.connectedNodes.remove(o)
-                    obj.connectedNodes.append(new_node)
+    def update_connections(self, new_node):
+        for obj in self.connected_nodes:
+            for o in obj.connected_nodes:
+                if(o.node_id == self.node_id):
+                    obj.connected_nodes.remove(o)
+                    obj.connected_nodes.append(new_node)
                     break
-        del self.connectedNodes[:]
+        del self.connected_nodes[:]
 
-    def removeConnectedNodeWithId(self, index_to_delete):
-        for obj in self.connectedNodes:
-            if(obj.nodeId == index_to_delete):
-                self.connectedNodes.remove(obj)
+    def remove_connected_node_with_id(self, index_to_delete):
+        for obj in self.connected_nodes:
+            if(obj.node_id == index_to_delete):
+                self.connected_nodes.remove(obj)
                 break
