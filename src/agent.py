@@ -79,50 +79,50 @@ class Agent:
         for n in self.nodeTo.connectedNodes:
             print(n.nodeId)
 
-    def slowDown(self):
+    def slow_down(self):
         #self.acceleration = self.heading.multiply(-1*self.breakRate) #TODO change to sum later
-        self.velocity = self.velocity - self.heading.multiply(self.breakRate)
-        if(self.velocity.magnitude() < 0):## TODO: magnitude can not be negative, fix
-            self.velocity.multiplySelfByScalar(0)
+        self.velocity.divideSelfByScalar(2)
+        #self.velocity = self.velocity - self.heading.multiply(self.breakRate)
+        #if(self.velocity.magnitude() < 0):## TODO: magnitude can not be negative, fix
+            #self.velocity.multiplySelfByScalar(0)
 
     def add_agent_list(self, agent_list):
         self.agent_list = agent_list
 
     def feel_repulsion(self):
-        for agent_index, agent_nearby in enumerate(self.agent_list):
-            self.agents_in_range = 0
-            if(self != agent_nearby):
+        self.agents_in_range = 0
+        for agent_index, agent in enumerate(self.agent_list):
+            if(agent != self):
                 #check if two agents are close
-                distance = Pvector.distance_between(self.position, agent_nearby.position)
+                distance = Pvector.distance_between(agent.position, self.position)
                 if(distance > self.agent_range):
                     continue
 
                 #check if two agents are heading to the same node
-                if(self.nodeTo != agent_nearby.nodeTo):
+                if(self.nodeTo != agent.nodeTo):
                     continue
 
                 #check if two agents are coming from the same node    ## WARNING: may cause unintended skipping
-                if(self.node_out != agent_nearby.node_out):
+                if(self.node_out != agent.node_out):
                     continue
-
                 self.agents_in_range += 1
 
-                #directional vector from this agent tovards the agent_nearby
+                #directional vector from this agent tovards the agent
                 delta_vector = Pvector(0,0)
-                delta_vector = agent_nearby.position - self.position
+                delta_vector = agent.position - self.position
 
                 delta_vector.normalize()
 
-                #check if the agent_nearby is behind or in front
-                if(Pvector.dot_product(delta_vector, agent_nearby.heading) > 0):
+                #check if the agent is behind or in front
+                if(Pvector.dot_product(delta_vector, self.heading) < 0):
                     continue
                 else:
-                    self.slowDown()
+                    self.slow_down()
                 #delta_vector.divideSelfByScalar(10)
                 #a = Pvector(0,0)
                 #print(delta_vector.magnitude())
                 #a = a.add(delta_vector)
 
-                #agent.acceleration.addToSelf(a)
+                #agent.acceleration + a
         if(self.agents_in_range == 0): #TODO slowly accelerate till v_max
-            self.velocity.setMagnitude(self.v_max)
+            self.velocity.set_magnitude(self.v_max)

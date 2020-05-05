@@ -30,10 +30,6 @@ class Simulation:
         self.agentCount += number
         #for agent in self.agent_list:
         #    print(len(agent.agent_list))
-        
-    # TODO: remove method
-    def select_random_node(self):
-        randrange(0,101,1)
 
     def start_simulation(self, time):
         self.iterMax = time

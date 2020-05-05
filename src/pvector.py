@@ -40,14 +40,6 @@ class Pvector:
             return Pvector(self.x, self.y)
             print('Division by zero')
 
-    def addToSelf(self, vector):
-        self.x = self.x + vector.x
-        self.y = self.y + vector.y
-
-    def subtractFromSelf(self, vector):
-        self.x = self.x - vector.x
-        self.y = self.y - vector.y
-
     def multiplySelfByScalar(self, alpha):
         self.x = self.x * alpha
         self.y = self.y * alpha
@@ -72,13 +64,13 @@ class Pvector:
     def copy(self):
         return Pvector(self.x, self.y)
 
-    def setMagnitude(self, x):
+    def set_magnitude(self, x):
         self.normalize()
         self.multiplySelfByScalar(x)
 
     def limitMagnitude(self, lim):
         if self.magnitude() > lim:
-            self.setMagnitude(lim)
+            self.set_magnitude(lim)
 
     #TODO swap for atan2 for a safer angle determination
     def angleBetween(self, other):

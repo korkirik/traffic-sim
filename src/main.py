@@ -23,7 +23,6 @@
 '''
 from map import *
 from parser_streets import *
-from agentcontroller import *
 from simulation import *
 
 from pseudoparser_testground2 import *
