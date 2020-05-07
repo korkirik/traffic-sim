@@ -9,7 +9,7 @@ class Parser:
     def __init__(self):
             self.street_segment_list = list()
 
-            with open('export_map_data_smaller.json', 'r') as export: 
+            with open('export_map_data_smaller.json', 'r') as export:
                 meta_data = json.load(export)
             number_of_elements = len(meta_data['features'])
 
@@ -45,21 +45,21 @@ class Parser:
 
                         endYcoor = geometry['coordinates'][segment +1][1]
 
-                        StrSeg = StreetSegment(Pvector(startXcoor,startYcoor),
+                        street = StreetSegment(Pvector(startXcoor,startYcoor),
                         Pvector(endXcoor,endYcoor))
 
-                        StrSeg.name = self.name
-                        StrSeg.streetType = self.highway
-                        StrSeg.lanes = self.lanes
-                        StrSeg.lanesForward = self.fwdlanes
-                        StrSeg.lanesBackward = self.bcklanes
-                        StrSeg.speed = self.speed
+                        street.name = self.name
+                        street.streetType = self.highway
+                        street.lanes = self.lanes
+                        street.lanesForward = self.fwdlanes
+                        street.lanesBackward = self.bcklanes
+                        street.speed = self.speed
 
 
-                        self.street_segment_list.append(StrSeg)
+                        self.street_segment_list.append(street)
 
 
             export.close()
 
-            def get_street_segment_list(self):
-                return self.street_segment_list
+    def get_street_segment_list(self):
+        return self.street_segment_list

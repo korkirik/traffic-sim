@@ -32,5 +32,6 @@ class PseudoParserTestground(Parser):
         self.street_segment_list.append(street10)
         self.street_segment_list.append(street11)
         self.street_segment_list.append(street12)
+
     def get_street_segment_list(self):
         return self.street_segment_list

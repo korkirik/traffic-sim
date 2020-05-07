@@ -14,6 +14,7 @@ import random
 
 
 plot = figure(x_range=(-1, 17), y_range=(-12, 5), title='Traffic Sim', plot_height=450, match_aspect=True)
+#plot = figure(title='Traffic Sim', plot_height=450, match_aspect=True)
 plot.xaxis.ticker = SingleIntervalTicker(interval=1)
 plot.xaxis.axis_label = "Coordinate X longitude"
 plot.yaxis.ticker = SingleIntervalTicker(interval=1)
