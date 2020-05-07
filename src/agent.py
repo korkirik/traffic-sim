@@ -12,6 +12,7 @@ class Agent:
         self.agent_id = agent_id
 
         self.v_max = 0.1
+        self.alpha = 2
         self.break_rate = 0.01
 
         self.separation = 1
@@ -20,23 +21,7 @@ class Agent:
         self.agents_in_range = 0
         self.heading = Pvector(0,0)
         self.delta_r = Pvector(0,0)
-
-    def pick_node(self):
-        #print(self.agent_id,' at ', self.node_out.node_id)
-        picked_node = random.randint(0,len(self.node_out.connected_nodes)-1)  #pick random N0de from available
-        #print('picked node', picked_node, 'out of ',len(self.node_out.connected_nodes) )
-
-        self.nodeTo = self.node_out.connected_nodes[picked_node]
-        self.update_distance_heading()
-        self.velocity = self.heading.multiply(self.v_max)
-
-    def update_distance_heading(self):
-        vector_to_next_node = Pvector(self.nodeTo.position.x, self.nodeTo.position.y)
-        vector_to_next_node = vector_to_next_node - self.position
-        self.distance_to_next_node = vector_to_next_node.magnitude()
-        vector_to_next_node.normalize()
-        self.heading = vector_to_next_node.copy()
-
+#--------------setters-------------------
     def set_starting_node(self, start_node):
         self.node_out = start_node
         self.position = start_node.position
@@ -45,31 +30,28 @@ class Agent:
     def set_v_max(self, v_max):
         self.v_max = v_max
 
-        ## TODO: make it work
-    def projectAcceleration(self):
-        dot_product = Pvector.dot_product(self.acceleration, self.heading)
-        self.acceleration = self.heading.multiply(dot_product)
+    def add_agent_list(self, agent_list):
+        self.agent_list = agent_list
 
+#-------------Main Logic-----------------
     ## TODO: Gather all behaviours here
     def update_behaviour(self):
+        self.next_node_attraction()
         self.feel_repulsion()
 
     def update_velocity(self):
-        #self.projectAcceleration() ## TODO: fix
         self.velocity = self.velocity + self.acceleration
+        self.velocity.limit_magnitude(self.v_max)
 
     def update_position(self):
         self.position = self.position + self.velocity
-        self.update_distance_heading()
+        self.update_distance_heading_towards_next_node()
         #a = Pvector.dot_product(self.velocity, self.heading)
         #if(a < 0):
         if(self.distance_to_next_node < self.approach_error):
             self.node_out = self.nodeTo
             self.pick_node()
-
-    #def detectAgentsAround(self):
-        #calculate resulting force
-
+#-----------------------------------------
     def print_reachable_nodes(self):
         print('start connections:')
         for obj in self.node_out.connected_nodes:
@@ -78,6 +60,25 @@ class Agent:
         print('next connections:')
         for n in self.nodeTo.connected_nodes:
             print(n.node_id)
+#-------------Behaviours------------------
+    def pick_node(self):
+        #print(self.agent_id,' at ', self.node_out.node_id)
+        picked_node = random.randint(0,len(self.node_out.connected_nodes)-1)  #pick random N0de from available
+        #print('picked node', picked_node, 'out of ',len(self.node_out.connected_nodes) )
+
+        self.nodeTo = self.node_out.connected_nodes[picked_node]
+        self.update_distance_heading_towards_next_node()
+        #self.velocity = self.heading.multiply(self.v_max)
+
+    def update_distance_heading_towards_next_node(self):
+        vector_to_next_node = Pvector(self.nodeTo.position.x, self.nodeTo.position.y)
+        vector_to_next_node = vector_to_next_node - self.position
+        self.distance_to_next_node = vector_to_next_node.magnitude()
+        vector_to_next_node.normalize()
+        self.heading = vector_to_next_node.copy()
+
+    def next_node_attraction(self):
+        self.acceleration = self.acceleration + self.heading.multiply(self.alpha)
 
     def slow_down(self):
         #self.acceleration = self.heading.multiply(-1*self.break_rate) #TODO change to sum later
@@ -85,9 +86,6 @@ class Agent:
         #self.velocity = self.velocity - self.heading.multiply(self.break_rate)
         #if(self.velocity.magnitude() < 0):## TODO: magnitude can not be negative, fix
             #self.velocity.multiply_itself(0)
-
-    def add_agent_list(self, agent_list):
-        self.agent_list = agent_list
 
     def feel_repulsion(self):
         self.agents_in_range = 0
@@ -124,5 +122,5 @@ class Agent:
                 #a = a.add(delta_vector)
 
                 #agent.acceleration + a
-        if(self.agents_in_range == 0): #TODO slowly accelerate till v_max
-            self.velocity.set_magnitude(self.v_max)
+    #    if(self.agents_in_range == 0): #TODO slowly accelerate till v_max
+    #        self.velocity.set_magnitude(self.v_max)

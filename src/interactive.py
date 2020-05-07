@@ -13,14 +13,16 @@ import numpy as np
 import random
 
 
-plot = figure(x_range=(-1, 17), y_range=(-12, 5), title='Traffic Sim', plot_height=450, match_aspect=True)
+plot = figure(x_range=(-1, 17), y_range=(-12, 5), title='Traffic Sim', plot_height=600, match_aspect=True,
+                tools="pan, wheel_zoom, reset", active_drag="pan", active_scroll = "wheel_zoom")
+
 #plot = figure(title='Traffic Sim', plot_height=450, match_aspect=True)
 plot.xaxis.ticker = SingleIntervalTicker(interval=1)
 plot.xaxis.axis_label = "Coordinate X longitude"
 plot.yaxis.ticker = SingleIntervalTicker(interval=1)
 plot.yaxis.axis_label = "Coordinate Y latitude"
 
-label = Label(x=10.5, y=2, text=str("Iteration"), text_font_size='30pt', text_color='#eeeeee')
+label = Label(x=9, y=2.5, text=str("Iteration"), text_font_size='30pt', text_color='#eeeeee')
 plot.add_layout(label)
 
 #color_mapper = CategoricalColorMapper(palette=Spectral6, factors=regions_list)
@@ -64,7 +66,7 @@ def animate_update():
 
 def slider_update(attrname, old, new):
     iteration = slider.value
-    label.text = "Iteration"
+    label.text = "Iteration " + str(slider.value)
     source_agents.data = df_agentsFile.loc[[iteration],:]
 
 
