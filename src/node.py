@@ -37,3 +37,9 @@ class Node:
             if(obj.node_id == index_to_delete):
                 self.connected_nodes.remove(obj)
                 break
+
+    def print_connections(self):
+        conn = list()
+        for node in self.connected_nodes:
+            conn.append(node.node_id)
+        print('#{}, connected to # {}'.format(self.node_id, conn))

@@ -36,7 +36,7 @@ class Simulation:
         agentsDataArray = np.zeros((self.iterMax*len(self.agent_list),4))
 
         for iter in range(0, self.iterMax, 1):
-            #self.findRepulsion()
+            
             for agentIndex, agent in enumerate(self.agent_list):
                 agentsDataArray[agentIndex + self.agent_count*iter,0] = iter
                 agentsDataArray[agentIndex + self.agent_count*iter,1] = agent.agent_id

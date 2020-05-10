@@ -35,7 +35,8 @@ psparser = PseudoParserTestground()
 map.load_streets(psparser.get_street_segment_list())
 map.generate_nodes()
 
-map.save_map_to_file()
+#map.save_map_to_file()
+map.save_graph_to_file()
 map.print_nodes_stats(0)
 
 simulation = Simulation()

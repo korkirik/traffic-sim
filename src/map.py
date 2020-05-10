@@ -108,3 +108,26 @@ class Map:
             dataArray[rowIndex,2] = node.position.y
         #print(dataArray)
         np.savetxt("mapFile.csv", dataArray, delimiter=", ", header="node_id, X, Y")
+
+    def save_graph_to_file(self):
+        rows = len(self.node_list)
+        for i in range(0, len(self.node_list),1):
+            rows = rows + len(self.node_list[i].connected_nodes)
+
+        dataArray = np.zeros((rows,4))
+
+        counter = 0
+        for rowIndex, node in enumerate(self.node_list):
+            dataArray[counter,0] = rowIndex
+            dataArray[counter,1] = node.node_id
+            dataArray[counter,2] = node.position.x
+            dataArray[counter,3] = node.position.y
+            counter = counter + 1
+            for node2 in node.connected_nodes:
+                dataArray[counter,0] = -1
+                dataArray[counter,1] = node2.node_id
+                counter = counter + 1
+
+
+        #print(dataArray)
+        np.savetxt("graph.csv", dataArray, delimiter=", ", header="vertex,node_id, X, Y")
