@@ -46,6 +46,13 @@ class Simulation:
                 agent.update_velocity()
                 agent.update_position()
 
+                #self.do_agent_tests()
+
         np.savetxt("agentsFile.csv", agentsDataArray, delimiter=", ", header="iteration, agent_id, X, Y")
         print('Simulation complete, {} steps'.format(time))
         #print('data saved in agentsFile.csv')
+
+    def do_agent_tests(self):
+        agent_tester = Agent_test(self.agent_list[0])
+        #agent_tester.print_street_size()
+        agent_tester.print_forces()

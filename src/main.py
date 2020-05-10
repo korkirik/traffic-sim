@@ -26,10 +26,11 @@ from parser_streets import *
 from simulation import *
 
 from pseudoparser_testground2 import *
-
+from proving_ground import *
 
 map = Map()
 #psparser = Parser()
+#psparser = ProvingGround()
 psparser = PseudoParserTestground()
 map.load_streets(psparser.get_street_segment_list())
 map.generate_nodes()

@@ -72,6 +72,11 @@ class Pvector:
         if self.magnitude() > lim:
             self.set_magnitude(lim)
 
+    def smooth_limit_magnitude(self, lim):
+        pass
+        #if self.magnitude() > lim:
+            #self.set_magnitude(lim)
+
     #TODO swap for atan2 for a safer angle determination
     def angle_between(self, other):
         angle = math.acosf( Pvector.dot_product(self, other) / (self.magnitude() * other.magnitude() ))

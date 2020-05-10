@@ -12,15 +12,18 @@ class Agent:
         self.agent_id = agent_id
 
         self.v_max = 0.1
-        self.alpha = 2
-        self.break_rate = 0.01
+        self.alpha = 1
+        self.beta = 0.9
+        self.decceleration_magnitude = 0
 
-        self.separation = 1
+        self.minimal_separation = 0.75
         self.approach_error = 0.2
-        self.agent_range = 1
+        self.agent_range = 1.5
         self.agents_in_range = 0
         self.heading = Pvector(0,0)
-        self.delta_r = Pvector(0,0)
+        self.distance_to_next_node = 0
+
+        self.delta = Pvector(0,0)
 #--------------setters-------------------
     def set_starting_node(self, start_node):
         self.node_out = start_node
@@ -35,17 +38,19 @@ class Agent:
 
 #-------------Main Logic-----------------
     ## TODO: Gather all behaviours here
-    def update_behaviour(self):
+    def update_behaviour(self): #поворотная функция
+        self.reset_acceleration()
         self.next_node_attraction()
-        self.feel_repulsion()
+        self.agents_aversion()
 
     def update_velocity(self):
         self.velocity = self.velocity + self.acceleration
         self.velocity.limit_magnitude(self.v_max)
 
+
     def update_position(self):
         self.position = self.position + self.velocity
-        self.update_distance_heading_towards_next_node()
+        self.update_distance_heading_next_node()
         #a = Pvector.dot_product(self.velocity, self.heading)
         #if(a < 0):
         if(self.distance_to_next_node < self.approach_error):
@@ -67,27 +72,26 @@ class Agent:
         #print('picked node', picked_node, 'out of ',len(self.node_out.connected_nodes) )
 
         self.nodeTo = self.node_out.connected_nodes[picked_node]
-        self.update_distance_heading_towards_next_node()
+        self.update_distance_heading_next_node()
         #self.velocity = self.heading.multiply(self.v_max)
 
-    def update_distance_heading_towards_next_node(self):
-        vector_to_next_node = Pvector(self.nodeTo.position.x, self.nodeTo.position.y)
-        vector_to_next_node = vector_to_next_node - self.position
-        self.distance_to_next_node = vector_to_next_node.magnitude()
-        vector_to_next_node.normalize()
-        self.heading = vector_to_next_node.copy()
+    def update_distance_heading_next_node(self):
+        vector_next_node = Pvector(self.nodeTo.position.x, self.nodeTo.position.y)
+        vector_next_node = vector_next_node - self.position
+        self.distance_to_next_node = vector_next_node.magnitude()
+        vector_next_node.normalize()
+        self.heading = vector_next_node.copy()
 
     def next_node_attraction(self):
         self.acceleration = self.acceleration + self.heading.multiply(self.alpha)
 
-    def slow_down(self):
-        #self.acceleration = self.heading.multiply(-1*self.break_rate) #TODO change to sum later
-        self.velocity.divide_itself(2)
-        #self.velocity = self.velocity - self.heading.multiply(self.break_rate)
-        #if(self.velocity.magnitude() < 0):## TODO: magnitude can not be negative, fix
-            #self.velocity.multiply_itself(0)
+    #def check_negative_velocity(self):
+        #if( Pvector.dot_product(self.heading, self.velocity) < 0):
 
-    def feel_repulsion(self):
+    def reset_acceleration(self):
+        self.acceleration = Pvector(0,0)
+
+    def agents_aversion(self):
         self.agents_in_range = 0
         for agent_index, agent in enumerate(self.agent_list):
             if(agent != self):
@@ -109,18 +113,43 @@ class Agent:
                 delta_vector = Pvector(0,0)
                 delta_vector = agent.position - self.position
 
-                delta_vector.normalize()
+                #delta_vector.normalize()
 
                 #check if the agent is behind or in front
                 if(Pvector.dot_product(delta_vector, self.heading) < 0):
                     continue
                 else:
-                    self.slow_down()
-                #delta_vector.divide_itself(10)
-                #a = Pvector(0,0)
-                #print(delta_vector.magnitude())
-                #a = a.add(delta_vector)
+                    if(distance > self.minimal_separation):
+                        self.follow(agent)
+                        self.reset_acceleration()
+                    else:
+                        self.avoid_obstacle(delta_vector)
+    def follow(self, agent):
+        self.velocity = agent.velocity
 
-                #agent.acceleration + a
-    #    if(self.agents_in_range == 0): #TODO slowly accelerate till v_max
-    #        self.velocity.set_magnitude(self.v_max)
+    def avoid_obstacle(self, delta_vector):
+        self.decceleration_magnitude = self.beta/(delta_vector.magnitude())
+        self.delta = delta_vector
+        decceleration = self.heading.multiply(self.decceleration_magnitude)
+        self.acceleration = self.acceleration - decceleration
+        #self.acceleration = self.heading.multiply(-1*self.break_rate) #TODO change to sum later
+        #self.velocity.divide_itself(2)
+        #self.velocity = self.velocity - self.heading.multiply(self.break_rate)
+        #if(self.velocity.magnitude() < 0):## TODO: magnitude can not be negative, fix
+            #self.velocity.multiply_itself(0)
+
+class Agent_test:
+    def __init__(self,agent):
+        self.agent = agent
+
+
+    def print_street_size(self):
+        size = self.agent.distance_to_next_node
+        print('distance: {}'.format(size))
+
+    def print_forces(self):
+        attraction = self.agent.alpha
+        repulsion = self.agent.decceleration_magnitude
+        delta = self.agent.delta
+
+        print('attraction: {}, repulsion: {}, deltaX: {}'.format(attraction, repulsion,delta.x))
