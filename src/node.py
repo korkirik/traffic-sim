@@ -4,6 +4,7 @@ class Node:
         self.position = Pvector(x,y)
         self.node_id = node_id
         self.connected_nodes = list()
+        self.connections = list()
 
     def remove_connections_to_me(self):
         for obj in self.connected_nodes:
@@ -39,13 +40,21 @@ class Node:
                 break
 
     def get_connections_ids(self):
-        conn = list()
-        for node in self.connected_nodes:
-            conn.append(node.node_id)
-        return conn
+        self.update_connections_list()
+        return self.connections
+
+    def print(self):
+        self.update_connections_list()
+        print('#{}, at ({},{}), linked to {}'.format(self.node_id, self.position.x, self.position.y, self.connections))
 
     def print_connections(self):
         conn = list()
         for node in self.connected_nodes:
             conn.append(node.node_id)
-        print('#{}, connected to # {}'.format(self.node_id, conn))
+        print('#{}, linked to # {}'.format(self.node_id, conn))
+
+    def update_connections_list(self):
+        conn = list()
+        for node in self.connected_nodes:
+            conn.append(node.node_id)
+        self.connections = conn

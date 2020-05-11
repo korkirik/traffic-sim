@@ -5,11 +5,13 @@ from bokeh.io import curdoc
 from bokeh.layouts import layout
 from bokeh.models import (ColumnDataSource, HoverTool, SingleIntervalTicker,
                           Slider, Button, Label, LabelSet, CategoricalColorMapper)
-from bokeh.palettes import Spectral6
+#from bokeh.palettes import Spectral6
 from bokeh.plotting import figure, show
 
+from node import *
 import pandas as pd
 import numpy as np
+import json
 import random
 
 
@@ -25,22 +27,48 @@ plot.yaxis.axis_label = "Coordinate Y latitude"
 label = Label(x=9, y=2.5, text=str("Iteration"), text_font_size='30pt', text_color='#eeeeee')
 plot.add_layout(label)
 
-#color_mapper = CategoricalColorMapper(palette=Spectral6, factors=regions_list)
 
+#Reading graph.json and adding nodes on the display
+with open('graph.json') as f:
+    graph = json.load(f)
 
-#Reading data from mapFile with nodes coordinates and drawing it
-df_mapFile = pd.read_csv("mapFile.csv")
-x1 = df_mapFile.iloc[:,1]
-y1 = df_mapFile.iloc[:,2]
+    node_list = list()
 
-plot.circle(x1,y1,fill_color='#7c7e71', size=2)
+    x1 = list()
+    y1 = list()
+    for node in graph['nodes']:
+        new_node = Node(node['X'], node['Y'], node['node_id'])
+        new_node.connections = node['connections']
+        node_list.append(new_node)
+        x1.append(node['X'])
+        y1.append(node['Y'])
 
-source = ColumnDataSource(df_mapFile)
-labels = LabelSet(x=' X', y=' Y', text='# node_id', level='glyph',
-              x_offset=5, y_offset=5, text_font_size="10pt", text_color="#0c0c0c",
-               source=source, render_mode='canvas')
-plot.add_layout(labels)
+    plot.circle(x1,y1,fill_color='#7c7e71', size=2)
 
+    #Link nodes to each other
+    for node in node_list:
+        for id in node.connections:
+            for other in node_list:
+                if(other.node_id == id):
+                    node.connected_nodes.append(other)
+                    break
+    #In order to draw one street only once, we have to remove drawn connections
+    for node in node_list:
+        for connected_node in node.connected_nodes:
+            xa = [node.position.x, connected_node.position.x]
+            ya = [node.position.y, connected_node.position.y]
+            connected_node.remove_connected_node_with_id(node.node_id)
+            plot.line(xa,ya,line_color='#a6051a', line_width=2)
+'''Labels
+source = ColumnDataSource(data=dict(posY=[o.position.y for o in self.node_list],
+                                    posX=[o.position.x for o in self.node_list],
+                                    nodeids=[o.node_id for o in self.node_list
+                                            ]))
+labels = LabelSet(x='posX', y='posY', text='nodeids', level='glyph',
+      x_offset=5, y_offset=5, text_font_size="10pt", text_color="#0c0c0c",
+       source=source, render_mode='canvas')
+plot.add_layout(labels)'''
+#---------------------------
 
 #Reading data from agentsFile
 df_agentsFile = pd.read_csv("agentsFile.csv")
@@ -68,8 +96,6 @@ def slider_update(attrname, old, new):
     iteration = slider.value
     label.text = "Iteration " + str(slider.value)
     source_agents.data = df_agentsFile.loc[[iteration],:]
-
-
 
 slider = Slider(start=0, end=iterMax, value=1, step=1, title="Iteration")
 slider.on_change('value', slider_update)

@@ -74,31 +74,6 @@ class Map:
                 for j in range(0,len(self.node_list[i].connected_nodes)):
                     print(self.node_list[i].connected_nodes[j].node_id)
 
-#Method used to visualise streets before interactive.py was implemented
-#Currently not used # TODO: Factor the funtionality out into the interactive.py
-    def draw_streets(self):
-        p = figure(plot_width=700, plot_height=700, match_aspect=True)
-        for node in self.node_list:
-            for connected_node in node.connected_nodes: #Remove overlapping drawings
-                x = [node.position.x, connected_node.position.x]
-                y = [node.position.y, connected_node.position.y]
-                p.line(x, y, line_width=2)
-
-        for index in range(0,len(self.node_list), 1):
-            x = self.node_list[index].position.x
-            y = self.node_list[index].position.y
-            p.circle(x, y, fill_color="white", size=2)
-
-        source = ColumnDataSource(data=dict(posY=[o.position.y for o in self.node_list],
-                                            posX=[o.position.x for o in self.node_list],
-                                            nodeids=[o.node_id for o in self.node_list
-                                                    ]))
-        labels = LabelSet(x='posX', y='posY', text='nodeids', level='glyph',
-              x_offset=5, y_offset=5, text_font_size="10pt", text_color="#0c0c0c",
-               source=source, render_mode='canvas')
-        p.add_layout(labels)
-        show(p)
-
     def save_map_to_file(self):
         dataArray = np.zeros((len(self.node_list),3))
 
@@ -122,6 +97,6 @@ class Map:
             element_list.append(element)
 
         data['nodes'] = element_list
-        
+
         with open('graph.json', 'w') as f:
             json.dump(data, f, indent = 2)
