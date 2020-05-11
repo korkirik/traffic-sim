@@ -4,6 +4,7 @@ from pvector import *
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import ColumnDataSource, Range1d, LabelSet, Label
 import numpy as np
+import json
 
 output_file("map_build_tg2.1.0.html")
 
@@ -100,34 +101,27 @@ class Map:
 
     def save_map_to_file(self):
         dataArray = np.zeros((len(self.node_list),3))
-        #print(dataArray)
-        #print(len(self.node_list))
+
         for rowIndex, node in enumerate(self.node_list):
             dataArray[rowIndex,0] = node.node_id
             dataArray[rowIndex,1] = node.position.x
             dataArray[rowIndex,2] = node.position.y
-        #print(dataArray)
+
         np.savetxt("mapFile.csv", dataArray, delimiter=", ", header="node_id, X, Y")
 
-    def save_graph_to_file(self):
-        rows = len(self.node_list)
-        for i in range(0, len(self.node_list),1):
-            rows = rows + len(self.node_list[i].connected_nodes)
+    def save_graph_to_json(self):
+        data = dict()
+        element_list = list()
 
-        dataArray = np.zeros((rows,4))
+        for node in self.node_list:
+            element = dict()
+            element['node_id'] = node.node_id
+            element['X'] = node.position.x
+            element['Y'] = node.position.y
+            element['connections'] = node.get_connections_ids()
+            element_list.append(element)
 
-        counter = 0
-        for rowIndex, node in enumerate(self.node_list):
-            dataArray[counter,0] = rowIndex
-            dataArray[counter,1] = node.node_id
-            dataArray[counter,2] = node.position.x
-            dataArray[counter,3] = node.position.y
-            counter = counter + 1
-            for node2 in node.connected_nodes:
-                dataArray[counter,0] = -1
-                dataArray[counter,1] = node2.node_id
-                counter = counter + 1
-
-
-        #print(dataArray)
-        np.savetxt("graph.csv", dataArray, delimiter=", ", header="vertex,node_id, X, Y")
+        data['nodes'] = element_list
+        
+        with open('graph.json', 'w') as f:
+            json.dump(data, f, indent = 2)

@@ -38,6 +38,12 @@ class Node:
                 self.connected_nodes.remove(obj)
                 break
 
+    def get_connections_ids(self):
+        conn = list()
+        for node in self.connected_nodes:
+            conn.append(node.node_id)
+        return conn
+
     def print_connections(self):
         conn = list()
         for node in self.connected_nodes:
