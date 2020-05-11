@@ -43,7 +43,7 @@ with open('graph.json') as f:
         x1.append(node['X'])
         y1.append(node['Y'])
 
-    plot.circle(x1,y1,fill_color='#7c7e71', size=2)
+    plot.circle(x1,y1,fill_color='#00ff00', size=10)
 
     #Link nodes to each other
     for node in node_list:
@@ -58,7 +58,7 @@ with open('graph.json') as f:
             xa = [node.position.x, connected_node.position.x]
             ya = [node.position.y, connected_node.position.y]
             connected_node.remove_connected_node_with_id(node.node_id)
-            plot.line(xa,ya,line_color='#a6051a', line_width=2)
+            plot.line(xa,ya,line_color='#ff5656', line_width=2)
 '''Labels
 source = ColumnDataSource(data=dict(posY=[o.position.y for o in self.node_list],
                                     posX=[o.position.x for o in self.node_list],
@@ -78,7 +78,7 @@ df_agentsFile.set_index('# iteration', inplace=True)
 
 #Draw agents on the map TODO add random colors
 source_agents = ColumnDataSource(df_agentsFile.loc[[0],:])
-plot.circle(x = ' X',y = ' Y',fill_color='#20D0D9', size=4, source=source_agents)
+plot.circle(x = ' X',y = ' Y',fill_color='#ffff00', line_color = '#00ff1a', size=6, source=source_agents)
 
 #plot.line(xa,ya,line_color='#a6051a', line_width=2, line_dash= 'dashed')
 #print(iterMax)
