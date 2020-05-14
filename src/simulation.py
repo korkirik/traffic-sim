@@ -17,7 +17,6 @@ class Simulation:
     def load_nodes(self, recievedList):
         self.node_list = recievedList
 
-
     def create_roaming_agents(self, number):
         for i in range(number):
             agent = Agent(self.agent_id)
@@ -28,15 +27,13 @@ class Simulation:
 
             self.agent_id +=1
         self.agent_count += number
-        #for agent in self.agent_list:
-        #    print(len(agent.agent_list))
 
     def start_simulation(self, time):
         self.iterMax = time
         agentsDataArray = np.zeros((self.iterMax*len(self.agent_list),4))
 
         for iter in range(0, self.iterMax, 1):
-            
+
             for agentIndex, agent in enumerate(self.agent_list):
                 agentsDataArray[agentIndex + self.agent_count*iter,0] = iter
                 agentsDataArray[agentIndex + self.agent_count*iter,1] = agent.agent_id
@@ -52,6 +49,7 @@ class Simulation:
         print('Simulation complete, {} steps'.format(time))
         #print('data saved in agentsFile.csv')
 
+    ## TODO: move agents' tests into other class
     def do_agent_tests(self):
         agent_tester = Agent_test(self.agent_list[0])
         #agent_tester.print_street_size()

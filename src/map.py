@@ -74,7 +74,7 @@ class Map:
                 for j in range(0,len(self.node_list[i].connected_nodes)):
                     print(self.node_list[i].connected_nodes[j].node_id)
 
-    def save_map_to_file(self):
+    def save_map_to_csv(self):
         dataArray = np.zeros((len(self.node_list),3))
 
         for rowIndex, node in enumerate(self.node_list):

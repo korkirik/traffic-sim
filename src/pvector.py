@@ -86,14 +86,9 @@ class Pvector:
     def distance_between(one, other):
         return math.sqrt((one.x - other.x)*(one.x - other.x) + (one.y - other.y)*(one.y - other.y))
 
-    def get_normal_point(self, b, p):
-        pa = p - self
-        ba = b - self
-        ba.normalize()
-        value = Pvector.dot_product(pa,ba)
-        ba.multiply_itself(value)
-        normalPoint = a.add(ba)
-        return normalPoint
+    @staticmethod
+    def get_normal_point(one, other):
+        pass
 
     @staticmethod
     def dot_product(one, other):
