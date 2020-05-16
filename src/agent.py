@@ -22,6 +22,7 @@ class Agent:
         self.agents_in_range = 0
         self.heading = Pvector(0,0)
         self.distance_to_next_node = 0
+        self.active = 1
 
         self.delta = Pvector(0,0)
 #--------------setters-------------------
@@ -95,12 +96,19 @@ class Agent:
     def reset_acceleration(self):
         self.acceleration = Pvector(0,0)
 
+    def set_inactive(self):
+        self.active = 0
+
+
     def agents_aversion(self):
         self.agents_in_range = 0
         for agent_index, agent in enumerate(self.agent_list):
             if(agent != self):
                 #check if two agents are close
                 distance = Pvector.distance_between_points(agent.position, self.position)
+                if(agent.active == 0):
+                    continue
+
                 if(distance > self.agent_range):
                     continue
 
@@ -118,7 +126,7 @@ class Agent:
                 delta_vector = agent.position - self.position
 
                 #check if the agent is behind or in front
-                if(Pvector.dot_product(delta_vector, self.heading) < 0):
+                if(Pvector.dot_product(delta_vector, self.heading) <= 0):
                     continue
                 else:
                     #if(distance > self.minimal_separation):
@@ -127,9 +135,7 @@ class Agent:
                     #else:
 
                     self.avoid_obstacle(delta_vector)
-    #todo replace
-    def follow(self, agent):
-        pass
+
 
     def avoid_obstacle(self, delta_vector):
         self.decceleration_magnitude = self.beta/(delta_vector.magnitude())

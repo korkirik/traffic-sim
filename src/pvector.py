@@ -76,8 +76,12 @@ class Pvector:
         pass
         #if self.magnitude() > lim:
             #self.set_magnitude(lim)
+    @staticmethod
+    def check_zero_magnitude(one):
+        if one.x == one.y and one.x == 0:
+            print('Zero length vector')
 
-    #TODO swap for atan2 for a safer angle determination
+
     @staticmethod
     def angle_between(one, other):
         cosine = Pvector.dot_product(one, other)/( one.magnitude() * other.magnitude() )

@@ -14,8 +14,13 @@ class HomingAgent(Agent):
 
     def set_target_node(self, node):
         self.target_node = node
-        self.update_target()
-        self.pick_node()
+        if(self.node_out == node):
+            self.node_in = node
+            print('start node is the target, setting inactive')
+            self.set_inactive() # TODO: here should be inactivation, so calls of the functions are not affecting agent
+        else:
+            self.update_target()
+            self.pick_node()
 
 #-------------Main Logic-----------------
     ## TODO: Gather all behaviours here
@@ -36,7 +41,8 @@ class HomingAgent(Agent):
         if(self.distance_to_next_node < self.approach_error):
             self.update_target()
             if self.check_if_arrved():
-                pass #self.position = self.position - self.velocity #step back
+                self.position = self.position - self.velocity #step back
+                self.set_inactive()
             else:
                 self.node_out = self.node_in
                 self.pick_node()
@@ -69,7 +75,7 @@ class HomingAgent(Agent):
         index = 0
         for i, angle in enumerate(angles):
             if math.fabs(angle) < smallest_angle:
-                smallest_angle = angle
+                smallest_angle = math.fabs(angle)
                 index = i
 
         self.node_in = self.node_out.connected_nodes[index]
