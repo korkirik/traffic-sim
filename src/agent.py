@@ -51,7 +51,7 @@ class Agent:
 
     def update_position(self):
         self.position = self.position + self.velocity
-        self.update_distance_heading_next_node()
+        self.update_next_node_vector()
 
         if(self.distance_to_next_node < self.approach_error):
             self.preceding_node = self.node_out
@@ -75,14 +75,14 @@ class Agent:
                 picked_number = self.random_roll()
 
         self.node_in = self.node_out.connected_nodes[picked_number]
-        self.update_distance_heading_next_node()
+        self.update_next_node_vector()
 
     def random_roll(self):
         number = random.randint(0,len(self.node_out.connected_nodes)-1)  #pick random Node from available
         #print('picked node #id {} ouf of {}'.format(self.node_out.connected_nodes[picked_number].node_id, len(self.node_out.connected_nodes)))
         return number
 
-    def update_distance_heading_next_node(self):
+    def update_next_node_vector(self):
         vector_next_node = Pvector(self.node_in.position.x, self.node_in.position.y)
         vector_next_node = vector_next_node - self.position
         self.distance_to_next_node = vector_next_node.magnitude()
@@ -100,7 +100,7 @@ class Agent:
         for agent_index, agent in enumerate(self.agent_list):
             if(agent != self):
                 #check if two agents are close
-                distance = Pvector.distance_between(agent.position, self.position)
+                distance = Pvector.distance_between_points(agent.position, self.position)
                 if(distance > self.agent_range):
                     continue
 

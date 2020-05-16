@@ -78,12 +78,20 @@ class Pvector:
             #self.set_magnitude(lim)
 
     #TODO swap for atan2 for a safer angle determination
-    def angle_between(self, other):
-        angle = math.acosf( Pvector.dot_product(self, other) / (self.magnitude() * other.magnitude() ))
-        return angle
+    @staticmethod
+    def angle_between(one, other):
+        cosine = Pvector.dot_product(one, other)/( one.magnitude() * other.magnitude() )
+        c_magnitude = Pvector.cross_product_magnitude(one, other)
+        sine = c_magnitude / ( one.magnitude() * other.magnitude() )
+        angle = math.atan2(sine,cosine)
+        return angle *360 /(2* math.pi)
 
     @staticmethod
-    def distance_between(one, other):
+    def cross_product_magnitude(one, other):
+        return one.x * other.y - one.y * other.x
+
+    @staticmethod
+    def distance_between_points(one, other):
         return math.sqrt((one.x - other.x)*(one.x - other.x) + (one.y - other.y)*(one.y - other.y))
 
     @staticmethod
@@ -95,3 +103,6 @@ class Pvector:
         x = one.x * other.x
         y = one.y * other.y
         return x + y
+
+    def show(self):
+        print('vector {},{}'.format(self.x, self.y))

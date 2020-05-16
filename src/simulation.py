@@ -1,5 +1,6 @@
 from map import *
 from agent import *
+from homing_agent import *
 from node import *
 import numpy as np
 import random
@@ -21,6 +22,18 @@ class Simulation:
         for i in range(number):
             agent = Agent(self.agent_id)
             agent.set_starting_node(self.node_list[i])
+            agent.set_v_max(self.v_max + random.randrange(0,10,1)*0.01)
+            self.agent_list.append(agent)
+            agent.add_agent_list(self.agent_list)
+
+            self.agent_id +=1
+        self.agent_count += number
+
+    def create_hoaming_agents(self, number):
+        for i in range(number):
+            agent = HomingAgent(self.agent_id)
+            agent.set_starting_node(self.node_list[i])
+            agent.set_target_node(self.node_list[3]) # TODO: randomize
             agent.set_v_max(self.v_max + random.randrange(0,10,1)*0.01)
             self.agent_list.append(agent)
             agent.add_agent_list(self.agent_list)
