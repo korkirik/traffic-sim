@@ -27,9 +27,9 @@ from pseudoparser_testground2 import *
 from proving_ground import *
 
 map = Map()
-#psparser = Parser()
+psparser = Parser()
 #psparser = ProvingGround()
-psparser = PseudoParserTestground()
+#psparser = PseudoParserTestground()
 map.load_streets(psparser.get_street_segment_list())
 map.generate_nodes()
 
@@ -38,6 +38,6 @@ map.print_nodes_stats(0)
 
 simulation = Simulation()
 simulation.load_nodes(map.node_list)
-#simulation.create_roaming_agents(1)
-simulation.create_hoaming_agents(9)
-simulation.start_simulation(1000)
+simulation.create_roaming_agents(100)
+#simulation.create_hoaming_agents(1)
+simulation.start_simulation(2000)

@@ -10,8 +10,7 @@ class Simulation:
         self.agent_count = 0
         self.agent_id = 0
 
-        self.v_max = 0.1
-        self.heading_error = 0.05
+    #    self.v_max = 0.1
 
         self.agent_list = list()
 
@@ -21,8 +20,9 @@ class Simulation:
     def create_roaming_agents(self, number):
         for i in range(number):
             agent = Agent(self.agent_id)
-            agent.set_starting_node(self.node_list[i])
-            agent.set_v_max(self.v_max + random.randrange(0,10,1)*0.01)
+
+            agent.set_starting_node(self.random_node())
+        #    agent.set_v_max(self.v_max + random.randrange(0,10,1)*0.01)
             self.agent_list.append(agent)
             agent.add_agent_list(self.agent_list)
 
@@ -32,14 +32,19 @@ class Simulation:
     def create_hoaming_agents(self, number):
         for i in range(number):
             agent = HomingAgent(self.agent_id)
-            agent.set_starting_node(self.node_list[i])
-            agent.set_target_node(self.node_list[3]) # TODO: randomize
-            agent.set_v_max(self.v_max + random.randrange(0,10,1)*0.01)
+            agent.set_starting_node(self.random_node())
+            agent.set_target_node(self.node_list[100]) # TODO: randomize
+            #agent.set_v_max(self.v_max + random.randrange(0,10,1)*0.01)
             self.agent_list.append(agent)
             agent.add_agent_list(self.agent_list)
 
             self.agent_id +=1
         self.agent_count += number
+
+    def random_node(self):
+        l = len(self.node_list)
+        node = self.node_list[random.randrange(0,l,1)]
+        return node
 
     def start_simulation(self, time):
         self.iterMax = time

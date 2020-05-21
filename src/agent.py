@@ -11,14 +11,14 @@ class Agent:
         self.acceleration = Pvector(0,0)
         self.agent_id = agent_id
 
-        self.v_max = 0.1
-        self.alpha = 1
-        self.beta = 0.8
+        self.v_max = 0.00002
+        self.alpha = 0.00001 # v_max/2
+        self.beta =  0.000008 #0.8 * alpha
         self.decceleration_magnitude = 0
 
-        self.minimal_separation = 0.75
-        self.approach_error = 0.2
-        self.agent_range = 0.8
+        #self.minimal_separation = 0.00075 #75 *self.alpha
+        self.approach_error = 0.00002 # 0.2 * self.alpha
+        self.agent_range = 0.0001 # 10 *self.alpha
         self.agents_in_range = 0
         self.heading = Pvector(0,0)
         self.distance_to_next_node = 0
@@ -58,6 +58,8 @@ class Agent:
             self.preceding_node = self.node_out
             self.node_out = self.node_in
             self.pick_node()
+            self.update_next_node_vector()
+            self.velocity = Pvector.turn_vector(self.heading, self.velocity)
 #-----------------------------------------
     def print_reachable_nodes(self):
         print('start connections:')
@@ -98,7 +100,6 @@ class Agent:
 
     def set_inactive(self):
         self.active = 0
-
 
     def agents_aversion(self):
         self.agents_in_range = 0

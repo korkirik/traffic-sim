@@ -16,7 +16,7 @@ class HomingAgent(Agent):
         self.target_node = node
         if(self.node_out == node):
             self.node_in = node
-            print('start node is the target, setting inactive')
+            print('start node is already at the target, setting inactive')
             self.set_inactive() # TODO: here should be inactivation, so calls of the functions are not affecting agent
         else:
             self.update_target()
@@ -46,6 +46,8 @@ class HomingAgent(Agent):
             else:
                 self.node_out = self.node_in
                 self.pick_node()
+                self.update_next_node_vector()
+                self.velocity = Pvector.turn_vector(self.heading, self.velocity)
 
 #-----------------------------------------
     def check_if_arrved(self):
@@ -64,12 +66,12 @@ class HomingAgent(Agent):
         for index, node in enumerate(self.node_out.connected_nodes):
             direction = Pvector(0,0)
             direction = node.position - self.node_out.position
-            direction.show()
-            self.target_vector.show()
+            #direction.show()
+            #self.target_vector.show()
             angle = Pvector.angle_between(direction,self.target_vector)
             angles.append(angle)
 
-        print(angles)
+        #print(angles)
 
         smallest_angle = 180
         index = 0

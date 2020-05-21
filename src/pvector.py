@@ -81,6 +81,10 @@ class Pvector:
         if one.x == one.y and one.x == 0:
             print('Zero length vector')
 
+    @staticmethod
+    def turn_vector(direction, vector):
+        direction.set_magnitude(vector.magnitude())
+        return direction
 
     @staticmethod
     def angle_between(one, other):
@@ -90,7 +94,7 @@ class Pvector:
         angle = math.atan2(sine,cosine)
         return angle *360 /(2* math.pi)
 
-    @staticmethod
+    @staticmethod #for 2D vectors
     def cross_product_magnitude(one, other):
         return one.x * other.y - one.y * other.x
 
