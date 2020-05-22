@@ -71,14 +71,15 @@ class Agent:
             print(n.node_id) ## TODO: remove
 #-------------Behaviours------------------
     def pick_node(self):
-        picked_number = self.random_roll()
 
         if(len(self.node_out.connected_nodes) != 1):
+            picked_number = self.random_roll()
             while(self.node_out.connected_nodes[picked_number] == self.preceding_node):
                 picked_number = self.random_roll()
-
+        else:
+            picked_number = 0
+            
         self.node_in = self.node_out.connected_nodes[picked_number]
-        self.update_next_node_vector()
 
     def random_roll(self):
         number = random.randint(0,len(self.node_out.connected_nodes)-1)  #pick random Node from available
