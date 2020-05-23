@@ -48,8 +48,6 @@ class HomingAgent(Agent):
                 self.position = self.position - self.velocity #step back
                 self.set_inactive()
             else:
-
-
                 self.node_out = self.node_in
                 self.pick_node()
                 self.update_next_node_vector()
@@ -67,13 +65,15 @@ class HomingAgent(Agent):
         self.target_distance = self.target_vector.magnitude()
 
     def pick_node(self):
+        #one node means turning around
         if(len(self.node_out.connected_nodes) == 1):
             index = 0
+        #two nodes means a continuation of the street, agent moves along
         elif(len(self.node_out.connected_nodes) == 2):
             index = self.find_node_towards_direction(self.heading) # vector forward
+        #agent decides at intersection which path is next    
         else:
             index = self.find_node_towards_direction(self.target_vector)
-
         self.node_in = self.node_out.connected_nodes[index]
 
     def find_node_towards_direction(self, vector):
