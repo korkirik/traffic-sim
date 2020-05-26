@@ -38,6 +38,6 @@ map.print_nodes_stats(0)
 
 simulation = Simulation()
 simulation.load_nodes(map.node_list)
-#simulation.create_roaming_agents(100)
-simulation.create_hoaming_agents(100)
+simulation.create_roaming_agents(100)
+#simulation.create_hoaming_agents(9)
 simulation.start_simulation(2000)

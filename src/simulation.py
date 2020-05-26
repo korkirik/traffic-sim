@@ -10,8 +10,6 @@ class Simulation:
         self.agent_count = 0
         self.agent_id = 0
 
-    #    self.v_max = 0.1
-
         self.agent_list = list()
 
     def load_nodes(self, recievedList):
@@ -22,7 +20,7 @@ class Simulation:
             agent = Agent(self.agent_id)
 
             agent.set_starting_node(self.random_node())
-        #    agent.set_v_max(self.v_max + random.randrange(0,10,1)*0.01)
+            agent.randomize_velocity()
             self.agent_list.append(agent)
             agent.add_agent_list(self.agent_list)
 

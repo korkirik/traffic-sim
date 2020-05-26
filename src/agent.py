@@ -12,13 +12,13 @@ class Agent:
         self.agent_id = agent_id
 
         self.v_max = 0.00002
-        self.alpha = 0.00001 # v_max/2
-        self.beta =  0.000008 #0.8 * alpha
+        self.alpha = self.v_max/2
+        self.beta =  0.8 * self.alpha
         self.decceleration_magnitude = 0
 
         #self.minimal_separation = 0.00075 #75 *self.alpha
-        self.approach_error = 0.00002 # 0.2 * self.alpha
-        self.agent_range = 0.0001 # 10 *self.alpha
+        self.approach_error = 2 * self.alpha
+        self.agent_range = 20 *self.alpha
         self.agents_in_range = 0
         self.heading = Pvector(0,0)
         self.distance_to_next_node = 0
@@ -32,11 +32,23 @@ class Agent:
         self.position = start_node.position
         self.pick_node()
 
-    def set_v_max(self, v_max):
-        self.v_max = v_max
-
     def add_agent_list(self, agent_list):
         self.agent_list = agent_list
+
+    def randomize_velocity(self):
+        self.set_v_max(self.v_max + random.randrange(0,10,1)*0.01*self.v_max)
+
+    def set_v_max(self, v_max):
+        self.v_max = v_max
+        self.reset_parameters()
+
+    def reset_parameters(self):
+        self.alpha = self.v_max/2
+        self.beta =  0.8 * self.alpha
+
+        #self.minimal_separation = 0.00075 #75 *self.alpha
+        self.approach_error = 2 * self.alpha
+        self.agent_range = 10 *self.alpha
 
 #-------------Main Logic-----------------
     ## TODO: Gather all behaviours here
@@ -78,7 +90,7 @@ class Agent:
                 picked_number = self.random_roll()
         else:
             picked_number = 0
-            
+
         self.node_in = self.node_out.connected_nodes[picked_number]
 
     def random_roll(self):
@@ -114,14 +126,18 @@ class Agent:
                 if(distance > self.agent_range):
                     continue
 
+                self.agents_in_range += 1
                 #check if two agents are heading to the same node
-                if(self.node_in != agent.node_in):
-                    continue
+            #    if(self.node_in != agent.node_in):
+            #        continue
 
                 #check if two agents are coming from the same node    ## WARNING: may cause unintended skipping
-                if(self.node_out != agent.node_out):
+            #    if(self.node_out != agent.node_out):
+            #        continue
+
+                #check if two agents are going towards each other
+                if(Pvector.dot_product(agent.velocity,self.velocity) <= 0):
                     continue
-                self.agents_in_range += 1
 
                 #directional vector from this agent tovards the agent
                 delta_vector = Pvector(0,0)
