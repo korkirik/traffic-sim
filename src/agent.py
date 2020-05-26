@@ -13,7 +13,7 @@ class Agent:
 
         self.v_max = 0.00002
         self.alpha = self.v_max/2
-        self.beta =  0.8 * self.alpha
+        self.beta =  0.78 * self.alpha
         self.decceleration_magnitude = 0
 
         #self.minimal_separation = 0.00075 #75 *self.alpha
@@ -127,16 +127,9 @@ class Agent:
                     continue
 
                 self.agents_in_range += 1
-                #check if two agents are heading to the same node
-            #    if(self.node_in != agent.node_in):
-            #        continue
-
-                #check if two agents are coming from the same node    ## WARNING: may cause unintended skipping
-            #    if(self.node_out != agent.node_out):
-            #        continue
 
                 #check if two agents are going towards each other
-                if(Pvector.dot_product(agent.velocity,self.velocity) <= 0):
+                if(Pvector.dot_product(agent.heading,self.heading) <= 0):
                     continue
 
                 #directional vector from this agent tovards the agent
@@ -158,10 +151,9 @@ class Agent:
     def avoid_obstacle(self, delta_vector):
         self.decceleration_magnitude = self.beta/(delta_vector.magnitude())
         self.delta = delta_vector
-        #delta_vector.normalize()
-        #decceleration = delta_vector.multiply(self.decceleration_magnitude)
         decceleration = self.heading.multiply(self.decceleration_magnitude)
         self.acceleration = self.acceleration - decceleration
+
 
 class Agent_test:
     def __init__(self,agent):

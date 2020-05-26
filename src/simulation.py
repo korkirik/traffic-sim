@@ -28,11 +28,17 @@ class Simulation:
         self.agent_count += number
 
     def create_hoaming_agents(self, number):
+        nodes_in_area1 = self.nodes_area_select(6.11, 51.7805, 0.002)
+        nodes_in_area2 = self.nodes_area_select(6.1255, 51.782, 0.001)
+        print(len(nodes_in_area1))
+        print(len(nodes_in_area2))
         for i in range(number):
             agent = HomingAgent(self.agent_id)
-            agent.set_starting_node(self.random_node())
-            agent.set_target_node(self.node_list[100]) # TODO: randomize
-            #agent.set_v_max(self.v_max + random.randrange(0,10,1)*0.01)
+            #agent.set_starting_node(self.random_node())
+            #agent.set_target_node(self.random_node()) # self.node_list[100]
+            agent.set_starting_node(self.random_node_from_list(nodes_in_area1))
+            agent.set_target_node(self.random_node_from_list(nodes_in_area2))
+            agent.randomize_velocity()
             self.agent_list.append(agent)
             agent.add_agent_list(self.agent_list)
 
@@ -43,6 +49,26 @@ class Simulation:
         l = len(self.node_list)
         node = self.node_list[random.randrange(0,l,1)]
         return node
+
+    def random_node_from_list(self,list_):
+        l = len(list_)
+        node = list_[random.randrange(0,l,1)]
+        return node
+
+    def nodes_area_select(self, x, y, radius):
+        selected_nodes = list()
+        center = Pvector(x,y)
+
+        for node in self.node_list:
+            distance_vector = node.position - center
+            distance = distance_vector.magnitude()
+            if(distance <= radius):
+                selected_nodes.append(node)
+
+        return selected_nodes
+
+
+
 
     def start_simulation(self, time):
         self.iterMax = time
