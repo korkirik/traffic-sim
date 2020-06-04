@@ -55,6 +55,8 @@ class Pvector:
         return self.x*self.x + self.y*self.y
 
     def magnitude(self):
+        if(self.x == 0 and self.y == 0):
+            print('zero magnitude')
         return math.sqrt(self.x*self.x + self.y*self.y)
 
     def normalize(self):

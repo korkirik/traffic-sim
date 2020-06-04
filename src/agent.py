@@ -11,14 +11,14 @@ class Agent:
         self.acceleration = Pvector(0,0)
         self.agent_id = agent_id
 
-        self.v_max = 0.00002
-        self.alpha = self.v_max/2
-        self.beta =  0.78 * self.alpha
+        self.v_max = 0.00004
+        self.alpha = self.v_max/4
+        self.beta =  2 * self.alpha #0.0001 * self.alpha
         self.decceleration_magnitude = 0
 
         #self.minimal_separation = 0.00075 #75 *self.alpha
         self.approach_error = 2 * self.alpha
-        self.agent_range = 20 *self.alpha
+        self.agent_range = 10 *self.alpha
         self.agents_in_range = 0
         self.heading = Pvector(0,0)
         self.distance_to_next_node = 0
@@ -60,7 +60,7 @@ class Agent:
     def update_velocity(self):
         self.velocity = self.velocity + self.acceleration
         self.velocity.limit_magnitude(self.v_max)
-
+        self.check_negative_velocity()
 
     def update_position(self):
         self.position = self.position + self.velocity
@@ -117,6 +117,10 @@ class Agent:
     def agents_aversion(self):
         self.agents_in_range = 0
         for agent_index, agent in enumerate(self.agent_list):
+
+            if(self.agents_in_range > 1): # TODO: this should proc brake only once
+                continue
+
             if(agent != self):
                 #check if two agents are close
                 distance = Pvector.distance_between_points(agent.position, self.position)
@@ -126,7 +130,6 @@ class Agent:
                 if(distance > self.agent_range):
                     continue
 
-                self.agents_in_range += 1
 
                 #check if two agents are going towards each other
                 if(Pvector.dot_product(agent.heading,self.heading) <= 0):
@@ -136,7 +139,13 @@ class Agent:
                 delta_vector = Pvector(0,0)
                 delta_vector = agent.position - self.position
 
+                '''#angle between 1st agent heading and 2nd agent position
+                angle = Pvector.angle_between(self.heading, delta_vector)
+                if(math.fabs(angle) > 10):
+                    continue
+                '''
                 #check if the agent is behind or in front
+
                 if(Pvector.dot_product(delta_vector, self.heading) <= 0):
                     continue
                 else:
@@ -145,14 +154,31 @@ class Agent:
                     #    self.reset_acceleration()
                     #else:
 
-                    self.avoid_obstacle(delta_vector)
+                    #self.avoid_obstacle(delta_vector)
 
+                    self.agents_in_range += 1
+                    self.brake(delta_vector)
 
     def avoid_obstacle(self, delta_vector):
         self.decceleration_magnitude = self.beta/(delta_vector.magnitude())
         self.delta = delta_vector
         decceleration = self.heading.multiply(self.decceleration_magnitude)
         self.acceleration = self.acceleration - decceleration
+## TODO: remove
+    def brake_percent(self, delta_vector):
+        #constatnt brake force # TODO: gradient of brake force
+        #decceleration = self.heading.multiply(self.beta)
+        self.velocity = self.velocity.multiply(0.5)
+
+    def brake(self, delta_vector):
+        #constatnt brake force # TODO: gradient of brake force
+        decceleration = self.heading.multiply(self.beta)
+        self.acceleration = self.acceleration - decceleration
+
+    def check_negative_velocity(self):
+        if(Pvector.dot_product(self.heading, self.velocity) <= 0):
+            self.velocity = Pvector(0,0)
+
 
 
 class Agent_test:
