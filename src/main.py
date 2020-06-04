@@ -27,10 +27,10 @@ from pseudoparser_testground2 import *
 from proving_ground import *
 
 map = Map()
-psparser = Parser('export_map_data.json')
+#psparser = Parser('export_map_data.json')
 
+psparser = Parser('KE_Map/Emmerich_bridge.json')
 psparser.parse_file('KE_Map/KE_bridge_south.json')
-psparser.parse_file('KE_Map/Bridge.json')
 psparser.parse_file('KE_Map/Kleve_north.json')
 
 #psparser.parse_file('KE_Map/Emmerich_bridge.json')
