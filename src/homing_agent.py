@@ -27,16 +27,6 @@ class HomingAgent(Agent):
             self.pick_node()
 
 #-------------Main Logic-----------------
-    ## TODO: Gather all behaviours here
-    def update_behaviour(self):
-        self.reset_acceleration()
-        self.next_node_attraction()
-        self.agents_aversion()
-
-    def update_velocity(self):
-        self.velocity = self.velocity + self.acceleration
-        self.velocity.limit_magnitude(self.v_max)
-
 
     def update_position(self): # TODO: replace
         self.position = self.position + self.velocity

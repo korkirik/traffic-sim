@@ -58,9 +58,12 @@ class Agent:
         self.agents_aversion()
 
     def update_velocity(self):
-        self.velocity = self.velocity + self.acceleration
-        self.velocity.limit_magnitude(self.v_max)
-        self.check_negative_velocity()
+        if (self.is_velocity_negative()):
+            self.velocity = Pvector(0,0)
+        else:
+            self.velocity = self.velocity + self.acceleration
+            self.velocity.limit_magnitude(self.v_max)
+
 
     def update_position(self):
         self.position = self.position + self.velocity
@@ -150,14 +153,18 @@ class Agent:
                 if(agent.node_out == self.node_out):
                     on_the_same_line = 1
                     #check if the agent is behind or in front
-                    if(Pvector.dot_product(delta_vector, self.heading) > 0):
-                        obstacle_forward = 1
+
+                    # TODO: shift left into if above
+                if(Pvector.dot_product(delta_vector, self.heading) > 0):
+                    obstacle_forward = 1
 
 
-                if(obstacle_forward == 1):
+
+                if(obstacle_rightward == 1 and not on_the_same_line):
                     self.brake(delta_vector)
                     break
-                elif(obstacle_rightward == 1 and not on_the_same_line):
+
+                if(obstacle_forward == 1 and on_the_same_line):
                     self.brake(delta_vector)
                     break
 
@@ -176,10 +183,15 @@ class Agent:
         decceleration = self.heading.multiply(self.beta)
         self.acceleration = self.acceleration - decceleration
 
-    def check_negative_velocity(self):
-        if(Pvector.dot_product(self.heading, self.velocity) <= 0):
-            self.velocity = Pvector(0,0)
-            self.reset_acceleration()
+    def is_velocity_negative(self):
+
+        v1 = self.velocity + self.acceleration
+        print('id {} v1 {}'.format(self.agent_id, v1))
+        if(Pvector.dot_product(v1, self.heading) <= 0):
+            return True
+        else:
+            return False
+            #self.reset_acceleration()
 
 
 class Agent_test:
