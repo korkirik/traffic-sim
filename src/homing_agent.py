@@ -22,9 +22,8 @@ class HomingAgent(Agent):
             self.set_inactive() # TODO: here should be inactivation, so calls of the functions are not affecting agent
         else:
             self.update_target()
-            self.target_vector.copy()
-            self.heading = Pvector(0,0)
-            self.pick_node()
+            self.find_initial_heading()
+            self.update_next_node_vector()
 
 #-------------Main Logic-----------------
 
@@ -54,6 +53,10 @@ class HomingAgent(Agent):
     def update_target(self):
         self.target_vector = self.target_node.position - self.position
         self.target_distance = self.target_vector.magnitude()
+
+    def find_initial_heading(self):
+        i = self.find_node_towards_direction(self.target_vector)
+        self.node_in = self.node_out.connected_nodes[i]
 
     def pick_node(self):
         #one node means turning around

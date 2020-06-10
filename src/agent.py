@@ -186,7 +186,6 @@ class Agent:
     def is_velocity_negative(self):
 
         v1 = self.velocity + self.acceleration
-        print('id {} v1 {}'.format(self.agent_id, v1))
         if(Pvector.dot_product(v1, self.heading) <= 0):
             return True
         else:
