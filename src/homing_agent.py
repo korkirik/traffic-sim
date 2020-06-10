@@ -22,7 +22,8 @@ class HomingAgent(Agent):
             self.set_inactive() # TODO: here should be inactivation, so calls of the functions are not affecting agent
         else:
             self.update_target()
-            self.heading = self.target_vector.copy()
+            self.target_vector.copy()
+            self.heading = Pvector(0,0)
             self.pick_node()
 
 #-------------Main Logic-----------------
@@ -71,7 +72,7 @@ class HomingAgent(Agent):
         #two nodes means a continuation of the street, agent moves along
         elif(len(self.node_out.connected_nodes) == 2):
             index = self.find_node_towards_direction(self.heading) # vector forward
-        #agent decides at intersection which path is next    
+        #agent decides at intersection which path is next
         else:
             index = self.find_node_towards_direction(self.target_vector)
         self.node_in = self.node_out.connected_nodes[index]

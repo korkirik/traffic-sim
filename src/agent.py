@@ -11,14 +11,14 @@ class Agent:
         self.acceleration = Pvector(0,0)
         self.agent_id = agent_id
 
-        self.v_max = 0.00004
+        self.v_max = 0.1 #0.00004
         self.alpha = self.v_max/4
-        self.beta =  2 * self.alpha #0.0001 * self.alpha
+        self.beta =  1.15 * self.alpha #0.0001 * self.alpha
         self.decceleration_magnitude = 0
 
         #self.minimal_separation = 0.00075 #75 *self.alpha
         self.approach_error = 2 * self.alpha
-        self.agent_range = 10 *self.alpha
+        self.agent_range = 3 # 10 *self.alpha
         self.agents_in_range = 0
         self.heading = Pvector(0,0)
         self.distance_to_next_node = 0
@@ -48,7 +48,7 @@ class Agent:
 
         #self.minimal_separation = 0.00075 #75 *self.alpha
         self.approach_error = 2 * self.alpha
-        self.agent_range = 10 *self.alpha
+        #self.agent_range = 10 *self.alpha # TODO: uncomment
 
 #-------------Main Logic-----------------
     ## TODO: Gather all behaviours here
@@ -118,57 +118,58 @@ class Agent:
         self.agents_in_range = 0
         for agent_index, agent in enumerate(self.agent_list):
 
-            if(self.agents_in_range > 1): # TODO: this should proc brake only once
-                continue
-
             if(agent != self):
-                #check if two agents are close
-                distance = Pvector.distance_between_points(agent.position, self.position)
                 if(agent.active == 0):
                     continue
 
+                #check if two agents are close
+                distance = Pvector.distance_between_points(agent.position, self.position)
                 if(distance > self.agent_range):
                     continue
 
-
-                #check if two agents are going towards each other
-                if(Pvector.dot_product(agent.heading,self.heading) <= 0):
+                #check if two agents are going towards same node
+                if(agent.node_in != self.node_in):
                     continue
 
-                #directional vector from this agent tovards the agent
+                #directional vector from self tovards the other agent
                 delta_vector = Pvector(0,0)
                 delta_vector = agent.position - self.position
 
-                '''#angle between 1st agent heading and 2nd agent position
-                angle = Pvector.angle_between(self.heading, delta_vector)
-                if(math.fabs(angle) > 10):
-                    continue
-                '''
-                #check if the agent is behind or in front
+                obstacle_forward = 0
+                obstacle_rightward = 0
+                on_the_same_line = 0
 
-                if(Pvector.dot_product(delta_vector, self.heading) <= 0):
-                    continue
-                else:
-                    #if(distance > self.minimal_separation):
-                    #    self.follow(agent)
-                    #    self.reset_acceleration()
-                    #else:
 
-                    #self.avoid_obstacle(delta_vector)
+                #check if the agent is on your right, property of cross product z component
+                #one on the right goes first
+                if(Pvector.cross_product_magnitude(self.heading, delta_vector) < 0):
+                    obstacle_rightward = 1
+                    #self.agents_in_range += 1
 
-                    self.agents_in_range += 1
+                #check if both agents on the same street coming from the same node
+                if(agent.node_out == self.node_out):
+                    on_the_same_line = 1
+                    #check if the agent is behind or in front
+                    if(Pvector.dot_product(delta_vector, self.heading) > 0):
+                        obstacle_forward = 1
+
+
+                if(obstacle_forward == 1):
                     self.brake(delta_vector)
+                    break
+                elif(obstacle_rightward == 1 and not on_the_same_line):
+                    self.brake(delta_vector)
+                    break
 
-    def avoid_obstacle(self, delta_vector):
-        self.decceleration_magnitude = self.beta/(delta_vector.magnitude())
-        self.delta = delta_vector
-        decceleration = self.heading.multiply(self.decceleration_magnitude)
-        self.acceleration = self.acceleration - decceleration
-## TODO: remove
-    def brake_percent(self, delta_vector):
-        #constatnt brake force # TODO: gradient of brake force
-        #decceleration = self.heading.multiply(self.beta)
-        self.velocity = self.velocity.multiply(0.5)
+        #    if(self.agents_in_range > 0):
+        #        self.brake(delta_vector)
+            #    break
+    def check_someone_rightward(self):
+        pass
+
+
+    def check_someone_forward(self):
+        pass
 
     def brake(self, delta_vector):
         #constatnt brake force # TODO: gradient of brake force
@@ -178,7 +179,7 @@ class Agent:
     def check_negative_velocity(self):
         if(Pvector.dot_product(self.heading, self.velocity) <= 0):
             self.velocity = Pvector(0,0)
-
+            self.reset_acceleration()
 
 
 class Agent_test:

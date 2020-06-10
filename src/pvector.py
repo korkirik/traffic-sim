@@ -96,7 +96,7 @@ class Pvector:
         angle = math.atan2(sine,cosine)
         return angle *360 /(2* math.pi)
 
-    @staticmethod #for 2D vectors
+    @staticmethod #for vectors in XY plane
     def cross_product_magnitude(one, other):
         return one.x * other.y - one.y * other.x
 

@@ -27,20 +27,11 @@ from pseudoparser_testground2 import *
 from proving_ground import *
 
 map = Map()
-#psparser = Parser('export_map_data.json')
-
-psparser = Parser('KE_Map/Emmerich_bridge.json')
-psparser.parse_file('KE_Map/KE_bridge_south.json')
-psparser.parse_file('KE_Map/Kleve_north.json')
-
+psparser = Parser()
+#psparser.parse_file('export_map_data_smaller.json')
 #psparser.parse_file('KE_Map/Emmerich_bridge.json')
-#psparser.parse_file('KE_Map/Emmerich_east.json')
-#psparser.parse_file('KE_Map/Emmerich_west.json')
-#psparser.parse_file('KE_Map/KE_bridge_south.json')
 
-
-
-#psparser = ProvingGround()
+psparser = ProvingGround()
 #psparser = PseudoParserTestground()
 map.load_streets(psparser.get_street_segment_list())
 map.generate_nodes()
@@ -48,8 +39,8 @@ map.generate_nodes()
 map.save_graph_to_json()
 map.print_nodes_stats(0)
 
-#simulation = Simulation()
-#simulation.load_nodes(map.node_list)
+simulation = Simulation()
+simulation.load_nodes(map.node_list)
 #simulation.create_roaming_agents(2)
-#simulation.create_hoaming_agents(50)
-#simulation.start_simulation(2000)
+simulation.create_hoaming_agents(2)
+simulation.start_simulation(1000)

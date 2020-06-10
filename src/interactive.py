@@ -15,7 +15,7 @@ import json
 import random
 
 
-plot = figure(title='Traffic Sim', plot_width=600,  plot_height=600, match_aspect = True ,aspect_scale = 0.6,
+plot = figure(title='Traffic Sim', plot_width=600,  plot_height=600, match_aspect = True ,#aspect_scale = 0.6,
                 tools="pan, wheel_zoom, reset", active_drag="pan", active_scroll = "wheel_zoom")
 #x_range=(6.11, 6.125), y_range=(51.774, 51.786),
 #x_range=(-1, 17), y_range=(-12, 5) x_range=(6.08, 6.16), y_range=(51.770, 57.790)

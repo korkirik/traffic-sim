@@ -6,10 +6,8 @@ from streetsegment import *
     # when everything is filled parser should pass object into street_segment_list
 
 class Parser:
-    def __init__(self, file_name):
+    def __init__(self):
         self.street_segment_list = list()
-        self.parse_file(file_name)
-
 
     def parse_file(self, file_name):
 
