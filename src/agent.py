@@ -11,14 +11,15 @@ class Agent:
         self.acceleration = Pvector(0,0)
         self.agent_id = agent_id
 
-        self.v_max = 0.1 #0.00001
+        self.v_max = 0.00001 #0.1
         self.alpha = self.v_max/4
         self.beta =  1.15 * self.alpha #0.0001 * self.alpha
         self.decceleration_magnitude = 0
 
         #self.minimal_separation = 0.00075 #75 *self.alpha
         self.approach_error = 2 * self.alpha
-        self.agent_range = 3 #100 *self.alpha
+        self.agent_range = 100 *self.alpha # 3
+        self.agent_close_range = 50 * self.alpha
         self.detection_angle = 15
 
         self.agents_in_range = 0
@@ -58,6 +59,7 @@ class Agent:
         self.reset_acceleration()
         self.next_node_attraction()
         self.detect_agents_in_sector(self.agent_range, self.detection_angle)
+        self.detect_agents_in_sector(self.agent_close_range, 90)
         self.agents_aversion()
 
     def update_velocity(self):
@@ -192,7 +194,7 @@ class Agent:
                 delta_vector = Pvector(0,0)
                 delta_vector = agent.position - self.position
                 agent_angle = Pvector.angle_between(self.heading, delta_vector)
-                print('id {}, angle {}'.format(self.agent_id, agent_angle))
+                #print('id {}, angle {}'.format(self.agent_id, agent_angle))
                 if(math.fabs(agent_angle) < angle):
                     #obstacle ahead
                     self.brake(delta_vector)

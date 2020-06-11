@@ -28,23 +28,23 @@ class Simulation:
         self.agent_count += number
 
     def create_hoaming_agents(self, number):
-        #nodes_in_area1 = self.nodes_area_select(6.11, 51.7805, 0.002)
-        #nodes_in_area2 = self.nodes_area_select(6.1255, 51.782, 0.001)
+        nodes_in_area1 = self.nodes_area_select(6.11, 51.7805, 0.002)
+        nodes_in_area2 = self.nodes_area_select(6.1255, 51.782, 0.001)
         #print(len(nodes_in_area1))
         #print(len(nodes_in_area2))
         for i in range(number):
             agent = HomingAgent(self.agent_id)
-            agent.set_starting_node(self.node_list[i])
-            agent.set_target_node(self.node_list[3]) # self.node_list[100]
+            #agent.set_starting_node(self.node_list[i])
+            #agent.set_target_node(self.node_list[3]) # self.node_list[100]
             # TODO: remove this if block
-            ''' if(len(nodes_in_area1) < 1):
+            if(len(nodes_in_area1) < 1):
                 Print('Agents created {} of requested {}'.format(self.agent_count, number))
                 break
 
             agent.set_starting_node(self.random_node_from_list_and_pop(nodes_in_area1))
             agent.set_target_node(self.random_node_from_list(nodes_in_area2))
-'''
-            #agent.randomize_velocity()
+
+            agent.randomize_velocity()
             self.agent_list.append(agent)
             agent.add_agent_list(self.agent_list)
 
@@ -63,8 +63,8 @@ class Simulation:
 
     def random_node_from_list_and_pop(self,list_):
         l = len(list_)
-        node = list_[random.randrange(0,l,1)]
-        return node
+        n = random.randrange(0,l,1)
+        return list_.pop(n)
 
     def nodes_area_select(self, x, y, radius):
         selected_nodes = list()

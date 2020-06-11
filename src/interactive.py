@@ -15,7 +15,7 @@ import json
 import random
 
 
-plot = figure(title='Traffic Sim', plot_width=600,  plot_height=600, match_aspect = True , #aspect_scale = 0.6,
+plot = figure(title='Traffic Sim', plot_width=600,  plot_height=600, match_aspect = True , aspect_scale = 0.6,
                 tools="pan, wheel_zoom, reset", active_drag="pan", active_scroll = "wheel_zoom")
 #x_range=(6.11, 6.125), y_range=(51.774, 51.786),
 #x_range=(-1, 17), y_range=(-12, 5) x_range=(6.08, 6.16), y_range=(51.770, 57.790)
@@ -72,7 +72,7 @@ with open('graph.json') as f:
             plot.line(xa,ya,line_color = streets_color, line_width=3)
 
 
-#def add_node_labels(self, x1, y1, nodes_ids):
+def add_node_labels(self, x1, y1, nodes_ids):
     source = ColumnDataSource(data=dict(posX=x1, posY=y1, nodeids=nodes_ids))
 
     nodes_labels = LabelSet(x='posX', y='posY', text='nodeids', level='glyph',
