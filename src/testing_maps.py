@@ -2,7 +2,38 @@ import random
 from parser_streets import Parser
 from streetsegment import *
 
-class PseudoParserTestground(Parser):
+class TJunction(Parser):
+    def __init__(self):
+            self.street_segment_list = list()
+            self.get_data()
+
+    def get_data(self):
+        street1 = StreetSegment(Pvector(1,1), Pvector(6,1))
+        street2 = StreetSegment(Pvector(6,6), Pvector(6,1))
+        street3 = StreetSegment(Pvector(6,1), Pvector(11,1))
+        self.street_segment_list.append(street1)
+        self.street_segment_list.append(street2)
+        self.street_segment_list.append(street3)
+
+
+class ParallelTracks(Parser):
+    def __init__(self):
+        self.street_segment_list = list()
+        self.get_data()
+
+    def get_data(self):
+        street1 = StreetSegment(Pvector(6,3), Pvector(1,3))
+        street2 = StreetSegment(Pvector(6,2), Pvector(1,2))
+        street3 = StreetSegment(Pvector(6,1), Pvector(1,1))
+        self.street_segment_list.append(street1)
+        self.street_segment_list.append(street2)
+        self.street_segment_list.append(street3)
+
+import random
+from parser_streets import Parser
+from streetsegment import *
+
+class MapOne(Parser):
     def __init__(self):
             self.street_segment_list = list()
             self.get_data()
@@ -32,6 +63,3 @@ class PseudoParserTestground(Parser):
         self.street_segment_list.append(street10)
         self.street_segment_list.append(street11)
         self.street_segment_list.append(street12)
-
-    def get_street_segment_list(self):
-        return self.street_segment_list

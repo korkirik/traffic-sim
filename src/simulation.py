@@ -36,10 +36,14 @@ class Simulation:
             agent = HomingAgent(self.agent_id)
             agent.set_starting_node(self.node_list[i])
             agent.set_target_node(self.node_list[3]) # self.node_list[100]
+            # TODO: remove this if block
+            ''' if(len(nodes_in_area1) < 1):
+                Print('Agents created {} of requested {}'.format(self.agent_count, number))
+                break
 
-            #agent.set_starting_node(self.random_node_from_list(nodes_in_area1))
-            #agent.set_target_node(self.random_node_from_list(nodes_in_area2))
-
+            agent.set_starting_node(self.random_node_from_list_and_pop(nodes_in_area1))
+            agent.set_target_node(self.random_node_from_list(nodes_in_area2))
+'''
             #agent.randomize_velocity()
             self.agent_list.append(agent)
             agent.add_agent_list(self.agent_list)
@@ -53,6 +57,11 @@ class Simulation:
         return node
 
     def random_node_from_list(self,list_):
+        l = len(list_)
+        node = list_[random.randrange(0,l,1)]
+        return node
+
+    def random_node_from_list_and_pop(self,list_):
         l = len(list_)
         node = list_[random.randrange(0,l,1)]
         return node

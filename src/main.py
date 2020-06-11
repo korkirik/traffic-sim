@@ -23,16 +23,16 @@ from map import *
 from parser_streets import *
 from simulation import *
 
-from pseudoparser_testground2 import *
-from proving_ground import *
+from testing_maps import *
 
 map = Map()
 psparser = Parser()
 #psparser.parse_file('export_map_data_smaller.json')
 #psparser.parse_file('KE_Map/Emmerich_bridge.json')
 
-#psparser = ProvingGround()
-psparser = PseudoParserTestground()
+psparser = TJunction()
+#psparser = ParallelTracks()
+#psparser = MapOne()
 map.load_streets(psparser.get_street_segment_list())
 map.generate_nodes()
 
@@ -42,5 +42,5 @@ map.print_nodes_stats(0)
 simulation = Simulation()
 simulation.load_nodes(map.node_list)
 #simulation.create_roaming_agents(2)
-simulation.create_hoaming_agents(9)
+simulation.create_hoaming_agents(2)
 simulation.start_simulation(1000)

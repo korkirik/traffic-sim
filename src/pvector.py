@@ -38,7 +38,7 @@ class Pvector:
             return Pvector(x, y)
         else:
             return Pvector(self.x, self.y)
-            print('Division by zero')
+            #print('Division by zero')
 
     def multiply_itself(self, alpha):
         self.x = self.x * alpha
@@ -49,14 +49,15 @@ class Pvector:
             self.x = self.x/float(alpha)
             self.y = self.y/float(alpha)
         else:
-            print('Division by zero')
+            pass
+            #print('Division by zero')
 
     def magnitude_squared(self):
         return self.x*self.x + self.y*self.y
 
     def magnitude(self):
-        if(self.x == 0 and self.y == 0):
-            print('zero magnitude')
+        #if(self.x == 0 and self.y == 0):
+            #print('zero magnitude')
         return math.sqrt(self.x*self.x + self.y*self.y)
 
     def normalize(self):
@@ -79,9 +80,12 @@ class Pvector:
         #if self.magnitude() > lim:
             #self.set_magnitude(lim)
     @staticmethod
-    def check_zero_magnitude(one):
-        if one.x == one.y and one.x == 0:
-            print('Zero length vector')
+    def is_not_zero_length(one):
+        if one.x == 0 and one.y == 0:
+            #print('Zero length vector')
+            return False
+        else:
+            return True
 
     @staticmethod
     def turn_vector(direction, vector):
@@ -90,11 +94,14 @@ class Pvector:
 
     @staticmethod
     def angle_between(one, other):
-        cosine = Pvector.dot_product(one, other)/( one.magnitude() * other.magnitude() )
-        c_magnitude = Pvector.cross_product_magnitude(one, other)
-        sine = c_magnitude / ( one.magnitude() * other.magnitude() )
-        angle = math.atan2(sine,cosine)
-        return angle *360 /(2* math.pi)
+        if(Pvector.is_not_zero_length(one) and Pvector.is_not_zero_length(other)):
+            cosine = Pvector.dot_product(one, other)/( one.magnitude() * other.magnitude() )
+            c_magnitude = Pvector.cross_product_magnitude(one, other)
+            sine = c_magnitude / ( one.magnitude() * other.magnitude() )
+            angle = math.atan2(sine,cosine)
+            return angle *360 /(2* math.pi)
+        else:
+            return 0
 
     @staticmethod #for vectors in XY plane
     def cross_product_magnitude(one, other):

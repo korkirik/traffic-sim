@@ -11,14 +11,16 @@ class Agent:
         self.acceleration = Pvector(0,0)
         self.agent_id = agent_id
 
-        self.v_max = 0.1 #0.00004
+        self.v_max = 0.1 #0.00001
         self.alpha = self.v_max/4
         self.beta =  1.15 * self.alpha #0.0001 * self.alpha
         self.decceleration_magnitude = 0
 
         #self.minimal_separation = 0.00075 #75 *self.alpha
         self.approach_error = 2 * self.alpha
-        self.agent_range = 3 # 10 *self.alpha
+        self.agent_range = 3 #100 *self.alpha
+        self.detection_angle = 15
+
         self.agents_in_range = 0
         self.heading = Pvector(0,0)
         self.distance_to_next_node = 0
@@ -55,6 +57,7 @@ class Agent:
     def update_behaviour(self):
         self.reset_acceleration()
         self.next_node_attraction()
+        self.detect_agents_in_sector(self.agent_range, self.detection_angle)
         self.agents_aversion()
 
     def update_velocity(self):
@@ -155,24 +158,44 @@ class Agent:
                     #check if the agent is behind or in front
 
                     # TODO: shift left into if above
-                if(Pvector.dot_product(delta_vector, self.heading) > 0):
-                    obstacle_forward = 1
-
+                ''' if(Pvector.dot_product(delta_vector, self.heading) > 0):
+                   obstacle_forward = 1
+                '''
 
 
                 if(obstacle_rightward == 1 and not on_the_same_line):
                     self.brake(delta_vector)
-                    break
+                    #break
 
-                if(obstacle_forward == 1 and on_the_same_line):
-                    self.brake(delta_vector)
-                    break
+                #if(obstacle_forward == 1 and on_the_same_line):
+                #    self.brake(delta_vector)
+                    #break
 
         #    if(self.agents_in_range > 0):
         #        self.brake(delta_vector)
             #    break
-    def check_someone_rightward(self):
-        pass
+    def detect_agents_in_sector(self, radius, angle):
+        self.agents_in_range = 0
+        for agent_index, agent in enumerate(self.agent_list):
+
+            if(agent != self):
+                if(agent.active == 0):
+                    continue
+
+                #check if two agents are close
+                distance = Pvector.distance_between_points(agent.position, self.position)
+                if(distance > radius):
+                    continue
+
+
+                #directional vector from self tovards the other agent
+                delta_vector = Pvector(0,0)
+                delta_vector = agent.position - self.position
+                agent_angle = Pvector.angle_between(self.heading, delta_vector)
+                print('id {}, angle {}'.format(self.agent_id, agent_angle))
+                if(math.fabs(agent_angle) < angle):
+                    #obstacle ahead
+                    self.brake(delta_vector)
 
 
     def check_someone_forward(self):
