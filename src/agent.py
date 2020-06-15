@@ -60,7 +60,7 @@ class Agent:
         self.next_node_attraction()
         self.detect_agents_in_sector(self.agent_range, self.detection_angle)
         self.detect_agents_in_sector(self.agent_close_range, 90)
-        self.agents_aversion()
+        self.detect_agents_rightward()
 
     def update_velocity(self):
         if (self.is_velocity_negative()):
@@ -68,7 +68,7 @@ class Agent:
         else:
             self.velocity = self.velocity + self.acceleration
             self.velocity.limit_magnitude(self.v_max)
-
+            
 
     def update_position(self):
         self.position = self.position + self.velocity
@@ -122,7 +122,7 @@ class Agent:
     def set_inactive(self):
         self.active = 0
 
-    def agents_aversion(self):
+    def detect_agents_rightward(self):
         self.agents_in_range = 0
         for agent_index, agent in enumerate(self.agent_list):
 
@@ -143,10 +143,8 @@ class Agent:
                 delta_vector = Pvector(0,0)
                 delta_vector = agent.position - self.position
 
-                obstacle_forward = 0
                 obstacle_rightward = 0
                 on_the_same_line = 0
-
 
                 #check if the agent is on your right, property of cross product z component
                 #one on the right goes first
@@ -157,25 +155,10 @@ class Agent:
                 #check if both agents on the same street coming from the same node
                 if(agent.node_out == self.node_out):
                     on_the_same_line = 1
-                    #check if the agent is behind or in front
-
-                    # TODO: shift left into if above
-                ''' if(Pvector.dot_product(delta_vector, self.heading) > 0):
-                   obstacle_forward = 1
-                '''
-
 
                 if(obstacle_rightward == 1 and not on_the_same_line):
                     self.brake(delta_vector)
-                    #break
 
-                #if(obstacle_forward == 1 and on_the_same_line):
-                #    self.brake(delta_vector)
-                    #break
-
-        #    if(self.agents_in_range > 0):
-        #        self.brake(delta_vector)
-            #    break
     def detect_agents_in_sector(self, radius, angle):
         self.agents_in_range = 0
         for agent_index, agent in enumerate(self.agent_list):
@@ -199,9 +182,6 @@ class Agent:
                     #obstacle ahead
                     self.brake(delta_vector)
 
-
-    def check_someone_forward(self):
-        pass
 
     def brake(self, delta_vector):
         #constatnt brake force # TODO: gradient of brake force
