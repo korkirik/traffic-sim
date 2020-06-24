@@ -8,16 +8,22 @@ from bokeh.models import (ColumnDataSource, HoverTool, SingleIntervalTicker,
 #from bokeh.palettes import Spectral6
 from bokeh.plotting import figure, show
 
+from geomap import *
 from node import *
 import pandas as pd
 import numpy as np
 import json
 import random
 
+c = Converter()
+tile_provider = get_provider(OSM)
 
-plot = figure(title='Traffic Sim', plot_width=600,  plot_height=600, match_aspect = True , #aspect_scale = 0.6,
+plot = figure(title='Traffic Sim', plot_width=600,  plot_height=600,
+                x_range=c.convert_longitude_range(6.06, 6.20), y_range=c.convert_latitude_range(51.74, 51.82),
+                x_axis_type="mercator", y_axis_type="mercator",
+                #match_aspect = True , aspect_scale = 0.6,
                 tools="pan, wheel_zoom, reset", active_drag="pan", active_scroll = "wheel_zoom")
-
+plot.add_tile(tile_provider)
 
 #plot.xaxis.ticker = SingleIntervalTicker(interval=1)
 plot.xaxis.axis_label = "Coordinate X longitude"

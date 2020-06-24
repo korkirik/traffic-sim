@@ -33,6 +33,7 @@ psparser.parse_file('export_map_data_smaller.json')
 #psparser = TJunction()
 #psparser = ParallelTracks()
 #psparser = MapOne()
+psparser.convert_to_mercator_coordinates()
 map.load_streets(psparser.get_street_segment_list())
 map.generate_nodes()
 

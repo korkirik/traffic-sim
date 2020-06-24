@@ -1,7 +1,7 @@
 import json
 
 from streetsegment import *
-
+from geomap import Converter
     #Should extract data from OSM, create a temp object and fill the fields in it,
     # when everything is filled parser should pass object into street_segment_list
 
@@ -63,7 +63,13 @@ class Parser:
 
 
         export.close()
-        print('         Done')
+        print('Done')
 
     def get_street_segment_list(self):
         return self.street_segment_list
+
+    def convert_to_mercator_coordinates(self):
+        c = Converter()
+        for street in self.street_segment_list:
+            street.start_point = c.convert_point(street.start_point.x, street.start_point.y)
+            street.end_point = c.convert_point(street.end_point.x, street.end_point.y)

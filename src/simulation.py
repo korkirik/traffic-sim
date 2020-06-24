@@ -4,6 +4,7 @@ from homing_agent import *
 from node import *
 import numpy as np
 import random
+from geomap import Converter
 
 class Simulation:
     def __init__(self):
@@ -28,8 +29,12 @@ class Simulation:
         self.agent_count += number
 
     def create_hoaming_agents(self, number):
-        nodes_in_area1 = self.nodes_area_select(6.11, 51.7805, 0.002)
-        nodes_in_area2 = self.nodes_area_select(6.1255, 51.782, 0.001)
+        c = Converter()
+        x,y = c.convert(6.11, 51.7805)
+        print(x,y)
+        nodes_in_area1 = self.nodes_area_select(x,y, 500)#0.002)
+        x,y = c.convert(6.1255, 51.782)
+        nodes_in_area2 = self.nodes_area_select(x,y, 1000)#0.001)
         #print(len(nodes_in_area1))
         #print(len(nodes_in_area2))
         for i in range(number):
@@ -38,7 +43,6 @@ class Simulation:
             #agent.set_target_node(self.node_list[3]) # self.node_list[100]
             # TODO: remove this if block
             if(len(nodes_in_area1) < 1):
-                Print('Agents created {} of requested {}'.format(self.agent_count, number))
                 break
 
             agent.set_starting_node(self.random_node_from_list_and_pop(nodes_in_area1))
@@ -49,6 +53,8 @@ class Simulation:
             agent.add_agent_list(self.agent_list)
 
             self.agent_id +=1
+
+        print('homing agents created {}'.format(number))
         self.agent_count += number
 
     def random_node(self):

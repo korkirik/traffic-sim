@@ -21,15 +21,15 @@ class Map:
         self.node_counter = 0
         for street_index in range(0,length,1):
             self.node_list.append(Node(
-                self.street_segment_list[street_index].startPoint.x,
-                self.street_segment_list[street_index].startPoint.y,
+                self.street_segment_list[street_index].start_point.x,
+                self.street_segment_list[street_index].start_point.y,
                 self.node_counter))
             #self.node_list[self.node_counter].connectedStreetSegments.append(self.street_segment_list[street_index].name)
             self.node_counter += 1
 
             self.node_list.append(Node(
-                self.street_segment_list[street_index].endPoint.x,
-                self.street_segment_list[street_index].endPoint.y,
+                self.street_segment_list[street_index].end_point.x,
+                self.street_segment_list[street_index].end_point.y,
                 self.node_counter))
             #self.node_list[self.node_counter].connectedStreetSegments.append(self.street_segment_list[street_index].name)
 
