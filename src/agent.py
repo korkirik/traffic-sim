@@ -11,15 +11,15 @@ class Agent:
         self.acceleration = Pvector(0,0)
         self.agent_id = agent_id
 
-        self.v_max = 4 #0.00001 #0.1
+        self.v_max = 1 #0.00001 #0.1
         self.alpha = self.v_max/4
         self.beta =  1.15 * self.alpha #0.0001 * self.alpha
         self.decceleration_magnitude = 0
 
         #self.minimal_separation = 0.00075 #75 *self.alpha
         self.approach_error = 2 * self.alpha
-        self.agent_range = 20 *self.alpha # 3
-        self.agent_close_range = 10 * self.alpha
+        self.agent_range = 40 *self.v_max # 3
+        self.agent_close_range = 20 * self.v_max
         self.detection_angle = 15
 
         self.agents_in_range = 0
@@ -172,6 +172,10 @@ class Agent:
                 if(distance > radius):
                     continue
 
+                #observe agents approaching vector, check angle between headings
+                headings_angle = Pvector.angle_between(agent.heading, self.heading)
+                if(math.fabs(headings_angle) > 135):
+                    continue
 
                 #directional vector from self tovards the other agent
                 delta_vector = Pvector(0,0)

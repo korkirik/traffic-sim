@@ -4,7 +4,7 @@ from homing_agent import *
 from node import *
 import numpy as np
 import random
-from geomap import Converter
+from converter import Converter
 
 class Simulation:
     def __init__(self):
@@ -31,12 +31,12 @@ class Simulation:
     def create_hoaming_agents(self, number):
         c = Converter()
         x,y = c.convert(6.11, 51.7805)
-        print(x,y)
+        #print(x,y)
         nodes_in_area1 = self.nodes_area_select(x,y, 500)#0.002)
         x,y = c.convert(6.1255, 51.782)
         nodes_in_area2 = self.nodes_area_select(x,y, 1000)#0.001)
-        #print(len(nodes_in_area1))
-        #print(len(nodes_in_area2))
+        print(len(nodes_in_area1))
+        print(len(nodes_in_area2))
         for i in range(number):
             agent = HomingAgent(self.agent_id)
             #agent.set_starting_node(self.node_list[i])
