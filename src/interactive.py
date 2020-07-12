@@ -81,13 +81,13 @@ def add_node_labels(self, x1, y1, nodes_ids):
 #---------------------------
 
 #Reading data from agentsFile
-df_agentsFile = pd.read_csv("agentsFile.csv")
-iterMax = df_agentsFile.iloc[-1,0]
+df_agents_file = pd.read_csv("agentsFile.csv")
+iter_max = df_agents_file.iloc[-1,0]
 
-df_agentsFile.set_index('# iteration', inplace=True)
+df_agents_file.set_index('# iteration', inplace=True)
 
 #Draw agents on the map TODO add random colors
-source_agents = ColumnDataSource(df_agentsFile.loc[[0],:])
+source_agents = ColumnDataSource(df_agents_file.loc[[0],:])
 
 plot.circle(x = ' X',y = ' Y',fill_color= agents_color, line_color = agents_rim_color, size=2, source=source_agents)
 #plot.add_tools(HoverTool(tooltips="@Country", show_arrow=False, point_policy='follow_mouse'))
@@ -95,7 +95,7 @@ plot.circle(x = ' X',y = ' Y',fill_color= agents_color, line_color = agents_rim_
 
 def animate_update():
     iteration = slider.value + 1
-    if iteration > iterMax:
+    if iteration > iter_max:
         iteration = 0
     slider.value = iteration
 
@@ -103,9 +103,9 @@ def animate_update():
 def slider_update(attrname, old, new):
     iteration = slider.value
     label.text = "Iteration " + str(slider.value)
-    source_agents.data = df_agentsFile.loc[[iteration],:]
+    source_agents.data = df_agents_file.loc[[iteration],:]
 
-slider = Slider(start=0, end=iterMax, value=1, step=1, title="Iteration")
+slider = Slider(start=0, end=iter_max, value=1, step=1, title="Iteration")
 slider.on_change('value', slider_update)
 
 callback_id = None

@@ -4,6 +4,8 @@ from homing_agent import *
 from node import *
 import numpy as np
 import random
+import json
+
 from converter import Converter
 
 class Simulation:
@@ -84,14 +86,47 @@ class Simulation:
 
         return selected_nodes
 
+    def start_simulation_json(self, time):
+        self.iter_max = time
+        #data = dict()
+        it_list = list()
+        agents_group = self.agent_list # TODO: expand to more groups
 
+        for iter in range(0, self.iter_max, 1):
+            it_data = dict()
+            it_data['iteration'] = iter
+
+
+            element_list = list()
+            it_data['agents'] = element_list
+
+            for agentIndex, agent in enumerate(agents_group):
+                element = dict()
+                element['agent_id'] = agent.agent_id
+                element['type'] = agent.agent_type
+                element['X'] = agent.position.x
+                element['Y'] = agent.position.y
+
+                element_list.append(element)
+
+                agent.update_behaviour()
+                agent.update_velocity()
+                agent.update_position()
+
+            it_list.append(it_data)
+
+        #data['iterations'] = it_list
+
+        with open('agents.json', 'w') as f:
+            json.dump(it_list, f, indent = 2)
+        print('Simulation complete, {} steps'.format(time))
 
 
     def start_simulation(self, time):
-        self.iterMax = time
-        agentsDataArray = np.zeros((self.iterMax*len(self.agent_list),4))
+        self.iter_max = time
+        agentsDataArray = np.zeros((self.iter_max*len(self.agent_list),4))
 
-        for iter in range(0, self.iterMax, 1):
+        for iter in range(0, self.iter_max, 1):
 
             for agentIndex, agent in enumerate(self.agent_list):
                 agentsDataArray[agentIndex + self.agent_count*iter,0] = iter

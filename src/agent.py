@@ -10,6 +10,7 @@ class Agent:
         self.velocity = Pvector(0,0)
         self.acceleration = Pvector(0,0)
         self.agent_id = agent_id
+        self.agent_type = 'default'
 
         self.v_max = 1 #0.00001 #0.1
         self.alpha = self.v_max/4

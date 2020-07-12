@@ -98,5 +98,5 @@ class Map:
 
         data['nodes'] = element_list
 
-        with open('graph.json', 'w') as f:
+        with open('map.json', 'w') as f:
             json.dump(data, f, indent = 2)
