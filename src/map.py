@@ -13,8 +13,8 @@ class Map:
         self.name = 'Default Map Name'
         self.node_list = list()
 
-    def load_streets(self, recievedList):
-        self.street_segment_list = recievedList.copy()
+    def load_streets(self, recieved_list):
+        self.street_segment_list = recieved_list.copy()
 
     def generate_nodes(self):
         length = len(self.street_segment_list)

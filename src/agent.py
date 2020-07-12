@@ -10,7 +10,7 @@ class Agent:
         self.velocity = Pvector(0,0)
         self.acceleration = Pvector(0,0)
         self.agent_id = agent_id
-        self.agent_type = 'default'
+        self.agent_type = 'roaming'
 
         self.v_max = 1 #0.00001 #0.1
         self.alpha = self.v_max/4
@@ -20,7 +20,7 @@ class Agent:
         #self.minimal_separation = 0.00075 #75 *self.alpha
         self.approach_error = 2 * self.alpha
         self.agent_range = 40 *self.v_max # 3
-        self.agent_close_range = 20 * self.v_max
+        self.agent_close_range = 10 * self.v_max
         self.detection_angle = 15
 
         self.agents_in_range = 0

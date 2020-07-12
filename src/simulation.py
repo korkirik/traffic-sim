@@ -14,15 +14,17 @@ class Simulation:
         self.agent_id = 0
 
         self.agent_list = list()
+        self.free_nodes_list = list()
 
-    def load_nodes(self, recievedList):
-        self.node_list = recievedList
+    def load_nodes(self, recieved_list):
+        self.node_list = recieved_list
+        self.free_nodes_list = recieved_list.copy()
 
     def create_roaming_agents(self, number):
         for i in range(number):
             agent = Agent(self.agent_id)
 
-            agent.set_starting_node(self.random_node())
+            agent.set_starting_node(self.random_node_from_list_and_pop(self.free_nodes_list))
             agent.randomize_velocity()
             self.agent_list.append(agent)
             agent.add_agent_list(self.agent_list)
@@ -34,20 +36,21 @@ class Simulation:
         c = Converter()
         x,y = c.convert(6.11, 51.7805)
         #print(x,y)
-        nodes_in_area1 = self.nodes_area_select(x,y, 500)#0.002)
+        #nodes_in_area1 = self.nodes_area_select(x,y, 500)#0.002)
         x,y = c.convert(6.1255, 51.782)
         nodes_in_area2 = self.nodes_area_select(x,y, 1000)#0.001)
-        print(len(nodes_in_area1))
+        #print(len(nodes_in_area1))
         print(len(nodes_in_area2))
         for i in range(number):
             agent = HomingAgent(self.agent_id)
             #agent.set_starting_node(self.node_list[i])
             #agent.set_target_node(self.node_list[3]) # self.node_list[100]
             # TODO: remove this if block
+            '''
             if(len(nodes_in_area1) < 1):
                 break
-
-            agent.set_starting_node(self.random_node_from_list_and_pop(nodes_in_area1))
+            '''
+            agent.set_starting_node(self.random_node_from_list_and_pop(self.free_nodes_list))
             agent.set_target_node(self.random_node_from_list(nodes_in_area2))
 
             agent.randomize_velocity()
