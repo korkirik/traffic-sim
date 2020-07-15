@@ -32,7 +32,7 @@ class Simulation:
             self.agent_id +=1
         self.agent_count += number
 
-    def create_hoaming_agents(self, number):
+    def create_homing_agents(self, number):
         c = Converter()
         x,y = c.convert(6.11, 51.7805)
         #print(x,y)

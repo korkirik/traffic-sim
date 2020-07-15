@@ -7,7 +7,7 @@ class HomingAgent(Agent):
         super().__init__(agent_id)
         self.target_node = None
         self.target_vector = Pvector(0,0)
-        self.agent_type = 'hoaming'
+        self.agent_type = 'homing'
         self.preceding_node = None
 
     def set_starting_node(self, start_node):

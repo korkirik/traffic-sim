@@ -20,7 +20,7 @@ agents_color = '#ffffff'    #White
 agents_rim_color = '#f31649'#Deep Red
 
 roaming_agents_color = '#f06000' #Orange
-hoaming_agents_color = '#127ca2' #Blue
+homing_agents_color = '#127ca2' #Blue
 
 aggressive_agents_color = '#dc1919' #Red
 calm_agents_color = '#a40197' # Purple
@@ -114,8 +114,8 @@ single_iteration_data = pd.DataFrame(df_agents_file.iat[0,0])
 source_agents1 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'roaming'))
 plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = roaming_agents_color, size=2, source=source_agents1)
 
-source_agents2 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'hoaming'))
-plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = hoaming_agents_color, size=2, source=source_agents2)
+source_agents2 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'homing'))
+plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = homing_agents_color, size=2, source=source_agents2)
 
 #print(single_iteration_data)
 
@@ -135,7 +135,7 @@ def slider_update(attrname, old, new):
     df = pd.DataFrame(df_agents_file.iat[iteration,0])
 
     source_agents1.data = find_agents_with_type(df, 'roaming')
-    source_agents2.data = find_agents_with_type(df, 'hoaming')
+    source_agents2.data = find_agents_with_type(df, 'homing')
 
 
 slider = Slider(start=0, end=iter_max, value=1, step=1, title="Iteration")
