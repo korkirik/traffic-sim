@@ -226,22 +226,3 @@ class Agent:
             return True
         else:
             return False
-
-
-class Agent_test:
-    def __init__(self,agent):
-        self.agent = agent
-
-    def print_connections(self):
-        agent.node_out.print_connections()
-
-    def print_street_size(self):
-        size = self.agent.distance_to_next_node
-        print('distance: {}'.format(size))
-
-    def print_forces(self):
-        attraction = self.agent.alpha
-        repulsion = self.agent.decceleration_magnitude
-        delta = self.agent.delta
-
-        print('attraction: {}, repulsion: {}, deltaX: {}'.format(attraction, repulsion,delta.x))
