@@ -1,6 +1,7 @@
 from pvector import *
 from node import *
-import random
+from converter import Converter
+import random, math
 
 class Agent:
 
@@ -29,6 +30,30 @@ class Agent:
         self.active = 1
 
         self.delta = Pvector(0,0)
+
+        self.patience = 100 # percent
+        self.patience_increment = 1
+        self.patience_threshold = 40
+
+        #if distance is < than that agent crashes
+        self.critical_distance = self.alpha
+
+        # TODO: test
+    def patience_check(self):
+        if(self.velocity.magnitude() == 0): #for homing agent: and goal is not reached
+            self.patience -= self.patience_increment
+        #behaviour change
+        if(self.patience < self.patience_threshold):
+            c = Converter()
+            long, lat = c.convert_point_to_geocoordinates(self.position.x, self.position.y)
+            print('agent# {} ran out of patience at {},{}'.format(self.agent_id, long, lat))
+
+    def crash(self):
+        self.active = 0
+        self.velocity = Pvector(0,0)
+        self.agent_type = 'crashed'
+        #remove behaviour
+
 #--------------setters-------------------
     def set_starting_node(self, start_node):
         self.preceding_node = None
@@ -57,6 +82,7 @@ class Agent:
 #-------------Main Logic-----------------
     ## TODO: Gather all behaviours here
     def update_behaviour(self):
+        self.patience_check()
         self.reset_acceleration()
         self.next_node_attraction()
         self.detect_agents_in_sector(self.agent_range, self.detection_angle)
@@ -200,7 +226,6 @@ class Agent:
             return True
         else:
             return False
-            #self.reset_acceleration()
 
 
 class Agent_test:

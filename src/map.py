@@ -65,26 +65,16 @@ class Map:
     def get_node_list(self):
         return self.node_list
 
-    def print_nodes_stats(self, showNodes):
+    def print_nodes_stats(self, show_nodes):
         print('Nodes initially created: ', self.nodes_created)
         print('Nodes removed:', self.deleted)
-        if(showNodes):
+        if(show_nodes):
             for i in range(0,len(self.node_list)):
                 print('Node:', self.node_list[i].node_id, 'Adjacent Nodes:')
                 for j in range(0,len(self.node_list[i].connected_nodes)):
                     print(self.node_list[i].connected_nodes[j].node_id)
 
-    def save_map_to_csv(self):
-        dataArray = np.zeros((len(self.node_list),3))
-
-        for rowIndex, node in enumerate(self.node_list):
-            dataArray[rowIndex,0] = node.node_id
-            dataArray[rowIndex,1] = node.position.x
-            dataArray[rowIndex,2] = node.position.y
-
-        np.savetxt("mapFile.csv", dataArray, delimiter=", ", header="node_id, X, Y")
-
-    def save_graph_to_json(self):
+    def save_map_to_json(self):
         data = dict()
         element_list = list()
 

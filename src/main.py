@@ -28,7 +28,6 @@ from testing_maps import *
 map = Map()
 psparser = Parser()
 psparser.parse_file('export_map_data_smaller.json')
-#psparser.parse_file('KE_Map/Emmerich_bridge.json')
 
 #psparser = TJunction()
 #psparser = ParallelTracks()
@@ -37,11 +36,11 @@ psparser.convert_to_mercator_coordinates()
 map.load_streets(psparser.get_street_segment_list())
 map.generate_nodes()
 
-map.save_graph_to_json()
+map.save_map_to_json()
 map.print_nodes_stats(0)
 
 simulation = Simulation()
-simulation.load_nodes(map.node_list)
+simulation.load_nodes(map.get_node_list())
 simulation.create_roaming_agents(60)
 simulation.create_homing_agents(20)
 simulation.start_simulation_json(1000)
