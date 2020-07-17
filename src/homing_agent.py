@@ -39,7 +39,7 @@ class HomingAgent(Agent):
                 self.set_inactive()
             else:
                 self.node_out = self.node_in
-                self.pick_node()
+                self.pick_next_node()
                 self.update_next_node_vector()
                 self.velocity = Pvector.turn_vector(self.heading, self.velocity)
 
@@ -58,7 +58,7 @@ class HomingAgent(Agent):
         i = self.find_node_towards_direction(self.target_vector)
         self.node_in = self.node_out.connected_nodes[i]
 
-    def pick_node(self):
+    def pick_next_node(self):
         #one node means turning around
         if(len(self.node_out.connected_nodes) == 1):
             index = 0

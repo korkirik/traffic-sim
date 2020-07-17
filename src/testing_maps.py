@@ -1,5 +1,5 @@
 import random
-from parser_streets import Parser
+from streets_parser import Parser
 from streetsegment import *
 
 class TJunction(Parser):
@@ -30,7 +30,7 @@ class ParallelTracks(Parser):
         self.street_segment_list.append(street3)
 
 import random
-from parser_streets import Parser
+from streets_parser import Parser
 from streetsegment import *
 
 class MapOne(Parser):

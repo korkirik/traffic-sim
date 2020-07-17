@@ -20,7 +20,7 @@ Yu-Jeng Kuo, Arindam Mahanta, Anoshan Indreswaran
 
 '''
 from map import *
-from parser_streets import *
+from streets_parser import *
 from simulation import *
 
 from testing_maps import *
@@ -41,6 +41,6 @@ map.print_nodes_stats(0)
 
 simulation = Simulation()
 simulation.load_nodes(map.get_node_list())
-simulation.create_roaming_agents(60)
-simulation.create_homing_agents(20)
+simulation.create_roaming_agents(100)
+#simulation.create_homing_agents(20)
 simulation.start_simulation_json(1000)
