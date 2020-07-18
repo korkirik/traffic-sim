@@ -33,6 +33,7 @@ class StandardRoamingBehaviour(Behaviour):
         self.pick_next_node()
         agent.update_next_node_vector()
         agent.velocity = Pvector.turn_vector(agent.heading, agent.velocity)
+#---------------------------------------
 
     def update_behaviour(self):
         agent = self.my_agent
@@ -44,6 +45,24 @@ class StandardRoamingBehaviour(Behaviour):
         #self.detect_agents_in_sector(agent.agent_close_range, 90)
         self.detect_agents_rightward()
 
+    def update_velocity(self):
+        agent = self.my_agent
+
+        if (agent.is_velocity_negative()):
+            agent.velocity = Pvector(0,0)
+        else:
+            agent.velocity = agent.velocity + agent.acceleration
+            agent.velocity.limit_magnitude(agent.v_max)
+
+    def update_position(self):
+        agent = self.my_agent
+
+        agent.position = agent.position + agent.velocity
+        agent.check_crash()
+        agent.update_next_node_vector()
+
+        if(agent.distance_to_next_node < agent.approach_error):
+            agent.my_behaviour.reached_node()
 #---------------------------------------
 
     def detect_agents_rightward(self):

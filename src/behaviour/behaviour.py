@@ -6,8 +6,14 @@ class Behaviour:
     def pick_next_node(self):
         pass
 
+    def reached_node(self):
+        pass
+
     def update_behaviour(self):
         pass
 
-    def reached_node(self):
+    def update_velocity(self):
+        pass
+
+    def update_position(self):
         pass

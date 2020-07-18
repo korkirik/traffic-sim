@@ -114,10 +114,13 @@ print('>> iter max: {}'.format(iter_max))
 single_iteration_data = pd.DataFrame(df_agents_file.iat[0,0])
 
 source_agents1 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'roaming'))
-plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = roaming_agents_color, size=2, source=source_agents1)
+plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = roaming_agents_color, size=3, source=source_agents1)
 
 source_agents2 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'homing'))
-plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = homing_agents_color, size=2, source=source_agents2)
+plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = homing_agents_color, size=3, source=source_agents2)
+
+source_agents3 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'crashed'))
+plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = crashed_agents_color, size=3, source=source_agents3)
 
 #print(single_iteration_data)
 
@@ -138,6 +141,7 @@ def slider_update(attrname, old, new):
 
     source_agents1.data = find_agents_with_type(df, 'roaming')
     source_agents2.data = find_agents_with_type(df, 'homing')
+    source_agents3.data = find_agents_with_type(df, 'crashed')
 
 
 slider = Slider(start=0, end=iter_max, value=1, step=1, title="Iteration")

@@ -3,6 +3,7 @@ from node import *
 from converter import Converter
 from behaviour.standard_roaming_behaviour import *
 from behaviour.behaviour import *
+from behaviour.crashed_behaviour import *
 import random, math
 
 class Agent:
@@ -13,18 +14,17 @@ class Agent:
         self.velocity = Pvector(0,0)
         self.acceleration = Pvector(0,0)
         self.agent_id = agent_id
-        #self.agent_type = 'roaming'                copied
 
-        self.v_max = 1 #0.00001 #0.1
+        self.v_max = 1 #0.1
         self.alpha = self.v_max/4
-        self.beta =  1.15 * self.alpha #0.0001 * self.alpha
+        self.beta =  2 * self.alpha # 1.15
         self.decceleration_magnitude = 0
 
         #self.minimal_separation = 0.00075 #75 *self.alpha
         self.approach_error = 2 * self.alpha
-        self.agent_range = 40 *self.v_max # 3
+        self.agent_range = 40 *self.v_max
         self.agent_close_range = 10 * self.v_max
-        self.detection_angle = 15
+        self.detection_angle = 10
 
         self.agents_in_range = 0
         self.heading = Pvector(0,0)
@@ -38,7 +38,7 @@ class Agent:
         self.patience_threshold = 40
 
         #if distance is < than that agent crashes
-        self.critical_distance = self.alpha
+        self.critical_distance = 2 * self.alpha
         self.my_behaviour = StandardRoamingBehaviour(self)
 
 
@@ -75,34 +75,31 @@ class Agent:
             long, lat = c.convert_point_to_geocoordinates(self.position.x, self.position.y)
             print('agent# {} ran out of patience at {},{}'.format(self.agent_id, long, lat))
 
+    def check_crash(self):
+        for agent in self.agent_list:
+            if(agent != self):
+                if(agent.active == 0):
+                    continue
+
+                distance = Pvector.distance_between_points(agent.position, self.position)
+                if(distance < self.critical_distance):
+                    self.crash()
+                    agent.crash()
+                    break
+
     # TODO: test
     def crash(self):
-        self.active = 0
-        self.velocity = Pvector(0,0)
-        self.agent_type = 'crashed'
-        #remove behaviour obj
+        self.my_behaviour = CrashedBehaviour(self)
 
     def set_inactive(self):
         self.active = 0
 #-------------Main Logic-----------------
     ## TODO: Gather all behaviours here
-    def update_behaviour(self):
+    def update(self):
         self.my_behaviour.update_behaviour()
+        self.my_behaviour.update_velocity()
+        self.my_behaviour.update_position()
 
-    def update_velocity(self):
-        if (self.is_velocity_negative()):
-            self.velocity = Pvector(0,0)
-        else:
-            self.velocity = self.velocity + self.acceleration
-            self.velocity.limit_magnitude(self.v_max)
-
-
-    def update_position(self):
-        self.position = self.position + self.velocity
-        self.update_next_node_vector()
-
-        if(self.distance_to_next_node < self.approach_error):
-            self.my_behaviour.reached_node()
 #-----------------------------------------
     def print_reachable_nodes(self):
         print('start connections:')
@@ -127,8 +124,8 @@ class Agent:
 
     def reset_acceleration(self):
         self.acceleration = Pvector(0,0)
-
-    def brake(self, delta_vector):
+    # TODO: is there need for delta_vector?
+    def brake(self, delta_vector = Pvector(0,0)):
         #constatnt brake force # TODO: gradient of brake force
         decceleration = self.heading.multiply(self.beta)
         self.acceleration = self.acceleration - decceleration

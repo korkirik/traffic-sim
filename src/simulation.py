@@ -112,9 +112,7 @@ class Simulation:
 
                 element_list.append(element)
 
-                agent.update_behaviour()
-                agent.update_velocity()
-                agent.update_position()
+                agent.update()
 
             it_list.append(it_data)
 
@@ -124,7 +122,7 @@ class Simulation:
             json.dump(it_list, f, indent = 2)
         print('Simulation complete, {} steps'.format(time))
 
-
+# TODO: remove method
     def start_simulation(self, time):
         self.iter_max = time
         agentsDataArray = np.zeros((self.iter_max*len(self.agent_list),4))
