@@ -18,15 +18,15 @@ import json
 import random
 
 #Colors
+#'#a40197' # Purple
 agents_color = '#ffffff'    #White
 agents_rim_color = '#f31649'#Deep Red
 
-roaming_agents_color = '#f06000' #Orange
 homing_agents_color = '#127ca2' #Blue
 
 aggressive_agents_color = '#dc1919' #Red
-calm_agents_color = '#a40197' # Purple
-average_agents_color = '#18dd8e' #Green
+careful_agents_color = '#127ca2' #Blue
+roaming_agents_color = '#18dd8e' #Green
 inactive_agents_color = '#828282' #Grey
 crashed_agents_color = '#000000' #Black
 
@@ -122,6 +122,11 @@ plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = homing_agents
 source_agents3 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'crashed'))
 plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = crashed_agents_color, size=3, source=source_agents3)
 
+source_agents4 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'aggressive_roaming'))
+plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = aggressive_agents_color, size=3, source=source_agents4)
+
+source_agents5 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'careful_roaming'))
+plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = careful_agents_color, size=3, source=source_agents5)
 #print(single_iteration_data)
 
 
@@ -142,6 +147,8 @@ def slider_update(attrname, old, new):
     source_agents1.data = find_agents_with_type(df, 'roaming')
     source_agents2.data = find_agents_with_type(df, 'homing')
     source_agents3.data = find_agents_with_type(df, 'crashed')
+    source_agents4.data = find_agents_with_type(df, 'aggressive_roaming')
+    source_agents5.data = find_agents_with_type(df, 'careful_roaming')
 
 
 slider = Slider(start=0, end=iter_max, value=1, step=1, title="Iteration")

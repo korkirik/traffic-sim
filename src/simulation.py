@@ -18,11 +18,11 @@ class Simulation:
 
     def load_nodes(self, recieved_list):
         self.node_list = recieved_list
-        self.free_nodes_list = recieved_list.copy()
+        self.free_nodes_list = recieved_list.copy() # TODO: temporary list remove
 
-    def create_roaming_agents(self, number):
+    def create_roaming_agents(self, number, type):
         for i in range(number):
-            agent = Agent(self.agent_id)
+            agent = Agent(self.agent_id, type)
 
             agent.set_starting_node(self.random_node_from_list_and_pop(self.free_nodes_list))
             agent.randomize_velocity()

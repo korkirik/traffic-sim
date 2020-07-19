@@ -13,12 +13,3 @@ class CrashedBehaviour(Behaviour):
         agent.agent_type = 'crashed'
         agent.reset_acceleration()
         agent.brake()
-
-    def pick_next_node(self):
-        pass
-
-    def update_behaviour(self):
-        pass
-
-    def reached_node(self):
-        pass

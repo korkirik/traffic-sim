@@ -3,10 +3,10 @@ from node import *
 from behaviour.behaviour import *
 import random
 
-class StandardRoamingBehaviour(Behaviour):
+class RoamingBehaviour(Behaviour):
 
-    def __init__(self, _agent):
-        self.my_agent = _agent
+    def __init__(self, agent):
+        self.my_agent = agent
         self.my_agent.agent_type = 'roaming'
 
     def pick_next_node(self):
