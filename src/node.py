@@ -1,4 +1,4 @@
-from pvector import *
+from pvector import Pvector
 class Node:
     def __init__(self, x, y, node_id):
         self.position = Pvector(x,y)

@@ -2,7 +2,7 @@
 
 import path as p
 from vehicle import *
-from pvector import *
+from pvector import Pvector
 
 class DrunkDriver:
 

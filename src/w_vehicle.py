@@ -1,4 +1,4 @@
-from pvector import *
+from pvector import Pvector
 #from junctionpoint import *
 from path import *
 

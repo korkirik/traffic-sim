@@ -1,6 +1,6 @@
 from streetsegment import *
-from node import *
-from pvector import *
+from node import Node
+from pvector import Pvector
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import ColumnDataSource, Range1d, LabelSet, Label
 import numpy as np

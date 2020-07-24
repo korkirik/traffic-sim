@@ -1,11 +1,15 @@
-from pvector import *
-from node import *
+from pvector import Pvector
+from node import Node
 from converter import Converter
-from behaviour.behaviour import *
-from behaviour.roaming_behaviour import *
-from behaviour.aggressive_roaming_behaviour import *
-from behaviour.careful_roaming_behaviour import *
-from behaviour.crashed_behaviour import *
+
+from behaviour.behaviour import Behaviour
+from behaviour.roaming_behaviour import RoamingBehaviour
+from behaviour.aggressive_roaming_behaviour import AggressiveRoamingBehaviour
+from behaviour.careful_roaming_behaviour import CarefulRoamingBehaviour
+from behaviour.crashed_behaviour import CrashedBehaviour
+from behaviour.homing_behaviour import HomingBehaviour
+
+
 import random, math
 
 class Agent:
@@ -52,13 +56,14 @@ class Agent:
             self.my_behaviour = CarefulRoamingBehaviour(self)
         elif(type == 'aggressive_roaming'):
             self.my_behaviour = AggressiveRoamingBehaviour(self)
-
+        elif(type == 'homing'):
+            self.my_behaviour = HomingBehaviour(self)
 
     def set_starting_node(self, start_node):
-        self.preceding_node = None
-        self.node_out = start_node
-        self.position = start_node.position
-        self.my_behaviour.pick_next_node()
+        self.my_behaviour.set_starting_node(start_node)
+
+    def set_target_node(self, target_node):
+        self.my_behaviour.set_target_node(target_node)
 
     def add_agent_list(self, agent_list):
         self.agent_list = agent_list
@@ -107,7 +112,7 @@ class Agent:
         self.my_behaviour = CrashedBehaviour(self)
 
     def set_inactive(self):
-        self.active = 0
+        self.active = 0 # TODO: switch to Inactive behaviour
 #-------------Main Logic-----------------
     ## TODO: Gather all behaviours here
     def update(self):
@@ -130,6 +135,7 @@ class Agent:
 
 #-------------Piloting------------------
 
+    #Todo: Factor into roaming behaviour
     def update_next_node_vector(self):
         vector_next_node = Pvector(self.node_in.position.x, self.node_in.position.y)
         vector_next_node = vector_next_node - self.position

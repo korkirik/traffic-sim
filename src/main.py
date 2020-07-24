@@ -5,11 +5,11 @@ Lecture:   System & Self-Organization
            Sommer Semester 2017, Sommer Semester 2019,
            and further on, Hochschule Rhein-Waal
 
-Objective:   This project demonstrates the emergent behavior
+Objective:   This project demonstrates the emergent behaviour
            that takes place among a group of drivers travelling
            in a pre-defined map. The traffic flow depends not
            only on the number of agents in the city, but also
-           the interaction between them. The behavior of one
+           the interaction between them. The behaviour of one
            driver is influenced by other drivers on the street
            as well as other factors like traffic jam. An overall
            emergent effect is thereby generated and is observable.
@@ -42,8 +42,8 @@ map.print_nodes_stats(0)
 simulation = Simulation()
 simulation.load_nodes(map.get_node_list())
 
-simulation.create_roaming_agents(50, 'roaming')
-simulation.create_roaming_agents(40, 'careful_roaming')
-simulation.create_roaming_agents(10, 'aggressive_roaming')
-#simulation.create_homing_agents(20)
-simulation.start_simulation_json(2000)
+#simulation.create_roaming_agents(50, 'roaming')
+#simulation.create_roaming_agents(40, 'careful_roaming')
+#simulation.create_roaming_agents(10, 'aggressive_roaming')
+simulation.create_homing_agents(30, 'homing')
+simulation.start_simulation(2000)

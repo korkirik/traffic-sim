@@ -11,7 +11,7 @@ from bokeh.models import MapOptions
 from bokeh.tile_providers import OSM, get_provider
 
 from converter import *
-from node import *
+from node import Node
 import pandas as pd
 import numpy as np
 import json
@@ -29,6 +29,7 @@ careful_agents_color = '#127ca2' #Blue
 roaming_agents_color = '#18dd8e' #Green
 inactive_agents_color = '#828282' #Grey
 crashed_agents_color = '#000000' #Black
+reached_goal_color = '#e6e600' #yellow
 
 streets_color = '#d3d3d3'   #Light Grey
 nodes_color = '#ffffff'     #White
@@ -129,6 +130,8 @@ source_agents5 = ColumnDataSource (find_agents_with_type(single_iteration_data, 
 plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = careful_agents_color, size=3, source=source_agents5)
 #print(single_iteration_data)
 
+source_agents6 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'reached_goal'))
+plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = reached_goal_color, size=3, source=source_agents6)
 
 
 def animate_update():
@@ -149,7 +152,7 @@ def slider_update(attrname, old, new):
     source_agents3.data = find_agents_with_type(df, 'crashed')
     source_agents4.data = find_agents_with_type(df, 'aggressive_roaming')
     source_agents5.data = find_agents_with_type(df, 'careful_roaming')
-
+    source_agents6.data = find_agents_with_type(df, 'reached_goal')
 
 slider = Slider(start=0, end=iter_max, value=1, step=1, title="Iteration")
 slider.on_change('value', slider_update)

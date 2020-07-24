@@ -1,4 +1,4 @@
-from pvector import *
+from pvector import Pvector
 
 class StreetSegment:
     def __init__(self, start_point, end_point):

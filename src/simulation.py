@@ -1,12 +1,12 @@
 from map import *
 from agent import *
 from homing_agent import *
-from node import *
+from node import Node
 import numpy as np
 import random
 import json
 
-from converter import Converter
+from area import Area
 
 class Simulation:
     def __init__(self):
@@ -14,17 +14,17 @@ class Simulation:
         self.agent_id = 0
 
         self.agent_list = list()
-        self.free_nodes_list = list()
+        self.free_node_list = list()
 
     def load_nodes(self, recieved_list):
         self.node_list = recieved_list
-        self.free_nodes_list = recieved_list.copy() # TODO: temporary list remove
+        self.free_node_list = recieved_list.copy() # TODO: temporary list remove
 
     def create_roaming_agents(self, number, type):
         for i in range(number):
             agent = Agent(self.agent_id, type)
 
-            agent.set_starting_node(self.random_node_from_list_and_pop(self.free_nodes_list))
+            agent.set_starting_node(self.random_node_from_list_and_pop(self.free_node_list))
             agent.randomize_velocity()
             self.agent_list.append(agent)
             agent.add_agent_list(self.agent_list)
@@ -32,17 +32,13 @@ class Simulation:
             self.agent_id +=1
         self.agent_count += number
 
-    def create_homing_agents(self, number):
-        c = Converter()
-        x,y = c.convert(6.11, 51.7805)
-        #print(x,y)
-        #nodes_in_area1 = self.nodes_area_select(x,y, 500)#0.002)
-        x,y = c.convert(6.1255, 51.782)
-        nodes_in_area2 = self.nodes_area_select(x,y, 1000)#0.001)
-        #print(len(nodes_in_area1))
-        print(len(nodes_in_area2))
+    def create_homing_agents(self, number, type): #, start_area, target_area):
+
+        Area.set_node_list(self.node_list) # TODO: move into main
+        area = Area(6.124, 51.78, 100)
+
         for i in range(number):
-            agent = HomingAgent(self.agent_id)
+            agent = Agent(self.agent_id, type)
             #agent.set_starting_node(self.node_list[i])
             #agent.set_target_node(self.node_list[3]) # self.node_list[100]
             # TODO: remove this if block
@@ -50,8 +46,9 @@ class Simulation:
             if(len(nodes_in_area1) < 1):
                 break
             '''
-            agent.set_starting_node(self.random_node_from_list_and_pop(self.free_nodes_list))
-            agent.set_target_node(self.random_node_from_list(nodes_in_area2))
+
+            agent.set_starting_node(self.random_node_from_list_and_pop(self.free_node_list))
+            agent.set_target_node(self.random_node_from_list(area.node_list))
 
             agent.randomize_velocity()
             self.agent_list.append(agent)
@@ -61,6 +58,8 @@ class Simulation:
 
         print('homing agents created {}'.format(number))
         self.agent_count += number
+
+
 
     def random_node(self):
         l = len(self.node_list)
@@ -77,19 +76,7 @@ class Simulation:
         n = random.randrange(0,l,1)
         return list_.pop(n)
 
-    def nodes_area_select(self, x, y, radius):
-        selected_nodes = list()
-        center = Pvector(x,y)
-
-        for node in self.node_list:
-            distance_vector = node.position - center
-            distance = distance_vector.magnitude()
-            if(distance <= radius):
-                selected_nodes.append(node)
-
-        return selected_nodes
-
-    def start_simulation_json(self, time):
+    def start_simulation(self, time):
         self.iter_max = time
         #data = dict()
         it_list = list()
@@ -121,28 +108,6 @@ class Simulation:
         with open('agents.json', 'w') as f:
             json.dump(it_list, f, indent = 2)
         print('Simulation complete, {} steps'.format(time))
-
-# TODO: remove method
-    def start_simulation(self, time):
-        self.iter_max = time
-        agentsDataArray = np.zeros((self.iter_max*len(self.agent_list),4))
-
-        for iter in range(0, self.iter_max, 1):
-
-            for agentIndex, agent in enumerate(self.agent_list):
-                agentsDataArray[agentIndex + self.agent_count*iter,0] = iter
-                agentsDataArray[agentIndex + self.agent_count*iter,1] = agent.agent_id
-                agentsDataArray[agentIndex + self.agent_count*iter,2] = agent.position.x
-                agentsDataArray[agentIndex + self.agent_count*iter,3] = agent.position.y
-                agent.update_behaviour()
-                agent.update_velocity()
-                agent.update_position()
-
-                #self.do_agent_tests()
-
-        np.savetxt("agentsFile.csv", agentsDataArray, delimiter=", ", header="iteration, agent_id, X, Y")
-        print('Simulation complete, {} steps'.format(time))
-        #print('data saved in agentsFile.csv')
 
     ## TODO: move agents' tests into other class
     def do_agent_tests(self):

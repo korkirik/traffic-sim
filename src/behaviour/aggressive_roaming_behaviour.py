@@ -1,5 +1,5 @@
-from pvector import *
-from node import *
+from pvector import Pvector
+from node import Node
 from behaviour.behaviour import *
 from behaviour.roaming_behaviour import *
 import random
@@ -7,7 +7,7 @@ import random
 class AggressiveRoamingBehaviour(RoamingBehaviour):
 
     def __init__(self, agent):
-        self.my_agent = agent
+        self.host = agent
 
         agent.agent_type = 'aggressive_roaming'
         agent.v_max = 1.25
@@ -15,7 +15,7 @@ class AggressiveRoamingBehaviour(RoamingBehaviour):
         agent.detection_angle = agent.detection_angle * 0.5
 
     def update_behaviour(self):
-        agent = self.my_agent
+        agent = self.host
 
         agent.patience_check()
         agent.reset_acceleration()

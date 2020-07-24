@@ -1,5 +1,5 @@
 import math
-from pvector import *
+from pvector import Pvector
 
 #converts coordinate point into Web Mercator Coordinates
 class Converter:
