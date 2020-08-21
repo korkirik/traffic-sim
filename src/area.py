@@ -5,7 +5,7 @@ from node import Node
 class Area:
 
     @classmethod
-    def set_node_list(cls, list):
+    def set_all_node_list(cls, list):
         cls.all_node_list = list
 
     def __init__(self, long, lat, radius):

@@ -17,23 +17,27 @@ import numpy as np
 import json
 import random
 
-#Colors
-#'#a40197' # Purple
-agents_color = '#ffffff'    #White
-agents_rim_color = '#f31649'#Deep Red
+#Colors shown in file palette_two.pdf
+#agents_rim_color = '#f31649'#Deep Red
 
-homing_agents_color = '#127ca2' #Blue
+#Agent Type Colors
+agents_color = '#ffffff' #White
+homing_color = '#fff047' #light yellow
 
-aggressive_agents_color = '#dc1919' #Red
-careful_agents_color = '#127ca2' #Blue
-roaming_agents_color = '#18dd8e' #Green
-inactive_agents_color = '#828282' #Grey
-crashed_agents_color = '#000000' #Black
-reached_goal_color = '#e6e600' #yellow
 
+#Rim Colors
+aggressive_color = '#da3447' #Red
+neutral_color = '#34c85d' #Green
+careful_color = '#0044cc' #Blue
+
+inactive_color = '#747474' #Grey
+crashed_color = '#000000' #Black
+reached_goal_color = '#ff7700' #Orange
+
+#Map Elements Colors
 streets_color = '#d3d3d3'   #Light Grey
 nodes_color = '#ffffff'     #White
-nodes_rim_color = '#d3d3d3'               #'#4af316' #Green
+nodes_rim_color = '#d3d3d3'
 
 def find_agents_with_type(df, type):
     df_result = df.loc[df['type'] == type]
@@ -115,23 +119,23 @@ print('>> iter max: {}'.format(iter_max))
 single_iteration_data = pd.DataFrame(df_agents_file.iat[0,0])
 
 source_agents1 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'roaming'))
-plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = roaming_agents_color, size=3, source=source_agents1)
+plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = neutral_color, size=5, source=source_agents1)
 
 source_agents2 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'homing'))
-plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = homing_agents_color, size=3, source=source_agents2)
+plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = neutral_color, size=5, source=source_agents2)
 
 source_agents3 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'crashed'))
-plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = crashed_agents_color, size=3, source=source_agents3)
+plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = crashed_color, size=5, source=source_agents3)
 
 source_agents4 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'aggressive_roaming'))
-plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = aggressive_agents_color, size=3, source=source_agents4)
+plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = aggressive_color, size=5, source=source_agents4)
 
 source_agents5 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'careful_roaming'))
-plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = careful_agents_color, size=3, source=source_agents5)
+plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = careful_color, size=5, source=source_agents5)
 #print(single_iteration_data)
 
 source_agents6 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'reached_goal'))
-plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = reached_goal_color, size=3, source=source_agents6)
+plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = reached_goal_color, size=5, source=source_agents6)
 
 
 def animate_update():

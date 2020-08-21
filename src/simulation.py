@@ -1,6 +1,5 @@
 from map import *
 from agent import *
-from homing_agent import *
 from node import Node
 import numpy as np
 import random
@@ -34,7 +33,7 @@ class Simulation:
 
     def create_homing_agents(self, number, type): #, start_area, target_area):
 
-        Area.set_node_list(self.node_list) # TODO: move into main
+        Area.set_all_node_list(self.node_list) # TODO: move into main
         area = Area(6.124, 51.78, 100)
 
         for i in range(number):
@@ -58,8 +57,6 @@ class Simulation:
 
         print('homing agents created {}'.format(number))
         self.agent_count += number
-
-
 
     def random_node(self):
         l = len(self.node_list)

@@ -135,7 +135,7 @@ class Agent:
 
 #-------------Piloting------------------
 
-    #Todo: Factor into roaming behaviour
+    #Todo: Factor into behaviour?
     def update_next_node_vector(self):
         vector_next_node = Pvector(self.node_in.position.x, self.node_in.position.y)
         vector_next_node = vector_next_node - self.position
