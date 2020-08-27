@@ -17,6 +17,6 @@ class AggressiveRoamingBehaviour(RoamingBehaviour):
         agent = self.host
 
         agent.patience_check()
-        agent.reset_acceleration()
-        agent.next_node_attraction()
+        self.reset_acceleration()
+        self.next_node_attraction()
         self.detect_agents_in_sector(agent.agent_range, agent.detection_angle)

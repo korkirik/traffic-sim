@@ -39,7 +39,7 @@ class HomingBehaviour(Behaviour):
         else:
             self.update_target()
             self.find_initial_heading()
-            agent.update_next_node_vector()
+            self.update_next_node_vector()
 
     def pick_next_node(self):
         agent = self.host
@@ -87,8 +87,8 @@ class HomingBehaviour(Behaviour):
         agent = self.host
 
         agent.patience_check()
-        agent.reset_acceleration()
-        agent.next_node_attraction()
+        self.reset_acceleration()
+        self.next_node_attraction()
         self.detect_agents_in_sector(agent.agent_range, agent.detection_angle)
         #self.detect_agents_in_sector(agent.agent_close_range, 90)
         self.detect_agents_rightward()
@@ -96,7 +96,7 @@ class HomingBehaviour(Behaviour):
     def update_velocity(self):
         agent = self.host
 
-        if (agent.is_velocity_negative()):
+        if (self.is_velocity_negative()):
             agent.velocity = Pvector(0,0)
         else:
             agent.velocity = agent.velocity + agent.acceleration
@@ -106,7 +106,7 @@ class HomingBehaviour(Behaviour):
         agent = self.host
 
         agent.position = agent.position + agent.velocity
-        agent.update_next_node_vector()
+        self.update_next_node_vector()
 
         if(agent.distance_to_next_node < agent.approach_error):
 
@@ -117,7 +117,7 @@ class HomingBehaviour(Behaviour):
             else:
                 agent.node_out = agent.node_in
                 self.pick_next_node()
-                agent.update_next_node_vector()
+                self.update_next_node_vector()
                 agent.velocity = Pvector.turn_vector(agent.heading, agent.velocity)
 
 #---------------------------------------

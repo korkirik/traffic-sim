@@ -10,5 +10,5 @@ class ReachedBehaviour(Behaviour):
         agent.active = 0
         #agent.velocity = Pvector(0,0)
         agent.agent_type = 'reached_goal'
-        agent.reset_acceleration()
-        agent.brake()
+        self.reset_acceleration()
+        self.brake()

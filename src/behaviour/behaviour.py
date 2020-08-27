@@ -17,9 +17,6 @@ class Behaviour:
     def pick_next_node(self):
         pass
 
-    def reached_next_node(self):
-        pass
-
     def update_behaviour(self):
         pass
 
@@ -28,7 +25,7 @@ class Behaviour:
 
     def update_position(self):
         pass
-#-----------Defined Functions-----------
+#-----------Concrete Functions-----------
     def detect_agents_rightward(self):
         host = self.host
 
@@ -66,7 +63,7 @@ class Behaviour:
                     on_the_same_line = 1
 
                 if(obstacle_rightward == 1 and not on_the_same_line):
-                    host.brake(delta_vector)
+                    self.brake(delta_vector)
 
     def detect_agents_in_sector(self, radius, angle):
         host = self.host
@@ -95,4 +92,33 @@ class Behaviour:
                 #print('id {}, angle {}'.format(self.agent_id, agent_angle))
                 if(math.fabs(agent_angle) < angle):
                     #obstacle ahead
-                    host.brake(delta_vector)
+                    self.brake(delta_vector)
+
+    def is_velocity_negative(self):
+        host = self.host
+        v1 = host.velocity + host.acceleration
+        if(Pvector.dot_product(v1, host.heading) <= 0):
+            return True
+        else:
+            return False
+
+    def reset_acceleration(self):
+        self.host.acceleration = Pvector(0,0)
+
+    def next_node_attraction(self):
+        host = self.host
+        host.acceleration = host.acceleration + host.heading.multiply(host.alpha)
+
+    def update_next_node_vector(self):
+        host = self.host
+        vector_next_node = Pvector(host.node_in.position.x, host.node_in.position.y)
+        vector_next_node = vector_next_node - host.position
+        host.distance_to_next_node = vector_next_node.magnitude()
+        vector_next_node.normalize()
+        host.heading = vector_next_node.copy()
+
+    def brake(self, delta_vector = Pvector(0,0)):
+        #constatnt brake force # TODO: gradient of brake force
+        host = self.host
+        decceleration = host.heading.multiply(host.beta)
+        host.acceleration = host.acceleration - decceleration

@@ -108,7 +108,6 @@ class Agent:
                     self.crash()
                     agent.crash()
                     break
-
     # TODO: test
     def crash(self):
         self.my_behaviour = CrashedBehaviour(self)
@@ -129,32 +128,3 @@ class Agent:
         print('next connections:')
         for n in self.node_in.connected_nodes:
             print(n.node_id)
-#-------------Piloting------------------
-
-    #Todo: Factor into behaviour?
-    def update_next_node_vector(self):
-        vector_next_node = Pvector(self.node_in.position.x, self.node_in.position.y)
-        vector_next_node = vector_next_node - self.position
-        self.distance_to_next_node = vector_next_node.magnitude()
-        vector_next_node.normalize()
-        self.heading = vector_next_node.copy()
-
-
-    def next_node_attraction(self):
-        self.acceleration = self.acceleration + self.heading.multiply(self.alpha)
-
-    def reset_acceleration(self):
-        self.acceleration = Pvector(0,0)
-    # TODO: is there need for delta_vector?
-    def brake(self, delta_vector = Pvector(0,0)):
-        #constatnt brake force # TODO: gradient of brake force
-        decceleration = self.heading.multiply(self.beta)
-        self.acceleration = self.acceleration - decceleration
-
-    def is_velocity_negative(self):
-
-        v1 = self.velocity + self.acceleration
-        if(Pvector.dot_product(v1, self.heading) <= 0):
-            return True
-        else:
-            return False
