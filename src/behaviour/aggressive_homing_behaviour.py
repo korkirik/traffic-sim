@@ -1,8 +1,6 @@
+from behaviour.homing_behaviour import HomingBehaviour
 from pvector import Pvector
 from node import Node
-from behaviour.homing_behaviour import HomingBehaviour
-
-import random, math
 
 class AggressiveHomingBehaviour(HomingBehaviour):
 

@@ -1,11 +1,12 @@
-from pvector import Pvector
-from node import Node
+from behaviour.behaviour import Behaviour
 from behaviour.roaming_behaviour import RoamingBehaviour
 from behaviour.reached_behaviour import ReachedBehaviour
+from pvector import Pvector
+from node import Node
 
-import random, math
+import math
 
-class HomingBehaviour(RoamingBehaviour):
+class HomingBehaviour(Behaviour):
 
     def __init__(self, agent):
         self.host = agent
@@ -81,6 +82,25 @@ class HomingBehaviour(RoamingBehaviour):
 
     def reached_next_node(self):
         pass
+#---------------------------------------
+    def update_behaviour(self):
+        agent = self.host
+
+        agent.patience_check()
+        agent.reset_acceleration()
+        agent.next_node_attraction()
+        self.detect_agents_in_sector(agent.agent_range, agent.detection_angle)
+        #self.detect_agents_in_sector(agent.agent_close_range, 90)
+        self.detect_agents_rightward()
+
+    def update_velocity(self):
+        agent = self.host
+
+        if (agent.is_velocity_negative()):
+            agent.velocity = Pvector(0,0)
+        else:
+            agent.velocity = agent.velocity + agent.acceleration
+            agent.velocity.limit_magnitude(agent.v_max)
 
     def update_position(self):
         agent = self.host
@@ -100,6 +120,7 @@ class HomingBehaviour(RoamingBehaviour):
                 agent.update_next_node_vector()
                 agent.velocity = Pvector.turn_vector(agent.heading, agent.velocity)
 
+#---------------------------------------
     def update_target(self):
         agent = self.host
 

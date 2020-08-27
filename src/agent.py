@@ -8,6 +8,7 @@ from behaviour.aggressive_roaming_behaviour import AggressiveRoamingBehaviour
 from behaviour.careful_roaming_behaviour import CarefulRoamingBehaviour
 from behaviour.crashed_behaviour import CrashedBehaviour
 from behaviour.homing_behaviour import HomingBehaviour
+from behaviour.inactive_behaviour import InactiveBehaviour
 
 
 import random, math
@@ -63,6 +64,7 @@ class Agent:
         self.my_behaviour.set_starting_node(start_node)
 
     def set_target_node(self, target_node):
+        # TODO: check if it is homing type
         self.my_behaviour.set_target_node(target_node)
 
     def add_agent_list(self, agent_list):
@@ -112,14 +114,12 @@ class Agent:
         self.my_behaviour = CrashedBehaviour(self)
 
     def set_inactive(self):
-        self.active = 0 # TODO: switch to Inactive behaviour
+        self.my_behaviour = InactiveBehaviour(self)
 #-------------Main Logic-----------------
-    ## TODO: Gather all behaviours here
     def update(self):
         self.my_behaviour.update_behaviour()
         self.my_behaviour.update_velocity()
         self.my_behaviour.update_position()
-
 #-----------------------------------------
     def print_reachable_nodes(self):
         print('start connections:')
@@ -128,11 +128,7 @@ class Agent:
 
         print('next connections:')
         for n in self.node_in.connected_nodes:
-            print(n.node_id) ## TODO: remove
-
-    def next_node_attraction(self):
-        self.acceleration = self.acceleration + self.heading.multiply(self.alpha)
-
+            print(n.node_id)
 #-------------Piloting------------------
 
     #Todo: Factor into behaviour?
@@ -142,6 +138,10 @@ class Agent:
         self.distance_to_next_node = vector_next_node.magnitude()
         vector_next_node.normalize()
         self.heading = vector_next_node.copy()
+
+
+    def next_node_attraction(self):
+        self.acceleration = self.acceleration + self.heading.multiply(self.alpha)
 
     def reset_acceleration(self):
         self.acceleration = Pvector(0,0)

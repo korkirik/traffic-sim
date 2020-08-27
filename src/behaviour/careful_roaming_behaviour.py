@@ -1,8 +1,7 @@
+from behaviour.behaviour import Behaviour
+from behaviour.roaming_behaviour import *
 from pvector import Pvector
 from node import Node
-from behaviour.behaviour import *
-from behaviour.roaming_behaviour import *
-import random
 
 class CarefulRoamingBehaviour(RoamingBehaviour):
 

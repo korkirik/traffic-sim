@@ -22,16 +22,15 @@ import random
 
 #Agent Type Colors
 agents_color = '#ffffff' #White
-homing_color = '#fff047' #light yellow
-
+homing_color = '#fbff00' #Yellow
 
 #Rim Colors
 aggressive_color = '#da3447' #Red
 neutral_color = '#34c85d' #Green
 careful_color = '#0044cc' #Blue
 
-inactive_color = '#747474' #Grey
-crashed_color = '#000000' #Black
+inactive_color = '#9421a1' #Magenta
+crashed_color = '#747474' #Grey
 reached_goal_color = '#ff7700' #Orange
 
 #Map Elements Colors
@@ -132,10 +131,14 @@ plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = aggressive_co
 
 source_agents5 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'careful_roaming'))
 plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = careful_color, size=5, source=source_agents5)
-#print(single_iteration_data)
+
+## TODO: Homing Roaming and Homing
 
 source_agents6 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'reached_goal'))
 plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = reached_goal_color, size=5, source=source_agents6)
+
+source_agents7 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'inactive'))
+plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = inactive_color, size=5, source=source_agents7)
 
 
 def animate_update():
@@ -157,6 +160,7 @@ def slider_update(attrname, old, new):
     source_agents4.data = find_agents_with_type(df, 'aggressive_roaming')
     source_agents5.data = find_agents_with_type(df, 'careful_roaming')
     source_agents6.data = find_agents_with_type(df, 'reached_goal')
+    source_agents7.data = find_agents_with_type(df, 'inactive')
 
 slider = Slider(start=0, end=iter_max, value=1, step=1, title="Iteration")
 slider.on_change('value', slider_update)

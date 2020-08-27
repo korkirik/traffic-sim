@@ -1,6 +1,8 @@
 from pvector import Pvector
 from node import Node
-from behaviour.behaviour import *
+from behaviour.behaviour import Behaviour
+from pvector import Pvector
+from node import Node
 
 class CrashedBehaviour(Behaviour):
 
