@@ -1,9 +1,4 @@
-#Brief Rewritten and Refactored from code in C
-#  - A toolbox that manipulate all the physics behind the simulation
-# Detail
-# - Pvector class contains all the necessary tools for doing maths
-#   on a two-dimensional vector space. Most of the functions here
-#   to generate ideal forces to drive the agents.
+# Pvector class consists of functions for vector operations on a 2D space.
 import math
 
 class Pvector:

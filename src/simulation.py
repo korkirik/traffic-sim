@@ -47,7 +47,7 @@ class Simulation:
             '''
 
             agent.set_starting_node(self.random_node_from_list_and_pop(self.free_node_list))
-            agent.set_target_node(self.random_node_from_list(area.node_list))
+            agent.set_target_node(self.node_list[0])#random_node_from_list(area.node_list))
 
             agent.randomize_velocity()
             self.agent_list.append(agent)

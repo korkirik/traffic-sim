@@ -44,7 +44,7 @@ def find_agents_with_type(df, type):
     # TODO: check for empty df
     return df_result
 
-def add_node_labels(self, x1, y1, nodes_ids):
+def add_node_labels(x1, y1, nodes_ids):
     source = ColumnDataSource(data=dict(posX=x1, posY=y1, nodeids=nodes_ids))
 
     nodes_labels = LabelSet(x='posX', y='posY', text='nodeids', level='glyph',
@@ -91,6 +91,7 @@ with open('map.json') as f:
         y1.append(node['Y'])
         nodes_ids.append(node['node_id'])
 
+        #//add_node_labels(x1,y1,nodes_ids)
     plot.circle(x1,y1,fill_color = nodes_color, line_color = nodes_rim_color, size=4)
 
 
