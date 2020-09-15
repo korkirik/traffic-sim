@@ -133,14 +133,17 @@ plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = aggressive_co
 source_agents5 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'careful_roaming'))
 plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = careful_color, size=5, source=source_agents5)
 
-## TODO: Homing Roaming and Homing
-
 source_agents6 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'reached_goal'))
 plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = reached_goal_color, size=5, source=source_agents6)
 
 source_agents7 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'inactive'))
 plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = inactive_color, size=5, source=source_agents7)
 
+source_agents8 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'careful_homing'))
+plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = careful_color, size=5, source=source_agents8)
+
+source_agents9 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'agressive_homing'))
+plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = aggressive_color, size=5, source=source_agents9)
 
 def animate_update():
     iteration = slider.value + 1
@@ -162,6 +165,8 @@ def slider_update(attrname, old, new):
     source_agents5.data = find_agents_with_type(df, 'careful_roaming')
     source_agents6.data = find_agents_with_type(df, 'reached_goal')
     source_agents7.data = find_agents_with_type(df, 'inactive')
+    source_agents8.data = find_agents_with_type(df, 'careful_homing')
+    source_agents9.data = find_agents_with_type(df, 'agressive_homing')
 
 slider = Slider(start=0, end=iter_max, value=1, step=1, title="Iteration")
 slider.on_change('value', slider_update)

@@ -75,7 +75,7 @@ class Simulation:
 
     def start_simulation(self, time):
         self.iter_max = time
-        #data = dict()
+
         it_list = list()
         agents_group = self.agent_list # TODO: expand to more groups
 
@@ -100,7 +100,6 @@ class Simulation:
 
             it_list.append(it_data)
 
-        #data['iterations'] = it_list
 
         with open('agents.json', 'w') as f:
             json.dump(it_list, f, indent = 2)

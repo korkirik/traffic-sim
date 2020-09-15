@@ -53,7 +53,8 @@ class Pvector:
     def magnitude(self):
         #if(self.x == 0 and self.y == 0):
             #print('zero magnitude')
-        return math.sqrt(self.x*self.x + self.y*self.y)
+        self.length = math.sqrt(self.x*self.x + self.y*self.y)
+        return self.length
 
     def normalize(self):
         mag = self.magnitude()

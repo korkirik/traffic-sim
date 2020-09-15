@@ -1,4 +1,3 @@
-from behaviour.behaviour import Behaviour
 from behaviour.roaming_behaviour import *
 from pvector import Pvector
 from node import Node
@@ -13,4 +12,4 @@ class CarefulRoamingBehaviour(RoamingBehaviour):
         agent.agent_range = 1.25 * agent.agent_range
         agent.detection_angle = agent.detection_angle * 1.25
         self.patience_threshold = 30
-        agent.patience_increment = 0.75
+        agent.patience_decrement = 0.5

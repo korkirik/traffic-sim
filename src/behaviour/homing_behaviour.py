@@ -1,5 +1,4 @@
 from behaviour.behaviour import Behaviour
-from behaviour.roaming_behaviour import RoamingBehaviour
 from behaviour.reached_behaviour import ReachedBehaviour
 from pvector import Pvector
 from node import Node
@@ -121,7 +120,7 @@ class HomingBehaviour(Behaviour):
                 self.update_next_node_vector()
                 host.velocity = Pvector.turn_vector(host.heading, host.velocity)
 
-                print('Going to Node {}'.format(host.node_in.node_id))
+                #print('Going to Node {}'.format(host.node_in.node_id))
 #---------------------------------------
     def update_target(self):
         host = self.host

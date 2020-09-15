@@ -8,6 +8,8 @@ from behaviour.aggressive_roaming_behaviour import AggressiveRoamingBehaviour
 from behaviour.careful_roaming_behaviour import CarefulRoamingBehaviour
 from behaviour.crashed_behaviour import CrashedBehaviour
 from behaviour.homing_behaviour import HomingBehaviour
+from behaviour.aggressive_homing_behaviour import AggressiveHomingBehaviour
+from behaviour.careful_homing_behaviour import CarefulHomingBehaviour
 from behaviour.inactive_behaviour import InactiveBehaviour
 
 
@@ -40,8 +42,8 @@ class Agent:
 
         self.delta = Pvector(0,0)
 
-        self.patience = 100 # percent
-        self.patience_increment = 1
+        self.patience = 200
+        self.patience_decrement = 1
         self.patience_threshold = 50
 
         #if distance is < than that agent crashes
@@ -59,6 +61,10 @@ class Agent:
             self.my_behaviour = AggressiveRoamingBehaviour(self)
         elif(type == 'homing'):
             self.my_behaviour = HomingBehaviour(self)
+        elif(type == 'aggressive_homing'):
+            self.my_behaviour = AggressiveHomingBehaviour(self)
+        elif(type == 'careful_homing'):
+            self.my_behaviour = CarefulHomingBehaviour(self)
 
     def set_starting_node(self, start_node):
         self.my_behaviour.set_starting_node(start_node)
@@ -86,10 +92,13 @@ class Agent:
     # TODO: test
     def patience_check(self):
         if(self.velocity.magnitude() == 0): #for homing agent: and goal is not reached
-            self.patience -= self.patience_increment
+            self.patience -= self.patience_decrement
         #behaviour change
-        if(self.patience < self.patience_threshold):
-            self.my_behaviour = AggressiveRoamingBehaviour(self)
+    #    if(self.patience < self.patience_threshold):
+    #        if isinstance(self.my_behaviour, RoamingBehaviour):
+    #            self.my_behaviour = AggressiveRoamingBehaviour(self)
+    #        else:
+    #            self.my_behaviour = AggressiveHomingBehaviour(self)
             #c = Converter()
             #long, lat = c.convert_point_to_geocoordinates(self.position.x, self.position.y)
             #print('agent# {} ran out of patience at {},{}'.format(self.agent_id, long, lat))
