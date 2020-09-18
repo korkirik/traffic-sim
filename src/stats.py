@@ -1,14 +1,15 @@
 import pandas as pd
 import numpy as np
-import json
+import math, json
 from pvector import Pvector
 
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import ColumnDataSource
-#from bokeh.palettes import PuBu5
+from bokeh.palettes import GnBu
+from bokeh.transform import cumsum
 from bokeh.layouts import gridplot
 
-def filter_agent_with_id(df_agents_file, agent_id):
+def find_agent_across_iterations(df_agents_file, agent_id):
 
     agent_complete_df = pd.DataFrame(columns=['agent_id', 'type', 'X', 'Y'])
     iter_max = df_agents_file.last_valid_index() #total number of iterations is +1
@@ -40,7 +41,42 @@ def find_mean(list, count):
     mean_value = sum/count
     return mean_value
 
+def count_agents_with_type(df, type):
+    one_type_df = df.loc[df['type'] == type]
+    one_type_df = one_type_df.reset_index(drop=True)
+    if(one_type_df.last_valid_index() == None):
+        d = {'type': [type], 'number': [0]}
+    else:
+        d = {'type': [type], 'number': [one_type_df.last_valid_index() + 1]}
+    df_result = pd.DataFrame.from_dict(d)
+    #print(df_result)
+    return df_result
+
+def find_agent_breakdown(df_agents_file):
+
+    breakdown_df = pd.DataFrame(columns=['type', 'number'])
+    first_df = pd.DataFrame(df_agents_file.iat[0,0])
+
+    breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'homing')])
+    breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'careful_homing')])
+    breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'agressive_homing')])
+    breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'roaming')])
+    breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'careful_roaming')])
+    breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'aggressive_roaming')])
+
+    breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'crashed')])
+    breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'inactive')])
+    breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'reached_goal')])
+
+    breakdown_df = breakdown_df.reset_index(drop=True)
+    return breakdown_df
+
+
+
 #begin here
+plot_width = 450
+plot_height = 450
+
 df_agents_file = pd.read_json("agents.json")
 df_agents_file.set_index('iteration', inplace = True)
 iter_max = df_agents_file.last_valid_index() #total number of iterations is +1
@@ -59,7 +95,7 @@ for i in range(0, agent_count, 1):
     element = dict()
     element['agent_id'] = i
 
-    df = filter_agent_with_id(df_agents_file, i)
+    df = find_agent_across_iterations(df_agents_file, i)
     distance, mean_v = calculate_distance_mean_velocity(df)
 
     element['distance'] = distance
@@ -89,10 +125,10 @@ source1 = ColumnDataSource(data=dict(x_list=x_list, dist_list=dist_list))
 
 p1 = figure(
     title="Distances Bar Plot",
-    plot_width=600,
-    plot_height=600,
+    plot_width=plot_width,
+    plot_height=plot_height,
     x_range=[-0.5, len(x_list)],
-    y_range=[round(min(dist_list)*0.95), round(max(dist_list)*1.05)],
+    y_range=[min(dist_list)*0.95, max(dist_list)*1.15],
     x_axis_label='Agent id',
     y_axis_label='Distance',
     #match_aspect = True , aspect_scale = 0.6,
@@ -103,16 +139,20 @@ p1.vbar(x='x_list', top='dist_list', color = '#8BE7D0', width=0.9, source=source
 string1 = 'Global Mean: {}'.format(round(mean_distance,2))
 p1.line(x = list(range(-1, agent_count + 1)), y = mean_distance, line_width=2, color = '#27C19A', legend_label=string1)
 p1.xgrid.grid_line_color = None
-
+p1.legend.background_fill_alpha = 0.4
+#legend customisation
+#p1.legend.label_standoff = 50
+#p1.legend.margin = 50
+#p1.legend.padding = 50
 #-------------------Velocities Plot -------------------------------
 source2 = ColumnDataSource(data=dict(x_list=x_list, v_list=v_list))
 
 p2 = figure(
     title="Mean Velocities Bar Plot",
-    plot_width=600,
-    plot_height=600,
+    plot_width=plot_width,
+    plot_height=plot_height,
     x_range=[-0.5, len(x_list)],
-    y_range=[min(v_list)*0.9, max(v_list)*1.1],
+    y_range=[min(v_list)*0.9, max(v_list)*1.2],
     x_axis_label='Agent id',
     y_axis_label='Mean Velocity',
     #match_aspect = True , aspect_scale = 0.6,
@@ -123,8 +163,31 @@ p2.vbar(x='x_list', top='v_list', color = '#8BE7D0', width=0.9, source=source2)
 string2 = 'Global Mean: {}'.format(round(mean_velocity,2))
 p2.line(x = list(range(-1, agent_count + 1)), y = mean_velocity, line_width=2, color = '#27C19A', legend_label=string2)
 p2.xgrid.grid_line_color = None
+p2.legend.background_fill_alpha = 0.4
+
 #------------------------------------------------------------------
+data = find_agent_breakdown(df_agents_file)
 
+data['angle'] = data['number']/data['number'].sum() * 2*math.pi
+data['color'] = GnBu[len(data.index)]
+data = data[data.number != 0]
+print(data)
+p3 = figure(
+    title="Agent Breakdown Chart",
+    plot_width=plot_width,
+    plot_height=plot_height,
+    x_range=(-0.5, 1.0),
+    toolbar_location=None,
+    tools="hover",
+    tooltips="@type: @number")
 
-plots = gridplot([[p1, p2]], toolbar_location= "right")
+p3.wedge(x=0, y=1, radius=0.4,
+        start_angle=cumsum('angle', include_zero=True), end_angle=cumsum('angle'),
+        line_color="white", fill_color='color', legend_field='type', source=data)
+
+p3.axis.axis_label=None
+p3.axis.visible=False
+p3.grid.grid_line_color = None
+#-------------------------------------------------------------------
+plots = gridplot([[p1, p2, p3]], toolbar_location= "right")
 show(plots)
