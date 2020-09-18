@@ -52,10 +52,13 @@ def count_agents_with_type(df, type):
     #print(df_result)
     return df_result
 
-def find_agent_breakdown(df_agents_file):
+def find_agent_breakdown(df_agents_file, point):
 
     breakdown_df = pd.DataFrame(columns=['type', 'number'])
-    first_df = pd.DataFrame(df_agents_file.iat[0,0])
+    if(point == 'start'):
+        first_df = pd.DataFrame(df_agents_file.iat[0,0])
+    elif(point == 'end'):
+        first_df = pd.DataFrame(df_agents_file.iat[-1,0])
 
     breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'homing')])
     breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'careful_homing')])
@@ -165,15 +168,15 @@ p2.line(x = list(range(-1, agent_count + 1)), y = mean_velocity, line_width=2, c
 p2.xgrid.grid_line_color = None
 p2.legend.background_fill_alpha = 0.4
 
-#------------------------------------------------------------------
-data = find_agent_breakdown(df_agents_file)
+#--------------------Agent Breakdown Chart -------------------------
+data = find_agent_breakdown(df_agents_file, 'start')
 
 data['angle'] = data['number']/data['number'].sum() * 2*math.pi
 data['color'] = GnBu[len(data.index)]
 data = data[data.number != 0]
 print(data)
 p3 = figure(
-    title="Agent Breakdown Chart",
+    title="Agent Breakdown Chart: Start",
     plot_width=plot_width,
     plot_height=plot_height,
     x_range=(-0.5, 1.0),
@@ -189,5 +192,29 @@ p3.axis.axis_label=None
 p3.axis.visible=False
 p3.grid.grid_line_color = None
 #-------------------------------------------------------------------
-plots = gridplot([[p1, p2, p3]], toolbar_location= "right")
+#--------------------Agent Breakdown Chart End----------------------
+data4 = find_agent_breakdown(df_agents_file, 'end')
+
+data4['angle'] = data4['number']/data4['number'].sum() * 2*math.pi
+data4['color'] = GnBu[len(data4.index)]
+data4 = data4[data4.number != 0]
+print(data4)
+p4= figure(
+    title="Agent Breakdown Chart: End",
+    plot_width=plot_width,
+    plot_height=plot_height,
+    x_range=(-0.5, 1.0),
+    toolbar_location=None,
+    tools="hover",
+    tooltips="@type: @number")
+
+p4.wedge(x=0, y=1, radius=0.4,
+        start_angle=cumsum('angle', include_zero=True), end_angle=cumsum('angle'),
+        line_color="white", fill_color='color', legend_field='type', source=data4)
+
+p4.axis.axis_label=None
+p4.axis.visible=False
+p4.grid.grid_line_color = None
+#-------------------------------------------------------------------
+plots = gridplot([[p1, p2, p3, p4], [None, None, None]], toolbar_location= "right")
 show(plots)
