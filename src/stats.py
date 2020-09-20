@@ -62,7 +62,7 @@ def find_agent_breakdown(df_agents_file, point):
 
     breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'homing')])
     breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'careful_homing')])
-    breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'agressive_homing')])
+    breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'aggressive_homing')])
     breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'roaming')])
     breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'careful_roaming')])
     breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'aggressive_roaming')])

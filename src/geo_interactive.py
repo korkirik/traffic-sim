@@ -29,9 +29,9 @@ aggressive_color = '#da3447' #Red
 neutral_color = '#34c85d' #Green
 careful_color = '#0044cc' #Blue
 
-inactive_color = '#9421a1' #Magenta
+inactive_color = '#ff7700' #Orange
 crashed_color = '#747474' #Grey
-reached_goal_color = '#ff7700' #Orange
+reached_goal_color = '#9421a1' #Magenta
 
 #Map Elements Colors
 streets_color = '#d3d3d3'   #Light Grey
@@ -134,15 +134,15 @@ source_agents5 = ColumnDataSource (find_agents_with_type(single_iteration_data, 
 plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = careful_color, size=5, source=source_agents5)
 
 source_agents6 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'reached_goal'))
-plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = reached_goal_color, size=5, source=source_agents6)
+plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = reached_goal_color, size=5, source=source_agents6)
 
 source_agents7 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'inactive'))
-plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = inactive_color, size=5, source=source_agents7)
+plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = inactive_color, size=5, source=source_agents7)
 
 source_agents8 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'careful_homing'))
 plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = careful_color, size=5, source=source_agents8)
 
-source_agents9 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'agressive_homing'))
+source_agents9 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'aggressive_homing'))
 plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = aggressive_color, size=5, source=source_agents9)
 
 def animate_update():
@@ -166,7 +166,7 @@ def slider_update(attrname, old, new):
     source_agents6.data = find_agents_with_type(df, 'reached_goal')
     source_agents7.data = find_agents_with_type(df, 'inactive')
     source_agents8.data = find_agents_with_type(df, 'careful_homing')
-    source_agents9.data = find_agents_with_type(df, 'agressive_homing')
+    source_agents9.data = find_agents_with_type(df, 'aggressive_homing')
 
 slider = Slider(start=0, end=iter_max, value=1, step=1, title="Iteration")
 slider.on_change('value', slider_update)
