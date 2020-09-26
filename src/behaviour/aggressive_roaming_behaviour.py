@@ -8,9 +8,11 @@ class AggressiveRoamingBehaviour(RoamingBehaviour):
         self.host = host
 
         host.agent_type = 'aggressive_roaming'
-        host.v_max = host.v_max * 1.25
-        host.agent_range = 0.75 * host.agent_range
-        host.detection_angle = host.detection_angle * 0.5
+        t = host.v_max
+        host.v_max = host.v_max * 1.1 #25
+        print('v_max:{} changing to {}'.format(t,host.v_max))
+        #host.agent_range = 0.75 * host.agent_range
+        #host.detection_angle = host.detection_angle * 0.5
 
     def update_behaviour(self):
         host = self.host

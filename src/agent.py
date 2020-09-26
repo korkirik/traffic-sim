@@ -53,16 +53,19 @@ class Agent:
 #--------------setters-------------------
     def set_behaviour(self, type):
         self.my_behaviour = Behaviour()
+        self.not_aggressive = 1
         if(type == 'roaming'):
             self.my_behaviour = RoamingBehaviour(self)
         elif(type == 'careful_roaming'):
             self.my_behaviour = CarefulRoamingBehaviour(self)
         elif(type == 'aggressive_roaming'):
             self.my_behaviour = AggressiveRoamingBehaviour(self)
+            self.not_aggressive = 0
         elif(type == 'homing'):
             self.my_behaviour = HomingBehaviour(self)
         elif(type == 'aggressive_homing'):
             self.my_behaviour = AggressiveHomingBehaviour(self)
+            self.not_aggressive = 0
         elif(type == 'careful_homing'):
             self.my_behaviour = CarefulHomingBehaviour(self)
         else:
@@ -98,16 +101,17 @@ class Agent:
             self.patience -= self.patience_decrement
 
         #behaviour change
-        if(self.patience < self.patience_threshold):
-            if isinstance(self.my_behaviour, RoamingBehaviour) or isinstance(self.my_behaviour, CarefulRoamingBehaviour):
-                self.my_behaviour = AggressiveRoamingBehaviour(self)
-
-    #        if isinstance(self.my_behaviour, HomingBehaviour) or isinstance(self.my_behaviour, CarefulHomingBehaviour):
-                #behaviour
-    #            self.my_behaviour = AggressiveHomingBehaviour(self)
-            #c = Converter()
-            #long, lat = c.convert_point_to_geocoordinates(self.position.x, self.position.y)
-            #print('agent# {} ran out of patience at {},{}'.format(self.agent_id, long, lat))
+        if(self.not_aggressive):
+            if(self.patience < self.patience_threshold):
+                if isinstance(self.my_behaviour, RoamingBehaviour) or isinstance(self.my_behaviour, CarefulRoamingBehaviour):
+                    self.my_behaviour = AggressiveRoamingBehaviour(self)
+                    self.not_aggressive = 0
+        #        if isinstance(self.my_behaviour, HomingBehaviour) or isinstance(self.my_behaviour, CarefulHomingBehaviour):
+                    #behaviour
+        #            self.my_behaviour = AggressiveHomingBehaviour(self)
+                #c = Converter()
+                #long, lat = c.convert_point_to_geocoordinates(self.position.x, self.position.y)
+                #print('agent# {} ran out of patience at {},{}'.format(self.agent_id, long, lat))
 
     def check_crash(self):
         for agent in self.agent_list:
