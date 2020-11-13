@@ -22,17 +22,17 @@ Yu-Jeng Kuo, Arindam Mahanta, Anoshan Indreswaran
 from map import *
 from streets_parser import *
 from simulation import *
+from area import Area
 
 from testing_maps import *
 
 map = Map()
-psparser = Parser()
-psparser.parse_file('export_map_data_smaller.json')
+#psparser = Parser()
+#psparser.parse_file('export_map_data_smaller.json')
 
-#psparser = TJunction()
-#psparser = ParallelTracks()
-#psparser = MapOne()
-psparser.convert_to_mercator_coordinates()
+psparser = WalkingMap()
+
+#psparser.convert_to_mercator_coordinates()
 map.load_streets(psparser.get_street_segment_list())
 map.generate_nodes()
 
@@ -42,10 +42,14 @@ map.print_nodes_stats(0)
 simulation = Simulation()
 simulation.load_nodes(map.get_node_list())
 
-simulation.create_roaming_agents(20, 'roaming')
+Area.set_all_node_list(list())
+area = Area(0,0,1)
+area.set_test_coordinates(1,1,3)
+simulation.create_walker(100, area)
+#simulation.create_roaming_agents(20, 'roaming')
 #simulation.create_roaming_agents(20, 'careful_roaming')
 #simulation.create_roaming_agents(10, 'aggressive_roaming')
-simulation.create_homing_agents(15, 'homing')
-simulation.create_homing_agents(5, 'careful_homing')
+#simulation.create_homing_agents(15, 'homing')
+#simulation.create_homing_agents(5, 'careful_homing')
 #simulation.create_homing_agents(5, 'aggressive_homing')
-simulation.start_simulation(1500)
+simulation.start_simulation(1000)

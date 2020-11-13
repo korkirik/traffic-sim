@@ -17,8 +17,8 @@ import numpy as np
 import json
 import random
 
-#Colors shown in file palette_two.pdf
-#agents_rim_color = '#f31649'#Deep Red
+#f31649'#Deep Red
+walker_color = '#34c85d' # Green'
 
 #Agent Type Colors
 agents_color = '#ffffff' #White
@@ -57,9 +57,9 @@ c = Converter()
 tile_provider = get_provider(OSM)
 
 plot = figure(title='Traffic Sim', plot_width=600,  plot_height=600,
-                x_range=c.convert_longitude_range(6.105, 6.13), y_range=c.convert_latitude_range(51.77, 51.788),
-                x_axis_type="mercator", y_axis_type="mercator",
-                #match_aspect = True , aspect_scale = 0.6,
+                #x_range=c.convert_longitude_range(6.105, 6.13), y_range=c.convert_latitude_range(51.77, 51.788),
+                #x_axis_type="mercator", y_axis_type="mercator",
+                match_aspect = True , aspect_scale = 1, #0.6,
                 tools="pan, wheel_zoom, reset", active_drag="pan", active_scroll = "wheel_zoom")
 #plot.add_tile(tile_provider) # Shows open maps in the background
 
@@ -145,6 +145,9 @@ plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = careful_color
 source_agents9 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'aggressive_homing'))
 plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = aggressive_color, size=5, source=source_agents9)
 
+source_agents10 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'walker'))
+plot.circle(x = 'X',y = 'Y',fill_color= nodes_color, line_color = walker_color, size=4, source=source_agents10)
+
 def animate_update():
     iteration = slider.value + 1
     if iteration > iter_max:
@@ -167,6 +170,7 @@ def slider_update(attrname, old, new):
     source_agents7.data = find_agents_with_type(df, 'inactive')
     source_agents8.data = find_agents_with_type(df, 'careful_homing')
     source_agents9.data = find_agents_with_type(df, 'aggressive_homing')
+    source_agents10.data = find_agents_with_type(df, 'walker')
 
 slider = Slider(start=0, end=iter_max, value=1, step=1, title="Iteration")
 slider.on_change('value', slider_update)

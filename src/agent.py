@@ -11,7 +11,7 @@ from behaviour.homing_behaviour import HomingBehaviour
 from behaviour.aggressive_homing_behaviour import AggressiveHomingBehaviour
 from behaviour.careful_homing_behaviour import CarefulHomingBehaviour
 from behaviour.inactive_behaviour import InactiveBehaviour
-
+from behaviour.walker import Walker
 
 import random, math
 
@@ -68,11 +68,16 @@ class Agent:
             self.not_aggressive = 0
         elif(type == 'careful_homing'):
             self.my_behaviour = CarefulHomingBehaviour(self)
+        elif(type == 'walker'):
+            self.my_behaviour = Walker(self)
         else:
             self.my_behaviour = InactiveBehaviour(self)
 
     def set_starting_node(self, start_node):
         self.my_behaviour.set_starting_node(start_node)
+
+    def set_closest_node(self, node):
+        self.my_behaviour.set_closest_node(node)
 
     def set_target_node(self, target_node):
         # TODO: check if it is homing type
@@ -93,6 +98,8 @@ class Agent:
         self.alpha = self.v_max/4
         self.beta =  2 * self.alpha
         self.approach_error = 2 * self.alpha
+        self.agent_range = 40 * self.v_max
+        self.agent_close_range = 10 * self.v_max
 #------------State Flow/Control---------------
 
     # TODO: test

@@ -1,9 +1,11 @@
 from map import *
 from agent import *
 from node import Node
+from pvector import Pvector
 import numpy as np
 import random
 import json
+import math
 
 from area import Area
 
@@ -57,6 +59,36 @@ class Simulation:
 
         print('homing agents created {}'.format(number))
         self.agent_count += number
+
+    def create_walker(self, number, area):
+        for i in range(number):
+            walker = Agent(self.agent_id, 'walker')
+            self.agent_list.append(walker)
+            walker.add_agent_list(self.agent_list)
+
+            r = area.radius*random.random()
+            phi = 2*math.pi*random.random()
+            x = r*math.cos(phi)
+            y = r*math.sin(phi)
+            walker.position = Pvector(x,y)
+            node = self.closest_node(walker.position)
+            walker.set_closest_node(node)
+            self.agent_id +=1
+
+        self.agent_count += number
+
+    def closest_node(self, point):
+        minimum = None
+        closest_node = None
+
+        for node in self.node_list:
+            d = node.position - point
+            distance = d.magnitude()
+            if(minimum == None or distance < minimum):
+                minimum = distance
+                closest_node = node
+
+        return closest_node
 
     def random_node(self):
         l = len(self.node_list)

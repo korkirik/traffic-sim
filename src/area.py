@@ -18,7 +18,7 @@ class Area:
         print('Nodes in area: {}'.format(len(self.node_list)) )
 
     def find_nodes(self, x, y, radius):
-        if(len(Area.all_node_list) == 0):
+        if(len(Area.all_node_list) == 0 or Area == None):
             print('class variable all_node_list is empty')
 
         center = Pvector(x,y)
@@ -27,3 +27,12 @@ class Area:
             distance = distance_vector.magnitude()
             if(distance <= radius):
                 self.node_list.append(node)
+
+    def set_test_coordinates(self,x,y,radius):
+        self.x = x
+        self.y = y
+        self.radius = radius
+
+        self.node_list = list()
+        self.find_nodes(x,y,radius)
+        print('Nodes in area: {}'.format(len(self.node_list)) )

@@ -29,9 +29,6 @@ class ParallelTracks(Parser):
         self.street_segment_list.append(street2)
         self.street_segment_list.append(street3)
 
-import random
-from streets_parser import Parser
-from streetsegment import *
 
 class MapOne(Parser):
     def __init__(self):
@@ -63,3 +60,21 @@ class MapOne(Parser):
         self.street_segment_list.append(street10)
         self.street_segment_list.append(street11)
         self.street_segment_list.append(street12)
+
+
+class WalkingMap(Parser):
+    def __init__(self):
+            self.street_segment_list = list()
+            self.get_data()
+
+    def get_data(self):
+        street1 = StreetSegment(Pvector(1,1), Pvector(6,1))
+        street2 = StreetSegment(Pvector(6,1), Pvector(11,1))
+        street3 = StreetSegment(Pvector(11,1), Pvector(12,1.25))
+        street4 = StreetSegment(Pvector(7,2), Pvector(7,4))
+        street5 = StreetSegment(Pvector(6,1), Pvector(7,2))
+        self.street_segment_list.append(street1)
+        self.street_segment_list.append(street2)
+        self.street_segment_list.append(street3)
+        self.street_segment_list.append(street4)
+        self.street_segment_list.append(street5)
