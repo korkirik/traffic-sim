@@ -11,6 +11,7 @@ from behaviour.homing_behaviour import HomingBehaviour
 from behaviour.aggressive_homing_behaviour import AggressiveHomingBehaviour
 from behaviour.careful_homing_behaviour import CarefulHomingBehaviour
 from behaviour.inactive_behaviour import InactiveBehaviour
+from behaviour.reached_behaviour import ReachedBehaviour
 from behaviour.walker import Walker
 
 import random, math
@@ -70,6 +71,8 @@ class Agent:
             self.my_behaviour = CarefulHomingBehaviour(self)
         elif(type == 'walker'):
             self.my_behaviour = Walker(self)
+        elif(type == 'reached_goal'):
+            self.my_behaviour = ReachedBehaviour(self)
         else:
             self.my_behaviour = InactiveBehaviour(self)
 

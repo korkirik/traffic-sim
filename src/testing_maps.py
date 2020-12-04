@@ -68,11 +68,11 @@ class WalkingMap(Parser):
             self.get_data()
 
     def get_data(self):
-        street1 = StreetSegment(Pvector(1,1), Pvector(6,1))
-        street2 = StreetSegment(Pvector(6,1), Pvector(11,1))
-        street3 = StreetSegment(Pvector(11,1), Pvector(12,1.25))
-        street4 = StreetSegment(Pvector(7,2), Pvector(7,4))
-        street5 = StreetSegment(Pvector(6,1), Pvector(7,2))
+        street1 = StreetSegment(Pvector(1,1), Pvector(4,1))
+        street2 = StreetSegment(Pvector(4,1), Pvector(7,1))
+        street3 = StreetSegment(Pvector(7,1), Pvector(8,1.25))
+        street4 = StreetSegment(Pvector(5,2), Pvector(5,4))
+        street5 = StreetSegment(Pvector(4,1), Pvector(5,2))
         self.street_segment_list.append(street1)
         self.street_segment_list.append(street2)
         self.street_segment_list.append(street3)

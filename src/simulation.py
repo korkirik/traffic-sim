@@ -77,6 +77,45 @@ class Simulation:
 
         self.agent_count += number
 
+    def create_curiosities(self, number):
+        self.curiosity_list = list()
+        for i in range(number):
+            cur = Agent(self.agent_id, 'inactive')
+            self.agent_list.append(cur)
+            self.curiosity_list.append(cur)
+
+            r = 0.5 + 1 * random.random()
+            phi = 2*math.pi*random.random()
+            x = r*math.cos(phi)
+            y = r*math.sin(phi)
+            node = self.random_node()
+            cur.position = Pvector(x,y) + node.position
+            self.agent_id +=1
+        self.agent_count += number
+
+        for a in self.agent_list:
+            a.curiosity_list = self.curiosity_list
+
+    def create_destinations(self, number):
+        self.destination_list = list()
+        for i in range(number):
+            dest = Agent(self.agent_id, 'reached_goal')
+            self.agent_list.append(dest)
+            self.destination_list.append(dest)
+
+            r = 0.5 + 1 * random.random()
+            phi = 2*math.pi*random.random()
+            x = r*math.cos(phi)
+            y = r*math.sin(phi)
+            node = self.random_node()
+            dest.position = Pvector(x,y) + node.position
+            self.agent_id +=1
+        self.agent_count += number
+
+        for a in self.agent_list:
+            a.dest_list = self.destination_list
+
+
     def closest_node(self, point):
         minimum = None
         closest_node = None
