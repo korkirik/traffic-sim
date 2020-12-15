@@ -27,12 +27,12 @@ from area import Area
 from testing_maps import *
 
 map = Map()
-#psparser = Parser()
+psparser = Parser()
 #psparser.parse_file('export_map_data_smaller.json')
-
+#psparser.convert_to_mercator_coordinates()  #required for agents running on osm map
 psparser = WalkingMap()
 
-#psparser.convert_to_mercator_coordinates()
+
 map.load_streets(psparser.get_street_segment_list())
 map.generate_nodes()
 
@@ -44,9 +44,12 @@ simulation.load_nodes(map.get_node_list())
 
 Area.set_all_node_list(list())
 area = Area(0,0,1)
+area2 = Area(0,0,1)
 area.set_test_coordinates(1,1,3)
-simulation.create_walker(50, area)
-simulation.create_curiosities(50)
+area2.set_test_coordinates(5,2,4)
+simulation.create_walker(10, area)
+#simulation.create_roaming_walker(5, area2)
+simulation.create_curiosities(1)
 simulation.create_destinations(2)
 #simulation.create_roaming_agents(20, 'roaming')
 #simulation.create_roaming_agents(20, 'careful_roaming')
@@ -54,4 +57,4 @@ simulation.create_destinations(2)
 #simulation.create_homing_agents(15, 'homing')
 #simulation.create_homing_agents(5, 'careful_homing')
 #simulation.create_homing_agents(5, 'aggressive_homing')
-simulation.start_simulation(1000)
+simulation.start_simulation(100)

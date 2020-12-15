@@ -40,16 +40,16 @@ class Simulation:
 
         for i in range(number):
             agent = Agent(self.agent_id, type)
-            #agent.set_starting_node(self.node_list[i])
-            #agent.set_target_node(self.node_list[3]) # self.node_list[100]
+            agent.set_starting_node(self.random_node_from_list_and_pop(self.free_node_list))
+            agent.set_target_node(self.node_list[3]) # self.node_list[100]
             # TODO: remove this if block
             '''
             if(len(nodes_in_area1) < 1):
                 break
             '''
 
-            agent.set_starting_node(self.random_node_from_list_and_pop(self.free_node_list))
-            agent.set_target_node(self.node_list[0])#random_node_from_list(area.node_list))
+            #agent.set_starting_node(self.random_node_from_list_and_pop(self.free_node_list))
+            #agent.set_target_node(self.node_list[0])#random_node_from_list(area.node_list))
 
             agent.randomize_velocity()
             self.agent_list.append(agent)
@@ -65,6 +65,24 @@ class Simulation:
             walker = Agent(self.agent_id, 'walker')
             self.agent_list.append(walker)
             walker.add_agent_list(self.agent_list)
+
+            r = area.radius*random.random()
+            phi = 2*math.pi*random.random()
+            x = r*math.cos(phi)
+            y = r*math.sin(phi)
+            walker.position = Pvector(x,y)
+            node = self.closest_node(walker.position)
+            walker.set_closest_node(node)
+            self.agent_id +=1
+
+        self.agent_count += number
+
+    def create_roaming_walker(self, number, area):
+        for i in range(number):
+            walker = Agent(self.agent_id, 'walkerroaming')
+            self.agent_list.append(walker)
+            walker.add_agent_list(self.agent_list)
+            walker.my_behaviour.set_roaming_area(Pvector(area.x, area.y), area.radius)
 
             r = area.radius*random.random()
             phi = 2*math.pi*random.random()

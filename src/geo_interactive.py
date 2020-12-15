@@ -61,7 +61,9 @@ plot = figure(title='Traffic Sim', plot_width=600,  plot_height=600,
                 #x_axis_type="mercator", y_axis_type="mercator",
                 match_aspect = True , aspect_scale = 1, #0.6,
                 tools="pan, wheel_zoom, reset", active_drag="pan", active_scroll = "wheel_zoom")
-#plot.add_tile(tile_provider) # Shows open maps in the background
+# Shows open maps in the background
+#plot.add_tile(tile_provider)
+
 
 #plot.xaxis.ticker = SingleIntervalTicker(interval=1)
 plot.xaxis.axis_label = "Coordinate X longitude"
