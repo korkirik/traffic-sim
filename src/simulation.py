@@ -9,6 +9,11 @@ import math
 
 from area import Area
 
+class MapObject:
+    def __init__(self, type):
+        self.position = Pvector(0,0)
+        self.type = type
+
 class Simulation:
     def __init__(self):
         self.agent_count = 0
@@ -98,8 +103,8 @@ class Simulation:
     def create_curiosities(self, number):
         self.curiosity_list = list()
         for i in range(number):
-            cur = Agent(self.agent_id, 'inactive')
-            self.agent_list.append(cur)
+            cur = MapObject('curiosity')
+            #self.agent_list.append(cur)
             self.curiosity_list.append(cur)
 
             r = 0.5 + 1 * random.random()
@@ -108,8 +113,8 @@ class Simulation:
             y = r*math.sin(phi)
             node = self.random_node()
             cur.position = Pvector(x,y) + node.position
-            self.agent_id +=1
-        self.agent_count += number
+            #self.agent_id +=1
+        #self.agent_count += number
 
         for a in self.agent_list:
             a.curiosity_list = self.curiosity_list
@@ -117,8 +122,8 @@ class Simulation:
     def create_destinations(self, number):
         self.destination_list = list()
         for i in range(number):
-            dest = Agent(self.agent_id, 'reached_goal')
-            self.agent_list.append(dest)
+            dest = MapObject('destination')
+            #self.agent_list.append(dest)
             self.destination_list.append(dest)
 
             r = 0.5 + 1 * random.random()
@@ -127,8 +132,8 @@ class Simulation:
             y = r*math.sin(phi)
             node = self.random_node()
             dest.position = Pvector(x,y) + node.position
-            self.agent_id +=1
-        self.agent_count += number
+            #self.agent_id +=1
+        #self.agent_count += number
 
         for a in self.agent_list:
             a.dest_list = self.destination_list
@@ -162,7 +167,52 @@ class Simulation:
         n = random.randrange(0,l,1)
         return list_.pop(n)
 
+    def save_map_objects_json(self):
+        data = dict()
+#code smell
+        element_list = list()
+        data['destinations'] = element_list
+
+        for index, o in enumerate(self.destination_list):
+            element = dict()
+            element['type'] = o.type
+            element['X'] = o.position.x
+            element['Y'] = o.position.y
+            element_list.append(element)
+
+        element_list2 = list()
+        data['curiosities'] = element_list2
+
+        for index, o in enumerate(self.curiosity_list):
+            element = dict()
+            element['type'] = o.type
+            element['X'] = o.position.x
+            element['Y'] = o.position.y
+            element_list2.append(element)
+
+        with open('map_objects.json', 'w') as f:
+            json.dump(data, f, indent = 2)
+        print('Map objects saved')
+
+    def read(self):
+        with open('map_objects.json') as f:
+            map_objects = json.load(f)
+
+            self.curiosity_list = list()
+            for o in map_objects['curiosities']:
+                new_node = MapObject(o['type'])
+                new_node.position = Pvector(o['X'], o['Y'])
+                self.curiosity_list.append(new_node)
+
+            self.destination_list = list()
+            for o in map_objects['destinations']:
+                new_node = MapObject(o['type'])
+                new_node.position = Pvector(o['X'], o['Y'])
+                self.destination_list.append(new_node)
+
+
     def start_simulation(self, time):
+        self.save_map_objects_json()
         self.iter_max = time
 
         it_list = list()

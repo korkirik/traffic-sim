@@ -180,7 +180,8 @@ class Walker(Behaviour):
         for c in self.visible_curiosities:
             delta_r = c.position - self.host.position
             u_cur = delta_r.multiply(self.u_max / delta_r.magnitude())
-            c_cur = delta_r.magnitude()/self.vision_range
+            #c_cur = delta_r.magnitude()/self.vision_range
+            c_cur = 0.5
             u_cur = u_cur.multiply(c_cur)
             u_sum = u_sum + u_cur
             n = n + 1

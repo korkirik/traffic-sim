@@ -113,6 +113,26 @@ with open('map.json') as f:
             plot.line(xa,ya,line_color = streets_color, line_width=3)
 #---------------------------
 
+with open('map_objects.json') as f2:
+    map_objects = json.load(f2)
+
+
+    x2 = list()
+    y2 = list()
+    for o in map_objects['destinations']:
+        x2.append(o['X'])
+        y2.append(o['Y'])
+
+    x3 = list()
+    y3 = list()
+    for o in map_objects['curiosities']:
+        x3.append(o['X'])
+        y3.append(o['Y'])
+
+        #//add_node_labels(x1,y1,nodes_ids)
+    plot.circle(x2,y2,fill_color = nodes_color, line_color = '#9421a1', size=4)
+    plot.circle(x3,y3,fill_color = nodes_color, line_color = '#0044cc', size=4)
+#---------------------------
 #Reading data from agents.json
 df_agents_file = pd.read_json("agents.json")
 iter_max = df_agents_file.iloc[-1,0] #total number of iterations is +1
