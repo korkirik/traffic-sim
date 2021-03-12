@@ -28,7 +28,8 @@ from testing_maps import *
 
 map = Map()
 psparser = Parser()
-psparser.parse_file('export_map_data_smaller.json')
+#psparser.parse_file('export_map_data_smaller.json')
+psparser.parse_file('map2.geojson')
 psparser.convert_to_mercator_coordinates()  #required for agents running on osm map
 
 map.load_streets(psparser.get_street_segment_list())
@@ -39,17 +40,16 @@ map.print_nodes_stats(0)
 
 simulation = Simulation()
 simulation.load_nodes(map.get_node_list())
+simulation.add_bus_stops()
 
 Area.set_all_node_list(list())
-area = Area(0,0,1)
-area2 = Area(0,0,1)
-simulation.read()
-area.set_test_coordinates(1,1,3)
-area2.set_test_coordinates(5,2,4)
-simulation.create_walker(50, area)
+#area = Area(0,0,1)
+#area2 = Area(0,0,1)
 
+#area.set_test_coordinates(1,1,3)
+#area2.set_test_coordinates(5,2,4)
 
-simulation.create_roaming_agents(20, 'roaming')
+#simulation.create_roaming_agents(20, 'roaming')
 #simulation.create_roaming_agents(20, 'careful_roaming')
 #simulation.create_roaming_agents(10, 'aggressive_roaming')
 simulation.create_homing_agents(15, 'homing')

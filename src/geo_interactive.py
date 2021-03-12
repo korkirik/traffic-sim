@@ -57,8 +57,8 @@ c = Converter()
 tile_provider = get_provider(OSM)
 
 plot = figure(title='Traffic Sim', plot_width=600,  plot_height=600,
-                #x_range=c.convert_longitude_range(6.105, 6.13), y_range=c.convert_latitude_range(51.77, 51.788),
-                #x_axis_type="mercator", y_axis_type="mercator",
+                x_range=c.convert_longitude_range(6.132, 6.149), y_range=c.convert_latitude_range(51.786, 51.798),
+                x_axis_type="mercator", y_axis_type="mercator",
                 match_aspect = True , aspect_scale = 1, #0.6,
                 tools="pan, wheel_zoom, reset", active_drag="pan", active_scroll = "wheel_zoom")
 # Shows open maps in the background
@@ -112,7 +112,7 @@ with open('map.json') as f:
             connected_node.remove_connected_node_with_id(node.node_id)
             plot.line(xa,ya,line_color = streets_color, line_width=3)
 #---------------------------
-
+''' walkers
 with open('map_objects.json') as f2:
     map_objects = json.load(f2)
 
@@ -133,6 +133,22 @@ with open('map_objects.json') as f2:
     plot.circle(x2,y2,fill_color = nodes_color, line_color = '#9421a1', size=4)
     plot.circle(x3,y3,fill_color = nodes_color, line_color = '#0044cc', size=4)
 #---------------------------
+'''
+#-----loading bus stops-----
+with open('bus_stops.json') as f2:
+    map_objects = json.load(f2)
+
+
+    x2 = list()
+    y2 = list()
+    for o in map_objects['bus_stops']:
+        x2.append(o['X'])
+        y2.append(o['Y'])
+
+        #//add_node_labels(x1,y1,nodes_ids)
+    plot.circle(x2,y2,fill_color = nodes_color, line_color = '#ff0000', size=4)
+#-----loading bus stops-----
+
 #Reading data from agents.json
 df_agents_file = pd.read_json("agents.json")
 iter_max = df_agents_file.iloc[-1,0] #total number of iterations is +1
@@ -167,8 +183,8 @@ plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = careful_color
 source_agents9 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'aggressive_homing'))
 plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = aggressive_color, size=5, source=source_agents9)
 
-source_agents10 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'walker'))
-plot.circle(x = 'X',y = 'Y',fill_color= nodes_color, line_color = walker_color, size=4, source=source_agents10)
+#source_agents10 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'walker'))
+#plot.circle(x = 'X',y = 'Y',fill_color= nodes_color, line_color = walker_color, size=4, source=source_agents10)
 
 def animate_update():
     iteration = slider.value + 1
@@ -192,7 +208,7 @@ def slider_update(attrname, old, new):
     source_agents7.data = find_agents_with_type(df, 'inactive')
     source_agents8.data = find_agents_with_type(df, 'careful_homing')
     source_agents9.data = find_agents_with_type(df, 'aggressive_homing')
-    source_agents10.data = find_agents_with_type(df, 'walker')
+    #source_agents10.data = find_agents_with_type(df, 'walker')
 
 slider = Slider(start=0, end=iter_max, value=1, step=1, title="Iteration")
 slider.on_change('value', slider_update)

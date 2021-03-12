@@ -19,7 +19,7 @@ simulation.load_nodes(map.get_node_list())
 Area.set_all_node_list(list())
 area = Area(0,0,1)
 area2 = Area(0,0,1)
-simulation.read()
+simulation.read_additional_objects()
 area.set_test_coordinates(1,1,3)
 area2.set_test_coordinates(5,2,4)
 

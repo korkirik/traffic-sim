@@ -8,11 +8,14 @@ import json
 import math
 
 from area import Area
+from converter import *
 
 class MapObject:
-    def __init__(self, type):
+    def __init__(self, position, type, name):
         self.position = Pvector(0,0)
+        self.position = position
         self.type = type
+        self.name = name
 
 class Simulation:
     def __init__(self):
@@ -41,20 +44,23 @@ class Simulation:
     def create_homing_agents(self, number, type): #, start_area, target_area):
 
         Area.set_all_node_list(self.node_list) # TODO: move into main
-        area = Area(6.124, 51.78, 100)
+        area1 = Area(6.130314, 51.794326, 200)
+        area2 = Area(6.14, 51.78, 200)
 
         for i in range(number):
             agent = Agent(self.agent_id, type)
-            agent.set_starting_node(self.random_node_from_list_and_pop(self.free_node_list))
-            agent.set_target_node(self.node_list[3]) # self.node_list[100]
+            #agent.set_starting_node(self.random_node_from_list_and_pop(self.free_node_list))
+
+            #Select a target for homing agents here
+            #agent.set_target_node(self.node_list[3]) # self.node_list[100]
             # TODO: remove this if block
             '''
             if(len(nodes_in_area1) < 1):
                 break
             '''
 
-            #agent.set_starting_node(self.random_node_from_list_and_pop(self.free_node_list))
-            #agent.set_target_node(self.node_list[0])#random_node_from_list(area.node_list))
+            agent.set_starting_node(self.random_node_from_list_and_pop(area1.node_list)) #self.free_node_list
+            agent.set_target_node(self.random_node_from_list(self.node_list)) #area2.node_list)) #self.node_list[0]
 
             agent.randomize_velocity()
             self.agent_list.append(agent)
@@ -64,6 +70,36 @@ class Simulation:
 
         print('homing agents created {}'.format(number))
         self.agent_count += number
+
+    def add_bus_stops(self):
+        self.bus_stop_list = list()
+        c = Converter()
+
+        self.bus_stop_list.append(MapObject(c.convert_point(6.130150214491974,51.79382451156521), 'bus_stop', 'Kleve Gruftstraße'))
+        self.bus_stop_list.append(MapObject(c.convert_point(6.138115701747227,51.790514881124665), 'bus_stop','Kleve Koekkoek-Platz'))
+        self.bus_stop_list.append(MapObject(c.convert_point(6.145389852402583, 51.78991430122071), 'bus_stop','Kleve Bahnhof'))
+        self.bus_stop_list.append(MapObject(c.convert_point(6.146449325029877, 51.793429736876085), 'bus_stop','Hochschule'))
+        #self.bus_stop_list.append(MapObject(c.convert_point(6.1524521086094595, 51.79567091213551), 'bus_stop','Kleve Schulstraße'))
+
+        for a in self.agent_list:
+            if(a.type == 'bus'):
+                #a.bus_stop_list = self.bus_stop_list
+                print('buses recieved bus stops')
+
+        data = dict()
+        element_list = list()
+        data['bus_stops'] = element_list
+
+        for index, o in enumerate(self.bus_stop_list):
+            element = dict()
+            element['type'] = o.type
+            element['X'] = o.position.x
+            element['Y'] = o.position.y
+            element_list.append(element)
+
+        with open('bus_stops.json', 'w') as f:
+            json.dump(data, f, indent = 2)
+        print('Bus stops saved')
 
     def create_walker(self, number, area):
         for i in range(number):
@@ -99,7 +135,7 @@ class Simulation:
             self.agent_id +=1
 
         self.agent_count += number
-
+#for walkers
     def create_curiosities(self, number):
         self.curiosity_list = list()
         for i in range(number):
@@ -118,7 +154,7 @@ class Simulation:
 
         for a in self.agent_list:
             a.curiosity_list = self.curiosity_list
-
+#for walkers
     def create_destinations(self, number):
         self.destination_list = list()
         for i in range(number):
@@ -167,6 +203,7 @@ class Simulation:
         n = random.randrange(0,l,1)
         return list_.pop(n)
 
+#for walkers
     def save_map_objects_json(self):
         data = dict()
 #code smell
@@ -193,8 +230,8 @@ class Simulation:
         with open('map_objects.json', 'w') as f:
             json.dump(data, f, indent = 2)
         print('Map objects saved')
-
-    def read(self):
+#for walkers
+    def read_additional_objects(self):
         with open('map_objects.json') as f:
             map_objects = json.load(f)
 
@@ -210,9 +247,8 @@ class Simulation:
                 new_node.position = Pvector(o['X'], o['Y'])
                 self.destination_list.append(new_node)
 
-
     def start_simulation(self, time):
-        self.save_map_objects_json()
+        #self.save_map_objects_json() Uncomment when launching walkers
         self.iter_max = time
 
         it_list = list()

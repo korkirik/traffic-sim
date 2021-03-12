@@ -110,15 +110,16 @@ class Agent:
 
     # TODO: test
     def patience_check(self):
-        if(self.velocity.magnitude() == 0): #for homing agent: and goal is not reached
-            self.patience -= self.patience_decrement
+        pass
+#        if(self.velocity.magnitude() == 0): #for homing agent: and goal is not reached
+#            self.patience -= self.patience_decrement
 
         #behaviour change
-        if(self.not_aggressive):
-            if(self.patience < self.patience_threshold):
-                if isinstance(self.my_behaviour, RoamingBehaviour) or isinstance(self.my_behaviour, CarefulRoamingBehaviour):
-                    self.my_behaviour = AggressiveRoamingBehaviour(self)
-                    self.not_aggressive = 0
+#        if(self.not_aggressive):
+#            if(self.patience < self.patience_threshold):
+#                if isinstance(self.my_behaviour, RoamingBehaviour) or isinstance(self.my_behaviour, CarefulRoamingBehaviour):
+#                    self.my_behaviour = AggressiveRoamingBehaviour(self)
+#                    self.not_aggressive = 0
         #        if isinstance(self.my_behaviour, HomingBehaviour) or isinstance(self.my_behaviour, CarefulHomingBehaviour):
                     #behaviour
         #            self.my_behaviour = AggressiveHomingBehaviour(self)

@@ -11,8 +11,9 @@ class HomingBehaviour(Behaviour):
         self.host = host
         host.agent_type = 'homing'
 
-        host.target_node = None
-        host.target_vector = Pvector(0,0)
+        self.current_target = None
+        self.target_list = list()
+        self.target_vector = Pvector(0,0)
         host.preceding_node = None
 
     def set_starting_node(self, start_node):
@@ -24,20 +25,36 @@ class HomingBehaviour(Behaviour):
     def set_target_node(self, node):
         host = self.host
 
-        host.target_node = node
+        self.current_target = node
         if(host.node_out == node):
             host.node_in = node
-            print('start is in the target node, setting inactive')
-            host.set_inactive() # TODO: here should be inactivation, so calls of the functions are not affecting agent
+            print('start is in the target node')
+            self.select_next_target()
+            #host.set_inactive() # TODO: here should be inactivation, so calls of the functions are not affecting agent
         else:
             self.update_target()
             self.find_initial_heading()
             self.update_next_node_vector()
 
+    def set_target_list(self, target_list):
+        self.target_list = target_list.copy()
+        self.set_target_node(self.target_list[0])
+
+    def select_next_target(self): #TODO test function
+        if not self.target_list: #empty sequence is false
+            host.set_inactive()
+        else:
+            index = list.index(self.current_target)
+            if index + 1 == len(self.target_list):
+                host.set_inactive()
+            else:
+                self.current_target = self.target_list[index + 1]
+
+
     def find_initial_heading(self):
         host = self.host
 
-        i = self.find_node_towards_direction(host.target_vector)
+        i = self.find_node_towards_direction(self.target_vector)
         host.node_in = host.node_out.connected_nodes[i]
 
     def pick_next_node(self):
@@ -55,7 +72,7 @@ class HomingBehaviour(Behaviour):
 
         #agent decides at intersection which path is next
         else:
-            index = self.find_node_towards_direction(host.target_vector)
+            index = self.find_node_towards_direction(self.target_vector)
         host.node_in = host.node_out.connected_nodes[index]
 
     def find_node_towards_direction(self, vector):
@@ -125,13 +142,13 @@ class HomingBehaviour(Behaviour):
     def update_target(self):
         host = self.host
 
-        host.target_vector = host.target_node.position - host.position
-        host.target_distance = host.target_vector.magnitude()
+        self.target_vector = self.current_target.position - host.position
+        self.target_distance = self.target_vector.magnitude()
 
     def check_if_arrved(self):
         host = self.host
 
-        if(host.target_distance < host.approach_error):
+        if(self.target_distance < host.approach_error):
             return True
         else:
             return False
