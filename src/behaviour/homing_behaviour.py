@@ -44,7 +44,7 @@ class HomingBehaviour(Behaviour):
         if not self.target_list: #empty sequence is false
             host.set_inactive()
         else:
-            index = list.index(self.current_target)
+            index = self.target_list.index(self.current_target)
             if index + 1 == len(self.target_list):
                 host.set_inactive()
             else:
@@ -59,6 +59,8 @@ class HomingBehaviour(Behaviour):
 
     def pick_next_node(self):
         host = self.host
+        index = 0
+        index2 = 0
 
         #one node means turning around
         if(len(host.node_out.connected_nodes) == 1):
@@ -69,12 +71,19 @@ class HomingBehaviour(Behaviour):
                 index = 1
             else:
                 index = 0
-
-        #agent decides at intersection which path is next
         else:
-            index = self.find_node_towards_direction(self.target_vector)
-        host.node_in = host.node_out.connected_nodes[index]
+            #index = self.find_node_towards_direction(self.target_vector)
+            index, index2 = self.find_two_nodes_towards_direction(self.target_vector) #agent decides at intersection which path is next
 
+        #host.node_in = host.node_out.connected_nodes[index]
+
+        #to avoid going back and forth stuck in the crossroad
+        if(host.node_out.connected_nodes[index] == host.preceding_node):
+            host.node_in = host.node_out.connected_nodes[index2]
+        else:
+            host.node_in = host.node_out.connected_nodes[index]
+
+## TODO: remove method
     def find_node_towards_direction(self, vector):
         host = self.host
         angles = list()
@@ -95,6 +104,34 @@ class HomingBehaviour(Behaviour):
                 index = i
 
         return index
+
+#TODO: function returns two angles
+    def find_two_nodes_towards_direction(self, vector):
+        host = self.host
+        angles = list()
+        for index, node in enumerate(host.node_out.connected_nodes):
+            direction = Pvector(0,0)
+            direction = node.position - host.node_out.position
+            angle = Pvector.angle_between(direction, vector)
+            angles.append(angle)
+
+        smallest_angle = 180
+        second_smallest_angle = 180
+        index = 0
+        index2 = 0
+        for i, angle in enumerate(angles):
+            if math.fabs(angle) < smallest_angle:
+                second_smallest_angle = smallest_angle
+                index2 = index
+
+                smallest_angle = math.fabs(angle)
+                index = i
+            else:
+                if math.fabs(angle) < second_smallest_angle:
+                    second_smallest_angle = math.fabs(angle)
+                    index2 = i
+
+        return index, index2
 
     def reached_next_node(self):
         pass
@@ -124,20 +161,19 @@ class HomingBehaviour(Behaviour):
         host.position = host.position + host.velocity
         self.update_next_node_vector()
 
+        self.update_target()
+        if self.check_if_arrved():
+            host.position = host.position - host.velocity #step back
+            self.select_next_target()
+
         if(host.distance_to_next_node < host.approach_error):
+            host.preceding_node = host.node_out
+            host.node_out = host.node_in
+            self.pick_next_node()
+            self.update_next_node_vector()
+            host.velocity = Pvector.turn_vector(host.heading, host.velocity)
 
-            self.update_target()
-            if self.check_if_arrved():
-                host.position = host.position - host.velocity #step back
-                host.my_behaviour = ReachedBehaviour(host)
-            else:
-                host.preceding_node = host.node_out
-                host.node_out = host.node_in
-                self.pick_next_node()
-                self.update_next_node_vector()
-                host.velocity = Pvector.turn_vector(host.heading, host.velocity)
-
-                #print('Going to Node {}'.format(host.node_in.node_id))
+            #print('Going to Node {}'.format(host.node_in.node_id))
 #---------------------------------------
     def update_target(self):
         host = self.host

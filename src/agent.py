@@ -82,6 +82,9 @@ class Agent:
     def set_starting_node(self, start_node):
         self.my_behaviour.set_starting_node(start_node)
 
+    def set_target_list(self, _list):
+        self.my_behaviour.set_target_list(_list)
+
     def set_closest_node(self, node):
         self.my_behaviour.set_closest_node(node)
 

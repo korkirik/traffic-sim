@@ -44,8 +44,8 @@ class Simulation:
     def create_homing_agents(self, number, type): #, start_area, target_area):
 
         Area.set_all_node_list(self.node_list) # TODO: move into main
-        area1 = Area(6.130314, 51.794326, 200)
-        area2 = Area(6.14, 51.78, 200)
+        #area1 = Area(6.130314, 51.794326, 200)
+        area1 = Area(6.1287, 51.7943, 50)
 
         for i in range(number):
             agent = Agent(self.agent_id, type)
@@ -60,7 +60,8 @@ class Simulation:
             '''
 
             agent.set_starting_node(self.random_node_from_list_and_pop(area1.node_list)) #self.free_node_list
-            agent.set_target_node(self.random_node_from_list(self.node_list)) #area2.node_list)) #self.node_list[0]
+            #agent.set_target_node(self.random_node_from_list(self.node_list)) #area2.node_list)) #self.node_list[0]
+            agent.set_target_list(self.bus_stop_list)
 
             agent.randomize_velocity()
             self.agent_list.append(agent)
@@ -75,8 +76,8 @@ class Simulation:
         self.bus_stop_list = list()
         c = Converter()
 
-        self.bus_stop_list.append(MapObject(c.convert_point(6.130150214491974,51.79382451156521), 'bus_stop', 'Kleve Gruftstraße'))
-        self.bus_stop_list.append(MapObject(c.convert_point(6.138115701747227,51.790514881124665), 'bus_stop','Kleve Koekkoek-Platz'))
+        self.bus_stop_list.append(MapObject(c.convert_point(6.13014,51.79376), 'bus_stop', 'Kleve Gruftstraße'))
+        self.bus_stop_list.append(MapObject(c.convert_point(6.1381,51.790532), 'bus_stop','Kleve Koekkoek-Platz'))
         self.bus_stop_list.append(MapObject(c.convert_point(6.145389852402583, 51.78991430122071), 'bus_stop','Kleve Bahnhof'))
         self.bus_stop_list.append(MapObject(c.convert_point(6.146449325029877, 51.793429736876085), 'bus_stop','Hochschule'))
         #self.bus_stop_list.append(MapObject(c.convert_point(6.1524521086094595, 51.79567091213551), 'bus_stop','Kleve Schulstraße'))
