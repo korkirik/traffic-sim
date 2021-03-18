@@ -25,13 +25,14 @@ agents_color = '#ffffff' #White
 homing_color = '#fbff00' #Yellow
 
 #Rim Colors
+bus_color = '#fca311' #Orange
 aggressive_color = '#da3447' #Red
 neutral_color = '#34c85d' #Green
 careful_color = '#0044cc' #Blue
 
-inactive_color = '#ff7700' #Orange
+inactive_color = '#9421a1' #Magenta
 crashed_color = '#747474' #Grey
-reached_goal_color = '#9421a1' #Magenta
+reached_goal_color = '#ec6f81' #Pink
 
 #Map Elements Colors
 streets_color = '#d3d3d3'   #Light Grey
@@ -145,8 +146,7 @@ with open('bus_stops.json') as f2:
         x2.append(o['X'])
         y2.append(o['Y'])
 
-        #//add_node_labels(x1,y1,nodes_ids)
-    plot.circle(x2,y2,fill_color = nodes_color, line_color = '#ff0000', size=4)
+    plot.circle(x2,y2,fill_color = nodes_color, line_color = '#00B4D8', size=4)
 #-----loading bus stops-----
 
 #Reading data from agents.json
@@ -165,11 +165,11 @@ plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = neutral_color
 source_agents3 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'crashed'))
 plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = crashed_color, size=5, source=source_agents3)
 
-source_agents4 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'aggressive_roaming'))
-plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = aggressive_color, size=5, source=source_agents4)
+#source_agents4 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'aggressive_roaming'))
+#plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = aggressive_color, size=5, source=source_agents4)
 
-source_agents5 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'careful_roaming'))
-plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = careful_color, size=5, source=source_agents5)
+#source_agents5 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'careful_roaming'))
+#plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = careful_color, size=5, source=source_agents5)
 
 source_agents6 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'reached_goal'))
 plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = reached_goal_color, size=5, source=source_agents6)
@@ -177,14 +177,17 @@ plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = reached_goal_
 source_agents7 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'inactive'))
 plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = inactive_color, size=5, source=source_agents7)
 
-source_agents8 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'careful_homing'))
-plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = careful_color, size=5, source=source_agents8)
+#source_agents8 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'careful_homing'))
+#plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = careful_color, size=5, source=source_agents8)
 
-source_agents9 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'aggressive_homing'))
-plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = aggressive_color, size=5, source=source_agents9)
+#source_agents9 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'aggressive_homing'))
+#plot.circle(x = 'X',y = 'Y',fill_color= homing_color, line_color = aggressive_color, size=5, source=source_agents9)
 
 #source_agents10 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'walker'))
 #plot.circle(x = 'X',y = 'Y',fill_color= nodes_color, line_color = walker_color, size=4, source=source_agents10)
+
+source_agents11 = ColumnDataSource (find_agents_with_type(single_iteration_data, 'bus'))
+plot.circle(x = 'X',y = 'Y',fill_color= agents_color, line_color = bus_color, size=5, source=source_agents11)
 
 def animate_update():
     iteration = slider.value + 1
@@ -202,13 +205,14 @@ def slider_update(attrname, old, new):
     source_agents1.data = find_agents_with_type(df, 'roaming')
     source_agents2.data = find_agents_with_type(df, 'homing')
     source_agents3.data = find_agents_with_type(df, 'crashed')
-    source_agents4.data = find_agents_with_type(df, 'aggressive_roaming')
-    source_agents5.data = find_agents_with_type(df, 'careful_roaming')
+    #source_agents4.data = find_agents_with_type(df, 'aggressive_roaming')
+    #source_agents5.data = find_agents_with_type(df, 'careful_roaming')
     source_agents6.data = find_agents_with_type(df, 'reached_goal')
     source_agents7.data = find_agents_with_type(df, 'inactive')
-    source_agents8.data = find_agents_with_type(df, 'careful_homing')
-    source_agents9.data = find_agents_with_type(df, 'aggressive_homing')
+    #source_agents8.data = find_agents_with_type(df, 'careful_homing')
+    #source_agents9.data = find_agents_with_type(df, 'aggressive_homing')
     #source_agents10.data = find_agents_with_type(df, 'walker')
+    source_agents11.data = find_agents_with_type(df, 'bus')
 
 slider = Slider(start=0, end=iter_max, value=1, step=1, title="Iteration")
 slider.on_change('value', slider_update)

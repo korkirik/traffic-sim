@@ -76,11 +76,12 @@ class Simulation:
         self.bus_stop_list = list()
         c = Converter()
 
-        self.bus_stop_list.append(MapObject(c.convert_point(6.13014,51.79376), 'bus_stop', 'Kleve Gruftstraße'))
-        self.bus_stop_list.append(MapObject(c.convert_point(6.1381,51.790532), 'bus_stop','Kleve Koekkoek-Platz'))
-        self.bus_stop_list.append(MapObject(c.convert_point(6.145389852402583, 51.78991430122071), 'bus_stop','Kleve Bahnhof'))
-        self.bus_stop_list.append(MapObject(c.convert_point(6.146449325029877, 51.793429736876085), 'bus_stop','Hochschule'))
-        #self.bus_stop_list.append(MapObject(c.convert_point(6.1524521086094595, 51.79567091213551), 'bus_stop','Kleve Schulstraße'))
+        self.bus_stop_list.append(MapObject(c.convert_point(6.13014, 51.79376), 'bus_stop', 'Kleve Gruftstraße'))
+        self.bus_stop_list.append(MapObject(c.convert_point(6.1381, 51.790522), 'bus_stop','Kleve Koekkoek-Platz'))
+        self.bus_stop_list.append(MapObject(c.convert_point(6.1435, 51.79133), 'waypoint','Waypoint one'))
+        self.bus_stop_list.append(MapObject(c.convert_point(6.14441, 51.78984), 'waypoint','Waypoint two'))
+        self.bus_stop_list.append(MapObject(c.convert_point(6.14491, 51.790242), 'bus_stop','Kleve Bahnhof'))
+        self.bus_stop_list.append(MapObject(c.convert_point(6.14645, 51.79346), 'bus_stop','Hochschule'))
 
         for a in self.agent_list:
             if(a.type == 'bus'):

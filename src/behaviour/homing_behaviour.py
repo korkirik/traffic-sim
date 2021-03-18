@@ -22,6 +22,7 @@ class HomingBehaviour(Behaviour):
         host.node_out = start_node
         host.position = start_node.position
 
+#used with nodes, apparently works with MapObject
     def set_target_node(self, node):
         host = self.host
 
@@ -42,14 +43,13 @@ class HomingBehaviour(Behaviour):
 
     def select_next_target(self): #TODO test function
         if not self.target_list: #empty sequence is false
-            host.set_inactive()
+            self.host.set_inactive()
         else:
             index = self.target_list.index(self.current_target)
             if index + 1 == len(self.target_list):
-                host.set_inactive()
+                self.host.set_inactive()
             else:
                 self.current_target = self.target_list[index + 1]
-
 
     def find_initial_heading(self):
         host = self.host
@@ -133,8 +133,6 @@ class HomingBehaviour(Behaviour):
 
         return index, index2
 
-    def reached_next_node(self):
-        pass
 #---------------------------------------
     def update_behaviour(self):
         host = self.host

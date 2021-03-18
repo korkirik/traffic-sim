@@ -78,6 +78,85 @@
     {
       "type": "Feature",
       "properties": {
+        "@id": "way/46887200",
+        "highway": "tertiary",
+        "lanes": "1",
+        "maxspeed": "50",
+        "name": "Hafenstraße",
+        "oneway": "yes"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            6.1392607,
+            51.7907332
+          ],
+          [
+            6.1392724,
+            51.790736
+          ],
+          [
+            6.1394709,
+            51.7907829
+          ],
+          [
+            6.139923,
+            51.790881
+          ],
+          [
+            6.1401012,
+            51.7909245
+          ],
+          [
+            6.1401963,
+            51.7909414
+          ],
+          [
+            6.1402836,
+            51.7909569
+          ]
+        ]
+      },
+      "id": "way/46887200"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/13050866",
+        "highway": "tertiary",
+        "lanes": "1",
+        "maxspeed": "50",
+        "name": "Hafenstraße",
+        "oneway": "yes"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            6.1380657,
+            51.7905209
+          ],
+          [
+            6.1383395,
+            51.7905294
+          ],
+          [
+            6.1387016,
+            51.7906011
+          ],
+          [
+            6.1392607,
+            51.7907332
+          ]
+        ]
+      },
+      "id": "way/13050866"
+    },
+
+    {
+      "type": "Feature",
+      "properties": {
         "@id": "way/13050858",
         "abandoned:railway": "tram",
         "cycleway": "lane",
@@ -308,61 +387,6 @@
         ]
       },
       "id": "way/18956309"
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "@id": "way/18956312",
-        "abandoned:railway": "tram",
-        "highway": "tertiary",
-        "lanes": "1",
-        "maxspeed": "50",
-        "name": "Hafenstraße",
-        "old_railway_operator": "Klever Straßenbahn",
-        "oneway": "yes",
-        "railway": "abandoned",
-        "railway:end_date": "1944-10-07",
-        "railway:historic": "tram",
-        "railway:start_date": "1912-08-03"
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            6.1402701,
-            51.7910421
-          ],
-          [
-            6.1401516,
-            51.7910214
-          ],
-          [
-            6.1400515,
-            51.791004
-          ],
-          [
-            6.139871,
-            51.7909617
-          ],
-          [
-            6.1394293,
-            51.790858
-          ],
-          [
-            6.1392141,
-            51.7908089
-          ],
-          [
-            6.138652,
-            51.7906805
-          ],
-          [
-            6.1385948,
-            51.7906649
-          ]
-        ]
-      },
-      "id": "way/18956312"
     },
     {
       "type": "Feature",
@@ -4068,28 +4092,6 @@
         ]
       },
       "id": "way/39093355"
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "@id": "way/39093356",
-        "highway": "service",
-        "oneway": "yes"
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            6.1392607,
-            51.7907332
-          ],
-          [
-            6.1392141,
-            51.7908089
-          ]
-        ]
-      },
-      "id": "way/39093356"
     },
     {
       "type": "Feature",
@@ -7957,30 +7959,6 @@
     {
       "type": "Feature",
       "properties": {
-        "@id": "way/162284273",
-        "highway": "service",
-        "lanes": "1",
-        "oneway": "yes",
-        "placement": "transition"
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            6.138371,
-            51.790604
-          ],
-          [
-            6.13839,
-            51.790577
-          ]
-        ]
-      },
-      "id": "way/162284273"
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "@id": "way/162284275",
         "highway": "service",
         "service": "parking_aisle"
@@ -9646,70 +9624,6 @@
     {
       "type": "Feature",
       "properties": {
-        "@id": "way/240238368",
-        "abandoned:railway": "tram",
-        "highway": "tertiary",
-        "lanes": "1",
-        "maxspeed": "50",
-        "name": "Hafenstraße",
-        "old_railway_operator": "Klever Straßenbahn",
-        "oneway": "yes",
-        "railway": "abandoned",
-        "railway:end_date": "1944-10-07",
-        "railway:historic": "tram",
-        "railway:start_date": "1912-08-03"
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            6.138371,
-            51.790604
-          ],
-          [
-            6.1380657,
-            51.7905209
-          ]
-        ]
-      },
-      "id": "way/240238368"
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "@id": "way/240238369",
-        "abandoned:railway": "tram",
-        "highway": "tertiary",
-        "lanes": "2",
-        "maxspeed": "50",
-        "name": "Hafenstraße",
-        "old_railway_operator": "Klever Straßenbahn",
-        "oneway": "yes",
-        "placement": "middle_of:2",
-        "railway": "abandoned",
-        "railway:end_date": "1944-10-07",
-        "railway:historic": "tram",
-        "railway:start_date": "1912-08-03",
-        "turn:lanes": "left|through"
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            6.1385948,
-            51.7906649
-          ],
-          [
-            6.138371,
-            51.790604
-          ]
-        ]
-      },
-      "id": "way/240238369"
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "@id": "way/240238370",
         "highway": "residential",
         "lanes": "2",
@@ -9834,34 +9748,7 @@
       },
       "id": "way/240238381"
     },
-    {
-      "type": "Feature",
-      "properties": {
-        "@id": "way/240238384",
-        "highway": "service",
-        "lanes": "1",
-        "oneway": "yes",
-        "turn": "left"
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            6.13839,
-            51.790577
-          ],
-          [
-            6.1383393,
-            51.7905635
-          ],
-          [
-            6.1383395,
-            51.7905294
-          ]
-        ]
-      },
-      "id": "way/240238384"
-    },
+
     {
       "type": "Feature",
       "properties": {

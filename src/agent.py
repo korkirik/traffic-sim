@@ -8,6 +8,7 @@ from behaviour.aggressive_roaming_behaviour import AggressiveRoamingBehaviour
 from behaviour.careful_roaming_behaviour import CarefulRoamingBehaviour
 from behaviour.crashed_behaviour import CrashedBehaviour
 from behaviour.homing_behaviour import HomingBehaviour
+from behaviour.bus_behaviour import BusBehaviour
 from behaviour.aggressive_homing_behaviour import AggressiveHomingBehaviour
 from behaviour.careful_homing_behaviour import CarefulHomingBehaviour
 from behaviour.inactive_behaviour import InactiveBehaviour
@@ -76,6 +77,8 @@ class Agent:
             self.my_behaviour = WalkerRoaming(self)
         elif(type == 'reached_goal'):
             self.my_behaviour = ReachedBehaviour(self)
+        elif(type == 'bus'):
+            self.my_behaviour = BusBehaviour(self)
         else:
             self.my_behaviour = InactiveBehaviour(self)
 
