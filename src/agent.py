@@ -26,6 +26,7 @@ class Agent:
         self.velocity = Pvector(0,0)
         self.acceleration = Pvector(0,0)
         self.agent_id = agent_id
+        self.type = type # TODO: should change when behaviour changes
 
         self.v_max = 1 #0.1
         self.alpha = self.v_max/4
@@ -33,7 +34,7 @@ class Agent:
         self.decceleration_magnitude = 0
 
         #self.minimal_separation = 0.00075 #75 *self.alpha
-        self.approach_error = 2 * self.alpha
+        self.approach_error = 3 * self.alpha
         self.agent_range = 40 *self.v_max
         self.agent_close_range = 10 * self.v_max
         self.detection_angle = 10

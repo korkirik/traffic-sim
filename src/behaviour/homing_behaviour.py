@@ -22,6 +22,12 @@ class HomingBehaviour(Behaviour):
         host.node_out = start_node
         host.position = start_node.position
 
+#used when agent is placed around node
+#    def set_closest_node(self, node):
+    #    self.next_node = node
+
+#        self.update_next_node_vector()
+
 #used with nodes, apparently works with MapObject
     def set_target_node(self, node):
         host = self.host

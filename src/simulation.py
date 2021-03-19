@@ -44,24 +44,27 @@ class Simulation:
     def create_homing_agents(self, number, type): #, start_area, target_area):
 
         Area.set_all_node_list(self.node_list) # TODO: move into main
-        #area1 = Area(6.130314, 51.794326, 200)
-        area1 = Area(6.1287, 51.7943, 50)
+        area1 = Area(6.1287, 51.7943, 20)
+        c = Converter()
+        xn, yn = c.convert(6.128525, 51.7944791)
+        n = self.closest_node(Pvector(xn,yn))
 
         for i in range(number):
             agent = Agent(self.agent_id, type)
-            #agent.set_starting_node(self.random_node_from_list_and_pop(self.free_node_list))
-
-            #Select a target for homing agents here
-            #agent.set_target_node(self.node_list[3]) # self.node_list[100]
-            # TODO: remove this if block
-            '''
-            if(len(nodes_in_area1) < 1):
-                break
-            '''
-
-            agent.set_starting_node(self.random_node_from_list_and_pop(area1.node_list)) #self.free_node_list
-            #agent.set_target_node(self.random_node_from_list(self.node_list)) #area2.node_list)) #self.node_list[0]
-            agent.set_target_list(self.bus_stop_list)
+            #Select a starting position and a target for homing agents here
+            #agent.set_target_node(self.node_list[3])
+            if(agent.type == 'bus'):
+                agent.set_starting_node(self.random_node_from_list_and_pop(area1.node_list))
+                agent.set_target_list(self.bus_stop_list)
+                print('bus recieved a list of bus stops')
+            else:
+                #agent.set_starting_node(self.random_node_from_list_and_pop(area1.node_list))
+                #setting starting position
+                p = self.place_near_node(n)
+                virtual_node = Node(p.x, p.y, 0)
+                virtual_node.connected_nodes.append(n)
+                agent.set_starting_node(virtual_node)
+                agent.set_target_list(self.waypoint_list)
 
             agent.randomize_velocity()
             self.agent_list.append(agent)
@@ -82,11 +85,10 @@ class Simulation:
         self.bus_stop_list.append(MapObject(c.convert_point(6.14441, 51.78984), 'waypoint','Waypoint two'))
         self.bus_stop_list.append(MapObject(c.convert_point(6.14491, 51.790242), 'bus_stop','Kleve Bahnhof'))
         self.bus_stop_list.append(MapObject(c.convert_point(6.14645, 51.79346), 'bus_stop','Hochschule'))
+        self.bus_stop_list.append(MapObject(c.convert_point(6.1487635, 51.7943618), 'waypoint','Waypoint three'))
 
-        for a in self.agent_list:
-            if(a.type == 'bus'):
-                #a.bus_stop_list = self.bus_stop_list
-                print('buses recieved bus stops')
+        self.waypoint_list = self.bus_stop_list.copy()
+        del self.waypoint_list[2:5]
 
         data = dict()
         element_list = list()
@@ -102,6 +104,16 @@ class Simulation:
         with open('bus_stops.json', 'w') as f:
             json.dump(data, f, indent = 2)
         print('Bus stops saved')
+
+    def place_near_node(self, n):
+        p = Pvector(0,0)
+
+        r = 20 + 10 * random.random()
+        phi = (math.pi/2)*random.random()
+        x = r*math.cos(phi)
+        y = r*math.sin(phi)
+        p = Pvector(x,y) + n.position
+        return p
 
     def create_walker(self, number, area):
         for i in range(number):
@@ -264,6 +276,10 @@ class Simulation:
             element_list = list()
             it_data['agents'] = element_list
 
+            #add agents during simulation every 100 iterations
+            if(iter % 50 == 0 and (iter < 260 or iter > 540)):
+                self.create_homing_agents(1, 'homing')
+
             for agentIndex, agent in enumerate(agents_group):
                 element = dict()
                 element['agent_id'] = agent.agent_id
@@ -281,9 +297,3 @@ class Simulation:
         with open('agents.json', 'w') as f:
             json.dump(it_list, f, indent = 2)
         print('Simulation complete, {} steps'.format(time))
-
-    ## TODO: move agents' tests into other class
-    def do_agent_tests(self):
-        agent_tester = Agent_test(self.agent_list[0])
-        #agent_tester.print_street_size()
-        agent_tester.print_forces()
