@@ -45,8 +45,6 @@ simulation.add_bus_stops()
 Area.set_all_node_list(list())
 
 #simulation.create_roaming_agents(20, 'roaming')
-
-simulation.create_homing_agents(1, 'bus')
+#simulation.create_homing_agents(1, 'bus')
 #simulation.create_homing_agents(1, 'homing')
-#simulation.create_agents_during_simulation()
-simulation.start_simulation(4000)
+simulation.start_simulation(5500)

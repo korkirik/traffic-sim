@@ -13,10 +13,15 @@ def find_agent_across_iterations(df_agents_file, agent_id):
 
     agent_complete_df = pd.DataFrame(columns=['agent_id', 'type', 'X', 'Y'])
     iter_max = df_agents_file.last_valid_index() #total number of iterations is +1
+
     for i in range(0, iter_max + 1, 1):
         df = pd.DataFrame(df_agents_file.iat[i,0])
-        agent_in_one_iter_df = df.loc[df['agent_id'] == agent_id]
-        agent_complete_df = pd.concat([agent_complete_df, agent_in_one_iter_df], ignore_index=True)
+
+        #check if an agent is in the current iteration
+        exists = agent_id in df.agent_id
+        if(exists):
+            agent_in_one_iter_df = df.loc[df['agent_id'] == agent_id]
+            agent_complete_df = pd.concat([agent_complete_df, agent_in_one_iter_df], ignore_index=True)
 
     #print('>> {}'.format(agent_complete_df))
     return agent_complete_df
@@ -30,7 +35,14 @@ def calculate_distance_mean_velocity(df):
         p2 = Pvector(df.iat[i+1,2],df.iat[i+1,3])
         p = p2 - p1
         distance = distance + p.magnitude()
-    mean_v = distance / (iter_max)
+    #mean velocity is counted until agent becomes inctive first time
+    for i in range(0, iter_max, 1):
+        if(df.iat[i,1] == 'inactive'):
+            total_time = i
+            print(i)
+            break
+
+    mean_v = distance / (total_time)
     #print('distance: {}, mean v: {}'.format(distance, mean_v))
     return distance, mean_v
 
@@ -61,6 +73,7 @@ def find_agent_breakdown(df_agents_file, point):
         first_df = pd.DataFrame(df_agents_file.iat[-1,0])
 
     breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'homing')])
+    breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'bus')])
     breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'careful_homing')])
     breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'aggressive_homing')])
     breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'roaming')])
@@ -69,7 +82,7 @@ def find_agent_breakdown(df_agents_file, point):
 
     breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'crashed')])
     breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'inactive')])
-    breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'reached_goal')])
+    #breakdown_df = pd.concat([breakdown_df, count_agents_with_type(first_df, 'reached_goal')])
 
     breakdown_df = breakdown_df.reset_index(drop=True)
     return breakdown_df
@@ -85,8 +98,10 @@ df_agents_file.set_index('iteration', inplace = True)
 iter_max = df_agents_file.last_valid_index() #total number of iterations is +1
 print('>> iteration max: {}, total number is: {}'.format(iter_max, iter_max + 1))
 
-df_first = pd.DataFrame(df_agents_file.iat[0,0])
-agent_count = df_first.last_valid_index() + 1
+#df_first = pd.DataFrame(df_agents_file.iat[0,0])
+#agent_count = df_first.last_valid_index() + 1
+df_last = pd.DataFrame(df_agents_file.iat[-1,0])
+agent_count = df_last.last_valid_index() + 1
 print('>> agent count is: {}'.format(agent_count))
 
 element_list = list()

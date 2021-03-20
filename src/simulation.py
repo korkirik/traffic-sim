@@ -21,6 +21,7 @@ class Simulation:
     def __init__(self):
         self.agent_count = 0
         self.agent_id = 0
+        self.spawn_count = 0
 
         self.agent_list = list()
         self.free_node_list = list()
@@ -81,7 +82,7 @@ class Simulation:
 
         self.bus_stop_list.append(MapObject(c.convert_point(6.13014, 51.79376), 'bus_stop', 'Kleve Gruftstraße'))
         self.bus_stop_list.append(MapObject(c.convert_point(6.1381, 51.790522), 'bus_stop','Kleve Koekkoek-Platz'))
-        self.bus_stop_list.append(MapObject(c.convert_point(6.1435, 51.79133), 'waypoint','Waypoint one'))
+        self.bus_stop_list.append(MapObject(c.convert_point(6.1435, 51.791328), 'waypoint','Waypoint one'))
         self.bus_stop_list.append(MapObject(c.convert_point(6.14441, 51.78984), 'waypoint','Waypoint two'))
         self.bus_stop_list.append(MapObject(c.convert_point(6.14491, 51.790242), 'bus_stop','Kleve Bahnhof'))
         self.bus_stop_list.append(MapObject(c.convert_point(6.14645, 51.79346), 'bus_stop','Hochschule'))
@@ -109,7 +110,7 @@ class Simulation:
         p = Pvector(0,0)
 
         r = 20 + 10 * random.random()
-        phi = (math.pi/2)*random.random()
+        phi = (math.pi/3)*random.random()
         x = r*math.cos(phi)
         y = r*math.sin(phi)
         p = Pvector(x,y) + n.position
@@ -276,9 +277,11 @@ class Simulation:
             element_list = list()
             it_data['agents'] = element_list
 
-            #add agents during simulation every 100 iterations
+            #add agents during simulation every 50 iterations
             if(iter % 50 == 0 and (iter < 260 or iter > 540)):
-                self.create_homing_agents(1, 'homing')
+                if(self.spawn_count < 40):
+                    self.create_homing_agents(1, 'homing')
+                    self.spawn_count +=1
 
             for agentIndex, agent in enumerate(agents_group):
                 element = dict()
@@ -293,7 +296,7 @@ class Simulation:
 
             it_list.append(it_data)
 
-
+        print('Agents created: {}'.format(self.agent_count))
         with open('agents.json', 'w') as f:
             json.dump(it_list, f, indent = 2)
         print('Simulation complete, {} steps'.format(time))

@@ -34,7 +34,7 @@ class Agent:
         self.decceleration_magnitude = 0
 
         #self.minimal_separation = 0.00075 #75 *self.alpha
-        self.approach_error = 3 * self.alpha
+        self.approach_error = 4 * self.alpha
         self.agent_range = 40 *self.v_max
         self.agent_close_range = 10 * self.v_max
         self.detection_angle = 10
