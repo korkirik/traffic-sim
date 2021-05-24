@@ -26,9 +26,11 @@ class BusBehaviour(HomingBehaviour):
 
     def check_if_still_boarding(self):
         if self.waiting_iteration < self.boarding_time:
-            self.waiting_iteration =  self.waiting_iteration + 1
+            self.waiting_iteration += 1
             return True
         else:
+            if(self.host.active == 0):  # TODO: fix this constant check
+                self.host.active = 1
             return False
 
     def update_velocity(self):
@@ -56,6 +58,7 @@ class BusBehaviour(HomingBehaviour):
             #print('I am at {}'.format(self.current_target.name))
             if self.check_if_at_bus_stop():
                 self.waiting_iteration = 0 #set boarding counter
+                self.host.active = 0
                 print('I am at {}'.format(self.current_target.name))
             self.select_next_target()
 

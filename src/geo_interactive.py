@@ -58,7 +58,7 @@ c = Converter()
 tile_provider = get_provider(OSM)
 
 plot = figure(title='Traffic Sim', plot_width=600,  plot_height=600,
-                x_range=c.convert_longitude_range(6.132, 6.149), y_range=c.convert_latitude_range(51.786, 51.798),
+                x_range=c.convert_longitude_range(6.105, 6.13), y_range=c.convert_latitude_range(51.772, 51.788),
                 x_axis_type="mercator", y_axis_type="mercator",
                 match_aspect = True , aspect_scale = 1, #0.6,
                 tools="pan, wheel_zoom, reset", active_drag="pan", active_scroll = "wheel_zoom")
@@ -135,19 +135,6 @@ with open('map_objects.json') as f2:
     plot.circle(x3,y3,fill_color = nodes_color, line_color = '#0044cc', size=4)
 #---------------------------
 '''
-#-----loading bus stops-----
-with open('bus_stops.json') as f2:
-    map_objects = json.load(f2)
-
-
-    x2 = list()
-    y2 = list()
-    for o in map_objects['bus_stops']:
-        x2.append(o['X'])
-        y2.append(o['Y'])
-
-    plot.circle(x2,y2,fill_color = nodes_color, line_color = '#00B4D8', size=4)
-#-----loading bus stops-----
 
 #Reading data from agents.json
 df_agents_file = pd.read_json("agents.json")

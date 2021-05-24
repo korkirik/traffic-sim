@@ -188,7 +188,7 @@ class HomingBehaviour(Behaviour):
     def check_if_arrved(self):
         host = self.host
 
-        if(self.target_distance < host.approach_error):
+        if(self.target_distance < 2 * host.approach_error):
             return True
         else:
             return False

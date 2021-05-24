@@ -28,8 +28,7 @@ from testing_maps import *
 
 map = Map()
 psparser = Parser()
-#psparser.parse_file('export_map_data_smaller.json')
-psparser.parse_file('map2.geojson')
+psparser.parse_file('export_map_data_smaller.json')
 psparser.convert_to_mercator_coordinates()  #required for agents running on osm map
 
 map.load_streets(psparser.get_street_segment_list())
@@ -40,11 +39,10 @@ map.print_nodes_stats(0)
 
 simulation = Simulation()
 simulation.load_nodes(map.get_node_list())
-simulation.add_bus_stops()
 
 Area.set_all_node_list(list())
 
-#simulation.create_roaming_agents(20, 'roaming')
-#simulation.create_homing_agents(1, 'bus')
+simulation.create_roaming_agents(20, 'roaming')
+simulation.create_homing_agents(20, 'homing')
 #simulation.create_homing_agents(1, 'homing')
-simulation.start_simulation(5500)
+simulation.start_simulation(1000)

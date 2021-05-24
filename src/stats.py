@@ -37,7 +37,8 @@ def calculate_distance_mean_velocity(df):
         distance = distance + p.magnitude()
     #mean velocity is counted until agent becomes inctive first time
     for i in range(0, iter_max, 1):
-        if(df.iat[i,1] == 'inactive'):
+        total_time = 1
+        if(df.iat[i,1] == 'inactive' or i == iter_max - 1):
             total_time = i
             print(i)
             break

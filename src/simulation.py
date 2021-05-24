@@ -44,30 +44,17 @@ class Simulation:
 
     def create_homing_agents(self, number, type): #, start_area, target_area):
 
-        Area.set_all_node_list(self.node_list) # TODO: move into main
-        area1 = Area(6.1287, 51.7943, 20)
-        c = Converter()
-        xn, yn = c.convert(6.128525, 51.7944791)
-        n = self.closest_node(Pvector(xn,yn))
-
         for i in range(number):
             agent = Agent(self.agent_id, type)
             #Select a starting position and a target for homing agents here
             #agent.set_target_node(self.node_list[3])
-            if(agent.type == 'bus'):
-                agent.set_starting_node(self.random_node_from_list_and_pop(area1.node_list))
-                agent.set_target_list(self.bus_stop_list)
-                print('bus recieved a list of bus stops')
-            else:
-                #agent.set_starting_node(self.random_node_from_list_and_pop(area1.node_list))
-                #setting starting position
-                p = self.place_near_node(n)
-                virtual_node = Node(p.x, p.y, 0)
-                virtual_node.connected_nodes.append(n)
-                agent.set_starting_node(virtual_node)
-                agent.set_target_list(self.waypoint_list)
 
+            #setting starting position
+            agent.set_starting_node(self.random_node_from_list_and_pop(self.free_node_list))
+
+            agent.set_target_node(self.random_node())
             agent.randomize_velocity()
+
             self.agent_list.append(agent)
             agent.add_agent_list(self.agent_list)
 
@@ -75,36 +62,6 @@ class Simulation:
 
         print('homing agents created {}'.format(number))
         self.agent_count += number
-
-    def add_bus_stops(self):
-        self.bus_stop_list = list()
-        c = Converter()
-
-        self.bus_stop_list.append(MapObject(c.convert_point(6.13014, 51.79376), 'bus_stop', 'Kleve Gruftstraße'))
-        self.bus_stop_list.append(MapObject(c.convert_point(6.1381, 51.790522), 'bus_stop','Kleve Koekkoek-Platz'))
-        self.bus_stop_list.append(MapObject(c.convert_point(6.1435, 51.791328), 'waypoint','Waypoint one'))
-        self.bus_stop_list.append(MapObject(c.convert_point(6.14441, 51.78984), 'waypoint','Waypoint two'))
-        self.bus_stop_list.append(MapObject(c.convert_point(6.14491, 51.790242), 'bus_stop','Kleve Bahnhof'))
-        self.bus_stop_list.append(MapObject(c.convert_point(6.14645, 51.79346), 'bus_stop','Hochschule'))
-        self.bus_stop_list.append(MapObject(c.convert_point(6.1487635, 51.7943618), 'waypoint','Waypoint three'))
-
-        self.waypoint_list = self.bus_stop_list.copy()
-        del self.waypoint_list[2:5]
-
-        data = dict()
-        element_list = list()
-        data['bus_stops'] = element_list
-
-        for index, o in enumerate(self.bus_stop_list):
-            element = dict()
-            element['type'] = o.type
-            element['X'] = o.position.x
-            element['Y'] = o.position.y
-            element_list.append(element)
-
-        with open('bus_stops.json', 'w') as f:
-            json.dump(data, f, indent = 2)
-        print('Bus stops saved')
 
     def place_near_node(self, n):
         p = Pvector(0,0)
@@ -276,12 +233,6 @@ class Simulation:
 
             element_list = list()
             it_data['agents'] = element_list
-
-            #add agents during simulation every 50 iterations
-            if(iter % 50 == 0 and (iter < 260 or iter > 540)):
-                if(self.spawn_count < 40):
-                    self.create_homing_agents(1, 'homing')
-                    self.spawn_count +=1
 
             for agentIndex, agent in enumerate(agents_group):
                 element = dict()

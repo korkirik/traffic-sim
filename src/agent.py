@@ -100,7 +100,7 @@ class Agent:
         self.agent_list = agent_list
 
     def randomize_velocity(self):
-        self.set_v_max(self.v_max + random.randrange(0,10,1)*0.01*self.v_max)
+        self.set_v_max(self.v_max + random.randrange(-5,5,1)*0.01*self.v_max) # +-5% to v_max
 
     #sets max velocity, adjusts agent dynamics accordingly
     def set_v_max(self, v_max):
